@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { Species } from "../models/species-model"
-import { getArtwork, getPokemonById, getPokemonFormById, getPokemonSpeciesById, getPokemonTotalCount } from "../services/pokemon.service";
+import { getPokemonById, getPokemonFormById, getPokemonSpeciesById, getPokemonTotalCount } from "../services/pokemon.service";
 import { GenericWrapper } from "../models/generic-wrapper-model";
 import { Form } from "../models/form-model";
 import { Pokemon } from "../models/pokemon-model";
 import PokemonArtworkComponent from "./artwork-component";
 
-const PokedexItem: React.FC = () => {
+const PokemonCardComponent: React.FC = () => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecie, setPokemonSpecie] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
@@ -63,10 +63,6 @@ const PokedexItem: React.FC = () => {
         console.log(data);
     }
 
-    
-
-
-
     function getRandomNumberBetweenRange(min: number, max: number) {
         return Math.floor(Math.random() * (max - min) + min);
     }
@@ -97,8 +93,24 @@ const PokedexItem: React.FC = () => {
     if (!mounted) return null;
 
     return (
-        <div>
-            <div>
+        <div className="w-full bg-orange-300 col-span-5 row-span-1 md:col-span-2 lg:col-span-4 xl:col-start-7 xl:col-span-3">
+            <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem] border-2 border-green-400 border-dashed">
+                <h4 className="text-3xl">Bulbasur</h4>
+                <span>Normal</span>
+            </div>
+            <div className="w-full h-[10rem] content-center text-center bg-blue-400 text-black">
+                <p>image</p>
+            </div>
+            <div className="w-full h-[5rem] content-center bg-green-300 text-black text-center">
+                <p>main stats</p>
+            </div>
+            <div className="w-full h-[5rem] content-center bg-yellow-300 text-black text-center">
+                <p>evolution chain</p>
+            </div>
+            <div className="w-full h-[5rem] content-center bg-red-300 text-black text-center">
+                <p>description</p>
+            </div>
+            {/* <div>
                 <p>Total amount of pokemon: {pokemonCount?.count}</p>
                 <p>ID: {currentId}</p>
             </div>
@@ -127,9 +139,9 @@ const PokedexItem: React.FC = () => {
                 </div>
             )}
 
-            <PokemonArtworkComponent id={currentId} />
+            <PokemonArtworkComponent id={currentId} /> */}
         </div>
     );
 }
 
-export default PokedexItem;
+export default PokemonCardComponent;

@@ -1,15 +1,13 @@
 "use client";
 
-import ColorSelectorComponent from "./color-selector-component";
-import PokedexItem from "./pokedex-item-component";
-import TypeSelectorComponent from "./type-selector-component";
+import PokedexListComponent from "./pokedex-list-component";
+import PokemonCardComponent from "./pokemon-card-component";
 
 const HomeComponent: React.FC = () => {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-blue-500">
-            <TypeSelectorComponent />
-            <ColorSelectorComponent />
-            <PokedexItem />
+        <div className="border-2 border-red-500 border-dashed grid grid-cols-2 grid-rows-2 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-10">
+            <PokedexListComponent />
+            <PokemonCardComponent />
         </div>
     );
 };
