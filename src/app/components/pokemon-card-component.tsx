@@ -6,7 +6,11 @@ import { Form } from "../models/form-model";
 import { Pokemon } from "../models/pokemon-model";
 import PokemonArtworkComponent from "./artwork-component";
 
-const PokemonCardComponent: React.FC = () => {
+interface Props {
+    id: number
+}
+
+const PokemonCardComponent: React.FC<Props> = ({ id }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecie, setPokemonSpecie] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
@@ -18,8 +22,30 @@ const PokemonCardComponent: React.FC = () => {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
-    }, []);
+        if (!id) return;
+
+        const fechtPokemonData = async () => {
+            try {
+                setLoading(true);
+                await setPokemon(id);
+                await setSpecies(id);
+                await setForm(id);
+                setMounted(true);
+                setError(null);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setError(error);
+                } else {
+                    setError(new Error('Unexpected error'));
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fechtPokemonData();
+
+    }, [id]);
 
     // it seems to be a problem fetching the total pokemon count so i hardcode it
     // const randomId = getRandomNumberBetweenRange(1, pokemonCount?.count ? pokemonCount?.count : 0);
@@ -93,23 +119,32 @@ const PokemonCardComponent: React.FC = () => {
     if (!mounted) return null;
 
     return (
-        <div className="w-full bg-orange-300 col-span-5 row-span-1 md:col-span-2 lg:col-span-4 xl:col-start-7 xl:col-span-3">
-            <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem] border-2 border-green-400 border-dashed">
-                <h4 className="text-3xl">Bulbasur</h4>
-                <span>Normal</span>
-            </div>
-            <div className="w-full h-[10rem] content-center text-center bg-blue-400 text-black">
-                <p>image</p>
-            </div>
-            <div className="w-full h-[5rem] content-center bg-green-300 text-black text-center">
-                <p>main stats</p>
-            </div>
+        <div >
+            {pokemonSpecie &&
+                <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem] border-2 border-green-400 border-dashed">
+                    <h4 className="text-3xl">{pokemonSpecie.name}</h4>
+                    <span>{pokemonSpecie.id}</span>
+                </div>
+            }
+            {pokemonForm &&
+                <div className="w-full h-[10rem] content-center text-center bg-blue-400 text-black">
+                    {/* <img src={pokemonForm.sprites.front_default} alt="" /> */}
+                    <PokemonArtworkComponent id={id} />
+                </div>
+            }
+            {pokemonSpecie &&
+                <div className="w-full h-[5rem] content-center bg-green-300 text-black text-center">
+                    <p>base happiness: {pokemonSpecie.base_happiness}</p>
+                </div>
+            }
             <div className="w-full h-[5rem] content-center bg-yellow-300 text-black text-center">
-                <p>evolution chain</p>
+                {pokemonTypes}
             </div>
-            <div className="w-full h-[5rem] content-center bg-red-300 text-black text-center">
-                <p>description</p>
-            </div>
+            {pokemonData &&
+                <div className="w-full h-[5rem] content-center bg-red-300 text-black text-center">
+                    {pokemonData.height}
+                </div>
+            }
             {/* <div>
                 <p>Total amount of pokemon: {pokemonCount?.count}</p>
                 <p>ID: {currentId}</p>
