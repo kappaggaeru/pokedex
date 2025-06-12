@@ -25,7 +25,7 @@ const PokemonArtworkComponent = ({ id }: { id: number }) => {
     return (
         <div>
             {pokemonArtwork ? (
-                <img src={pokemonArtwork} alt={`Pokemon ${id}`} style={{width: '100px', border: '1px #000 solid'}}/>
+                <img src={pokemonArtwork} alt={`Pokemon ${id}`} className="h-[15rem]"/>
             ) : (
                 <p>Loading artwork...</p>
             )}

@@ -4,23 +4,18 @@
 
 :root {
     --background: #ffffff;
-    --foreground: #171717;
+    --foreground: #242126;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background: #6e1292;
-        --foreground: #ededed;
+        --background: #242126;
+        --foreground: #C4C5C9;
     }
 }
 
 body {
     color: var(--foreground);
     background: var(--background);
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.mainContainer {
-    background-color: rgb(184, 184, 184);
-    margin: 1rem;
+    font-family: Helvetica, Arial, sans-serif;
 }

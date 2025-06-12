@@ -1,5 +1,6 @@
 const POKEMON_API_BASE_URL = 'https://pokeapi.co/api/v2';
 const ARTWORK_BASE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork';
+const SPRITE_BASE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon';
 
 // default call to get the total pokemon count and more
 export const getPokemonTotalCount = async () => {
@@ -86,6 +87,14 @@ export const getArtwork = async (id: number) => {
     const response = await fetch(`${ARTWORK_BASE_URL}/${id}.png`);
     if (!response.ok) {
         throw new Error('Error fetching artwork');
+    }
+    return response.blob();
+}
+
+export const getSprite = async (id: number) => {
+    const response = await fetch(`${SPRITE_BASE_URL}/${id}.png`);
+    if (!response.ok) {
+        throw new Error('Error fetching sprite');
     }
     return response.blob();
 }
