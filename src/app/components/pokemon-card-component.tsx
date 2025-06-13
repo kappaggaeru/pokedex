@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
-import { Species } from "../models/species-model"
+import { Species } from "../models/dto/species-model"
 import { getPokemonById, getPokemonFormById, getPokemonSpeciesById, getPokemonTotalCount } from "../services/pokemon.service";
-import { GenericWrapper } from "../models/generic-wrapper-model";
-import { Form } from "../models/form-model";
-import { Pokemon } from "../models/pokemon-model";
+import { Form } from "../models/dto/form-model";
+import { Pokemon } from "../models/dto/pokemon-model";
 import PokemonArtworkComponent from "./artwork-component";
-import { PokemonCardProps } from "../models/pokedex-card-props";
+import { PokemonCardProps } from "../models/props/pokedex-card-props";
+import { StatBar } from "./stat-bar.component";
+import { StatBarProps } from "../models/props/pokedex-stat-props";
 
 const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, toggleCard }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
@@ -44,6 +45,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, toggleCard }) =>
     async function setPokemon(id: number) {
         const data = await getPokemonById(id);
         setPokemonData(data);
+        setStats(data);
         console.log(data);
     }
 
@@ -59,6 +61,34 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, toggleCard }) =>
         console.log(data);
     }
 
+    const statsColors: Array<"green" | "red" | "blue" | "violet" | "lightblue" | "yellow"> = [
+        "green",
+        "red",
+        "blue",
+        "violet",
+        "lightblue",
+        "yellow"
+    ];
+
+    function setStats(data: Pokemon): StatBarProps[] {
+        return data.stats.map((stat, index) => ({
+            title: stat.stat.name ?? "",
+            value: stat.base_stat,
+            color: statsColors[index % statsColors.length]
+        }));
+    }
+
+    const statComponents = pokemonData
+        ? setStats(pokemonData).map((statProps) => (
+            <StatBar
+                key={statProps.title}
+                title={statProps.title}
+                value={statProps.value}
+                color={statProps.color}
+            />
+        ))
+        : [];
+
     const pokemonTypes = pokemonForm?.types.map((type, index) =>
         <span key={index}>
             {type.type.name}
@@ -69,7 +99,10 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, toggleCard }) =>
     if (!mounted) return null;
 
     return (
-        <div className="overflow-auto">
+        <div className="h-full w-full">
+            <button className="py-[.5rem] px-[1.5rem] rounded-md bg-slate-400 text-black md:hidden" onClick={toggleCard}>
+                CLOSE
+            </button>
             {pokemonSpecie &&
                 <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem]">
                     <h4 className="text-3xl uppercase">{pokemonSpecie.name}</h4>
@@ -82,8 +115,11 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, toggleCard }) =>
                 </div>
             }
             {pokemonSpecie &&
-                <div className="w-full h-[5rem] content-center bg-green-300 text-black text-center">
-                    <p>base happiness: {pokemonSpecie.base_happiness}</p>
+                <div className="px-[1rem]">
+                    <h1 className="text-xl">Stats</h1>
+                    {pokemonData &&
+                        statComponents
+                    }
                 </div>
             }
             <div className="w-full h-[5rem] content-center bg-yellow-300 text-black text-center">
@@ -94,13 +130,6 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, toggleCard }) =>
                     {pokemonData.height}
                 </div>
             }
-            <div className="md:hidden">
-                <button className="py-[.5rem] px-[1.5rem] rounded-md bg-slate-400 text-black" onClick={toggleCard}>CLOSE</button>
-            </div>
-            <div>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia minus modi qui vitae velit illum incidunt a repellat eveniet aliquam quas, cum saepe sint, tenetur ullam possimus. Ipsa, eum doloremque.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, pariatur reiciendis voluptates in aliquam molestias eveniet vitae explicabo harum rem iste facere debitis, eaque deserunt accusamus fugit, neque illum? Laudantium.</p>
-            </div>
         </div>
     );
 }

@@ -9,6 +9,7 @@ const PokedexListComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [showCard, setShowCard] = useState(false);
     const [viewedMap, setViewedMap] = useState<Record<number, string>>({});
+    const pokedexItems = [];
 
     const toggleCard = () => {
         console.log(showCard);
@@ -31,8 +32,7 @@ const PokedexListComponent: React.FC = () => {
         }
     };
 
-    const pokedexItems = [];
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= 300; i++) {
         pokedexItems.push(
             <PokedexItemContainer
                 key={i}
@@ -45,27 +45,29 @@ const PokedexListComponent: React.FC = () => {
     }
 
     return (
-        <div className="p-[1rem] bg-yellow-200 w-full h-full relative grid grid-cols-1 grid-rows-1 md:grid-cols-4 md:grid-rows-2 xl:grid-cols-8 xl:grid-rows-4">
+        <div className="p-[1rem] bg-yellow-200 w-full h-full grid grid-cols-1 grid-rows-1 md:grid-cols-4 md:grid-rows-2 xl:grid-cols-8 xl:grid-rows-4">
             <div
                 id="pokemonListContainer"
                 className={`col-span-1 row-span-1 md:col-span-2 md:row-span-2 xl:col-span-5 xl:row-span-4`}>
-                <div className={`bg-blue-300 w-full h-full flex flex-row flex-wrap justify-center gap-[1rem] overflow-auto ${showCard ? "hidden" : ""}`}>
+                <div
+                    className={`bg-blue-300 w-full h-full flex flex-row flex-wrap justify-center gap-[1rem] overflow-auto 
+                        ${showCard ? "block" : "block"} md:flex ${showCard ? "mobile:hidden" : "mobile:block"}`}>
                     {pokedexItems}
                 </div>
             </div>
 
             <div
                 id="pokemonCardContainer"
-                className={`col-span-1 row-span-1 md:col-span-2 md:row-span-2 xl:col-span-3 xl:row-span-4`}>
-                <div className={`bg-orange-200 w-full h-full ${showCard ? "" : "hidden"}`}>
-                    {
-                        selectedId && (
-                            <PokemonCardComponent
-                                id={selectedId}
-                                toggleCard={toggleCard}
-                            />
-                        )
-                    }
+                className={`col-span-1 row-span-1 md:col-span-2 md:row-span-2 xl:col-span-3 xl:row-span-4 sm:relative`}>
+                <div
+                    className={`sm:absolute sm:top-0 bg-orange-200 w-full h-full flex flex-col gap-[1rem] overflow-auto 
+                        ${showCard ? "block" : "hidden"} md:block`}>
+                    {selectedId && (
+                        <PokemonCardComponent
+                            id={selectedId}
+                            toggleCard={toggleCard}
+                        />
+                    )}
                 </div>
             </div>
         </div>
