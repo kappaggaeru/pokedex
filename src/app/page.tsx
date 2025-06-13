@@ -4,7 +4,7 @@ import SearchBarComponent from "./components/search-bar.component";
 
 export default function Home() {
     return (
-        <section className="p-[1.5rem] md:p-[4rem] xl:p-[2rem] xl:max-w-7xl xl:m-auto">
+        <section className="px-[1.5rem] md:px-[4rem] xl:pt-[2rem] xl:max-w-7xl xl:m-auto">
             <header>
                 <SearchBarComponent />
             </header>
