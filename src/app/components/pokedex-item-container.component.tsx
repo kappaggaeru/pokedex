@@ -1,5 +1,5 @@
 import React from 'react';
-import { PokedexItemProps } from '../models/pokedex-item-props';
+import { PokedexItemProps } from '../models/props/pokedex-item-props';
 
 const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, onSelect }) => {
     return (

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { GenericWrapper } from "../models/generic-wrapper-model";
+import { GenericWrapper } from "../models/dto/generic-wrapper-model";
 import { getPokemonColors } from "../services/pokemon.service";
-import { Generic } from "../models/generic-model";
+import { Generic } from "../models/dto/generic-model";
 
 const ColorSelectorComponent: React.FC = () => {
     const [colors, setColors] = useState<GenericWrapper | null>(null);
