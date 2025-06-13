@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getArtwork } from "../services/pokemon.service";
+import Image from "next/image";
 
 const PokemonArtworkComponent = ({ id }: { id: number }) => {
     const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
@@ -25,7 +26,7 @@ const PokemonArtworkComponent = ({ id }: { id: number }) => {
     return (
         <div>
             {pokemonArtwork ? (
-                <img src={pokemonArtwork} alt={`Pokemon ${id}`} className="h-[15rem]"/>
+                <Image src={pokemonArtwork} alt={`Pokemon ${id}`} className="h-[15rem]" width={200} height={200}/>
             ) : (
                 <p>Loading artwork...</p>
             )}

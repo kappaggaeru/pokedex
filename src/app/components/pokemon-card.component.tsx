@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { Species } from "../models/dto/species-model"
-import { getPokemonById, getPokemonFormById, getPokemonSpeciesById, getPokemonTotalCount } from "../services/pokemon.service";
+import { getPokemonById, getPokemonFormById, getPokemonSpeciesById } from "../services/pokemon.service";
 import { Form } from "../models/dto/form-model";
 import { Pokemon } from "../models/dto/pokemon-model";
-import PokemonArtworkComponent from "./artwork-component";
+import PokemonArtworkComponent from "./artwork.component";
 import { PokemonCardProps } from "../models/props/pokedex-card-props";
 import { StatBar } from "./stat-bar.component";
 import { StatBarProps } from "../models/props/pokedex-stat-props";

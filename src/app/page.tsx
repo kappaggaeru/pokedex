@@ -1,5 +1,5 @@
 import FooterComponent from "./components/footer.component";
-import HomeComponent from "./components/home-component";
+import HomeComponent from "./components/home.component";
 import SearchBarComponent from "./components/search-bar.component";
 
 export default function Home() {

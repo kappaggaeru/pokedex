@@ -1,5 +1,6 @@
 import React from 'react';
 import { PokedexItemProps } from '../models/props/pokedex-item-props';
+import Image from 'next/image';
 
 const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, onSelect }) => {
     return (
@@ -8,7 +9,7 @@ const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, 
             onClick={() => onSelect(id)}
         >
             {viewed && sprite ? (
-                <img src={sprite} alt={`Pokemon ${id}`} className='w-full h-full object-contain' />
+                <Image src={sprite} alt={`Pokemon ${id}`} className='w-full h-full object-contain' width={200} height={200} />
             ) : (
                 <span>{id}</span>
             )}
