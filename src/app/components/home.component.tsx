@@ -3,11 +3,9 @@
 import React, { useState } from "react";
 import PokedexListComponent from "./pokedex-list.component";
 import PokemonCardComponent from "./pokemon-card.component";
-import { useIsMobile } from "../hooks/useIsMobile";
 
 const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
-    const isMobile = useIsMobile();
 
     const handleSelect = (id: number) => setSelectedId(id);
     const handleClear = () => setSelectedId(null);

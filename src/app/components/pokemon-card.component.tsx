@@ -15,9 +15,12 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
     const [pokemonSpecie, setPokemonSpecie] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
     const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!id) return;
+
+        setLoading(true);
 
         let objectUrlTemp: string | null = null;
 
@@ -38,6 +41,8 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
                 setPokemonArtwork(objectUrlTemp);
             } catch (error) {
                 console.error("Error al obtener datos del Pokémon:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -66,12 +71,12 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
         ))
         : [];
 
-    const pokemonTypes = pokemonForm?.types.map((type, index) =>
-        <span key={index}>
-            {type.type.name}
-            {index < pokemonForm.types.length - 1 && ', '}
-        </span>
-    );
+    // const pokemonTypes = pokemonForm?.types.map((type, index) =>
+    //     <span key={index}>
+    //         {type.type.name}
+    //         {index < pokemonForm.types.length - 1 && ', '}
+    //     </span>
+    // );
 
     if (id === null) {
         return (
@@ -79,6 +84,18 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
                 <div className="p-4 text-center">
                     <h2 className="text-xl font-semibold">Selecciona un Pokémon</h2>
                     <p className="text-sm">Haz clic en uno de la lista para ver sus detalles.</p>
+                </div>
+            </div>
+        );
+    } else if (loading) {
+        return (
+            <div className="h-full w-full flex items-center justify-center">
+                <div className="animate-pulse w-full p-4 space-y-4">
+                    <div className="h-6 bg-gray-300 rounded w-1/3 mx-auto" />
+                    <div className="h-40 bg-gray-300 rounded" />
+                    <div className="h-4 bg-gray-300 rounded w-2/3 mx-auto" />
+                    <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto" />
+                    <div className="h-4 bg-gray-300 rounded w-1/4 mx-auto" />
                 </div>
             </div>
         );
