@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PokedexItemContainer from "./pokedex-item-container.component";
 import { getSprite } from "../services/pokemon.service";
 

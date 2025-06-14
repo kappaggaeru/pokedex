@@ -1,4 +1,4 @@
 export interface PokemonCardProps {
-    id: number;
-    toggleCard: () => void;
+    id: number | null;
+    clearCard: () => void;
 }

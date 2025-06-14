@@ -13,9 +13,9 @@ const colorClasses: Record<StatBarProps["color"], string> = {
 export const StatBar: React.FC<StatBarProps> = ({ title, value, color }) => {
     const [animatedWidth, setAnimatedWidth] = useState(0);
 
-    const clampedValue = Math.min(value, 100);
 
     useEffect(() => {
+        const clampedValue = Math.min(value, 100);
         setAnimatedWidth(0);
         const timeout = setTimeout(() => {
             setAnimatedWidth(clampedValue);

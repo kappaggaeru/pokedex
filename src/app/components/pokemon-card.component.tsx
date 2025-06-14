@@ -1,90 +1,67 @@
-import { useEffect, useState } from "react"
-import { Species } from "../models/dto/species-model"
-import { getPokemonById, getPokemonFormById, getPokemonSpeciesById } from "../services/pokemon.service";
-import { Form } from "../models/dto/form-model";
-import { Pokemon } from "../models/dto/pokemon-model";
+"use client";
+import { useEffect, useState } from "react";
+import { getPokemonById, getPokemonFormById, getPokemonSpeciesById, getArtwork } from "../services/pokemon.service";
 import PokemonArtworkComponent from "./artwork.component";
-import { PokemonCardProps } from "../models/props/pokedex-card-props";
 import { StatBar } from "./stat-bar.component";
+import { PokemonCardProps } from "../models/props/pokedex-card-props";
 import { StatBarProps } from "../models/props/pokedex-stat-props";
+import { Pokemon } from "../models/dto/pokemon-model";
+import { Species } from "../models/dto/species-model";
+import { Form } from "../models/dto/form-model";
+import CloseButton from "../buttons/close.button";
 
-const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, toggleCard }) => {
+const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecie, setPokemonSpecie] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
-    const [error, setError] = useState<Error | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [mounted, setMounted] = useState(false);
+    const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
 
     useEffect(() => {
         if (!id) return;
 
-        const fechtPokemonData = async () => {
+        let objectUrlTemp: string | null = null;
+
+        const fetchAllData = async () => {
             try {
-                setLoading(true);
-                await setPokemon(id);
-                await setSpecies(id);
-                await setForm(id);
-                setMounted(true);
-                setError(null);
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    setError(error);
-                } else {
-                    setError(new Error('Unexpected error'));
-                }
-            } finally {
-                setLoading(false);
+                const [pokemon, species, form, blob] = await Promise.all([
+                    getPokemonById(id),
+                    getPokemonSpeciesById(id),
+                    getPokemonFormById(id),
+                    getArtwork(id)
+                ]);
+
+                objectUrlTemp = URL.createObjectURL(blob);
+
+                setPokemonData(pokemon);
+                setPokemonSpecie(species);
+                setPokemonForm(form);
+                setPokemonArtwork(objectUrlTemp);
+            } catch (error) {
+                console.error("Error al obtener datos del Pokémon:", error);
             }
         };
 
-        fechtPokemonData();
+        fetchAllData();
 
+        return () => {
+            if (objectUrlTemp) {
+                URL.revokeObjectURL(objectUrlTemp);
+            }
+        };
     }, [id]);
 
-    async function setPokemon(id: number) {
-        const data = await getPokemonById(id);
-        setPokemonData(data);
-        setStats(data);
-        console.log(data);
-    }
 
-    async function setSpecies(id: number) {
-        const data = await getPokemonSpeciesById(id);
-        setPokemonSpecie(data);
-        console.log(data);
-    }
-
-    async function setForm(id: number) {
-        const data = await getPokemonFormById(id);
-        setPokemonForm(data);
-        console.log(data);
-    }
-
-    const statsColors: Array<"green" | "red" | "blue" | "violet" | "lightblue" | "yellow"> = [
-        "green",
-        "red",
-        "blue",
-        "violet",
-        "lightblue",
-        "yellow"
+    const statsColors: StatBarProps["color"][] = [
+        "green", "red", "blue", "violet", "lightblue", "yellow"
     ];
 
-    function setStats(data: Pokemon): StatBarProps[] {
-        return data.stats.map((stat, index) => ({
-            title: stat.stat.name ?? "",
-            value: stat.base_stat,
-            color: statsColors[index % statsColors.length]
-        }));
-    }
-
     const statComponents = pokemonData
-        ? setStats(pokemonData).map((statProps) => (
+        ? pokemonData.stats.map((stat, index) => (
             <StatBar
-                key={statProps.title}
-                title={statProps.title}
-                value={statProps.value}
-                color={statProps.color}
+                key={stat.stat.name}
+                title={stat.stat.name ?? ""}
+                value={stat.base_stat}
+                color={statsColors[index % statsColors.length]}
             />
         ))
         : [];
@@ -96,42 +73,42 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, toggleCard }) =>
         </span>
     );
 
-    if (!mounted) return null;
-
-    return (
-        <div className="h-full w-full">
-            <button className="py-[.5rem] px-[1.5rem] rounded-md bg-slate-400 text-black md:hidden" onClick={toggleCard}>
-                CLOSE
-            </button>
-            {pokemonSpecie &&
-                <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem]">
-                    <h4 className="text-3xl uppercase">{pokemonSpecie.name}</h4>
-                    <span>{pokemonSpecie.id}</span>
+    if (id === null) {
+        return (
+            <div className="h-full w-full flex items-center justify-center text-gray-500 ">
+                <div className="p-4 text-center">
+                    <h2 className="text-xl font-semibold">Selecciona un Pokémon</h2>
+                    <p className="text-sm">Haz clic en uno de la lista para ver sus detalles.</p>
                 </div>
-            }
-            {pokemonForm &&
-                <div className="w-full h-fit flex justify-center items-center">
-                    <PokemonArtworkComponent id={id} />
-                </div>
-            }
-            {pokemonSpecie &&
-                <div className="px-[1rem]">
-                    <h1 className="text-xl">Stats</h1>
-                    {pokemonData &&
-                        statComponents
-                    }
-                </div>
-            }
-            <div className="w-full h-[5rem] content-center bg-yellow-300 text-black text-center">
-                {pokemonTypes}
             </div>
-            {pokemonData &&
-                <div className="w-full h-[5rem] content-center bg-red-300 text-black text-center">
-                    {pokemonData.height}
-                </div>
-            }
-        </div>
-    );
-}
+        );
+    } else {
+        return (
+            <div className="relative h-full w-full">
+                <CloseButton onClick={clearCard} isVisible={true} />
+
+                {pokemonSpecie &&
+                    <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem]">
+                        <h4 className="text-3xl uppercase">{pokemonSpecie.name}</h4>
+                        <span>{pokemonSpecie.id}</span>
+                    </div>
+                }
+
+                {pokemonForm &&
+                    <div className="w-full h-fit flex justify-center items-center">
+                        <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
+                    </div>
+                }
+
+                {pokemonSpecie &&
+                    <div className="px-[1rem]">
+                        <h1 className="text-xl">Stats</h1>
+                        {statComponents}
+                    </div>
+                }
+            </div>
+        );
+    }
+};
 
 export default PokemonCardComponent;
