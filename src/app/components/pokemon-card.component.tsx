@@ -71,13 +71,6 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
         ))
         : [];
 
-    // const pokemonTypes = pokemonForm?.types.map((type, index) =>
-    //     <span key={index}>
-    //         {type.type.name}
-    //         {index < pokemonForm.types.length - 1 && ', '}
-    //     </span>
-    // );
-
     if (id === null) {
         return (
             <div className="h-full w-full flex items-center justify-center text-gray-500 ">
@@ -105,15 +98,40 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
                 <CloseButton onClick={clearCard} isVisible={true} />
 
                 {pokemonSpecie &&
-                    <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem]">
-                        <h4 className="text-3xl uppercase">{pokemonSpecie.name}</h4>
-                        <span>{pokemonSpecie.id}</span>
+                    <div className="flex flex-col m-[1rem] mx-[2.5rem]">
+                        <div className="flex flex-row">
+                            <div className="w-14 h-14 bg-blue-400 border-white border-4 rounded-full mr-[1rem]">
+                                
+                            </div>
+                            <div className=" flex flex-row align-baseline">
+                                <div className="w-3 h-3 border border-black bg-red-500 rounded-full mr-[.5rem]"></div>
+                                <div className="w-3 h-3 border border-black bg-yellow-500 rounded-full mr-[.5rem]"></div>
+                                <div className="w-3 h-3 border border-black bg-green-500 rounded-full"></div>
+                            </div>
+                        </div>
+                        {/* <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem]">
+                            <h4 className="text-3xl uppercase">{pokemonSpecie.name}</h4>
+                            <span>{pokemonSpecie.id}</span>
+                        </div> */}
                     </div>
                 }
 
                 {pokemonForm &&
-                    <div className="w-full h-fit flex justify-center items-center">
+                    <div className="h-fit flex flex-col justify-center items-center px-[2rem] py-[1rem] bg-[#fafafa] m-[1rem] mx-[2.5rem] rounded border border-black">
+                        <div className="flex flex-row justify-center mb-[1rem]">
+                            <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
+                            <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
+                        </div>
                         <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
+                        <div className="flex flex-row justify-between items-center w-full mt-[1rem]">
+                            <div className="w-5 h-5 bg-red-600 border border-black rounded-full"></div>
+                            <div className=" w-[2rem] flex flex-col">
+                                <div className="w-full h-[2px] bg-stone-700"></div>
+                                <div className="w-full h-[2px] bg-stone-700 mt-1"></div>
+                                <div className="w-full h-[2px] bg-stone-700 mt-1"></div>
+                                <div className="w-full h-[2px] bg-stone-700 mt-1"></div>
+                            </div>
+                        </div>
                     </div>
                 }
 

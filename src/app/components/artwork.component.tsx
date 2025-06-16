@@ -1,15 +1,11 @@
-import Image from "next/image";
-
 const PokemonArtworkComponent = ({ artworkUrl, id }: { artworkUrl: string | null, id: number }) => {
     return (
-        <div>
+        <div className="border border-black rounded w-full bg-blue-200 flex justify-center">
             {artworkUrl ? (
-                <Image
+                <img
                     src={artworkUrl}
                     alt={`Pokemon ${id}`}
-                    className="h-[15rem]"
-                    width={200}
-                    height={200}
+                    className="border border-red-500 object-cover h-[10rem]"
                 />
             ) : (
                 <p>Loading artwork...</p>
