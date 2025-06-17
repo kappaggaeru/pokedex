@@ -86,7 +86,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
     if (id === null) {
         return (
-            <div className="h-full w-full flex items-center justify-center text-gray-500 ">
+            <div className="h-[40rem] w-full flex items-center justify-center text-gray-500">
                 <div className="p-4 text-center">
                     <h2 className="text-xl font-semibold">Select a Pokémon</h2>
                     <p className="text-sm">Click on a item from the list to view the details.</p>
@@ -95,7 +95,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         );
     } else if (loading) {
         return (
-            <div className="h-full w-full flex items-center justify-center">
+            <div className="h-[40rem] w-full flex items-center justify-center">
                 <div className="animate-pulse w-full p-4 space-y-4">
                     <div className="h-6 bg-gray-300 rounded w-1/3 mx-auto" />
                     <div className="h-40 bg-gray-300 rounded" />
@@ -123,42 +123,22 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 }
 
                 {pokemonForm &&
-                    <div className=" h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] m-[1rem] mb-0 rounded-xl border border-black border-b-0 rounded-b-none" style={{ backgroundColor: "var(--my-white)" }}>
+                    <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] m-[1rem] mb-0 rounded-xl border border-gray-200/50 shadow-lg">
                         <div className="flex flex-row justify-center mb-[1rem]">
                             <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
                             <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
                         </div>
                         <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
+                        {
+                            pokemonSpecies &&
+                            <div className="w-full flex justify-end items-center space-x-2 my-[0.3rem]">
+                                <span className="text-md text-gray-400">#{id}</span>
+                                <h4 className="text-xl uppercase text-black">{pokemonSpecies.name}</h4>
+                            </div>
+                        }
                     </div>
                 }
 
-                <div className="flex flex-row mx-[1rem]">
-                    <div className="relative">
-                        <div className="absolute bottom-0 left-0 w-0 h-0 z-0"
-                            style={{
-                                borderLeft: "2.1rem solid black",
-                                borderTop: "2.1rem solid transparent"
-                            }}
-                        />
-                        <div className="absolute bottom-0 left-0 w-0 h-0 z-10"
-                            style={{
-                                borderLeft: "2rem solid white",
-                                borderTop: "2rem solid transparent"
-                            }}
-                        />
-                    </div>
-                    <div className="w-full px-[1rem] content-center border border-black border-t-0 rounded-br-xl" style={{ backgroundColor: "var(--my-white)" }}>
-                        <div className="flex flex-row justify-between w-full py-[0.5rem]">
-                            {
-                                pokemonSpecies &&
-                                <div className="w-full flex justify-end items-center space-x-2">
-                                    <span className="text-md text-gray-400">#{id}</span>
-                                    <h4 className="text-xl uppercase text-black">{pokemonSpecies.name}</h4>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
 
                 <IdNavigatorButton prevPokemon={prevPokemon} id={id} nextPokemon={nextPokemon} />
 
