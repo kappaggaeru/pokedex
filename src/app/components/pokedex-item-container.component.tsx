@@ -5,7 +5,8 @@ import Image from 'next/image';
 const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, onSelect }) => {
     return (
         <div
-            className="rounded-lg hover:cursor-pointer bg-orange-100 w-[4rem] h-[4rem] font-bold text-center content-center text-black"
+            className={`rounded-lg hover:cursor-pointer w-[4rem] h-[4rem] font-bold text-center content-center text-black 
+        ${viewed ? 'bg-gray-200' : 'bg-orange-100'}`}
             onClick={() => onSelect(id)}
         >
             {viewed && sprite ? (
@@ -14,6 +15,7 @@ const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, 
                 <span>{id}</span>
             )}
         </div>
+
     );
 }
 

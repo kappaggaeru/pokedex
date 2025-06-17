@@ -25,7 +25,7 @@ export const StatBar: React.FC<StatBarProps> = ({ title, value, color }) => {
 
     return (
         <div className="mb-[1rem]">
-            <div className="flex justify-between font-bold">
+            <div className="flex justify-between">
                 <h5 className="capitalize">{title}</h5>
                 <span>{value}</span>
             </div>

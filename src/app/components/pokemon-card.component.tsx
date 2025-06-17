@@ -9,8 +9,7 @@ import { Pokemon } from "../models/dto/pokemon-model";
 import { Species } from "../models/dto/species-model";
 import { Form } from "../models/dto/form-model";
 import CloseButton from "../buttons/close.button";
-import { MoveRight } from 'lucide-react';
-import { MoveLeft } from 'lucide-react';
+import IdNavigatorButton from "../buttons/id-navigator.button";
 
 const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
@@ -108,11 +107,9 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         );
     } else {
         return (
-            <div>
-                <CloseButton onClick={clearCard} isVisible={true} />
-
+            <div className="relative">
                 {pokemonSpecies &&
-                    <div className="flex flex-col m-[1rem] mx-[2.5rem]">
+                    <div className="flex flex-row m-[1rem] justify-between">
                         <div className="flex flex-row">
                             <div className="w-14 h-14 bg-blue-400 border-white border-4 rounded-full mr-[1rem]"></div>
                             <div className=" flex flex-row align-baseline">
@@ -121,11 +118,12 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                                 <div className="w-3 h-3 border border-black bg-green-500 rounded-full"></div>
                             </div>
                         </div>
+                        <CloseButton onClick={clearCard} isVisible={true} />
                     </div>
                 }
 
                 {pokemonForm &&
-                    <div className=" h-fit flex flex-col justify-center items-center px-[2rem] pt-[1rem] mt-[1rem] mx-[2.5rem] rounded-xl border border-black border-b-0 rounded-b-none" style={{ backgroundColor: "var(--my-white)" }}>
+                    <div className=" h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] m-[1rem] mb-0 rounded-xl border border-black border-b-0 rounded-b-none" style={{ backgroundColor: "var(--my-white)" }}>
                         <div className="flex flex-row justify-center mb-[1rem]">
                             <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
                             <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
@@ -134,7 +132,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     </div>
                 }
 
-                <div className="flex flex-row mx-[2.5rem]">
+                <div className="flex flex-row mx-[1rem]">
                     <div className="relative">
                         <div className="absolute bottom-0 left-0 w-0 h-0 z-0"
                             style={{
@@ -161,21 +159,11 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     </div>
                 </div>
 
-                <div className="bg-slate-50 p-[2rem] mx-[2.5rem] my-[1rem] rounded-xl flex flex-row justify-between border border-black">
-                    <div className="bg-slate-200 p-[1rem] rounded-md cursor-pointer text-black" onClick={prevPokemon}>
-                        <MoveLeft className="w-6 h-6" />
-                    </div>
-                    <div className="bg-slate-200 p-[1rem] px-[2rem] rounded-md text-black font-bold text-xl">
-                        <span>{id}</span>
-                    </div>
-                    <div className="bg-slate-200 p-[1rem] rounded-md cursor-pointer text-black" onClick={nextPokemon}>
-                        <MoveRight className="w-6 h-6" />
-                    </div>
-                </div>
+                <IdNavigatorButton prevPokemon={prevPokemon} id={id} nextPokemon={nextPokemon} />
 
                 {pokemonSpecies &&
-                    <div className="px-[2.5rem] my-[2rem]">
-                        <h1 className="text-xl">Stats</h1>
+                    <div className="p-[1rem] m-[1rem] border border-black rounded-xl bg-white">
+                        <h1 className="text-xl font-bold">Stats</h1>
                         {statComponents}
                     </div>
                 }
