@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+.geist-font {
+  font-family: "Geist", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
-    --background: #ffffff;
+    --background: #f9fafb;
     --foreground: #242126;
-    --primary: #dc0a2d;
     --my-white: #fafafa;
 }
 
@@ -19,5 +25,5 @@
 body {
     color: var(--foreground);
     background: var(--background);
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: "geist", Arial, sans-serif;
 }
