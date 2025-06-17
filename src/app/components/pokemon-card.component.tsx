@@ -147,19 +147,20 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                             }}
                         />
                     </div>
-                    <div className="w-full px-[2rem] content-center border border-black border-t-0 rounded-br-xl" style={{ backgroundColor: "var(--my-white)" }}>
+                    <div className="w-full px-[1rem] content-center border border-black border-t-0 rounded-br-xl" style={{ backgroundColor: "var(--my-white)" }}>
                         <div className="flex flex-row justify-between w-full py-[0.5rem]">
                             {
                                 pokemonSpecies &&
-                                <div className="w-full flex justify-end text-black">
-                                    <h4 className="text-xl uppercase h-full">{pokemonSpecies.name}</h4>
+                                <div className="w-full flex justify-end items-center space-x-2">
+                                    <span className="text-md text-gray-400">#{id}</span>
+                                    <h4 className="text-xl uppercase text-black">{pokemonSpecies.name}</h4>
                                 </div>
                             }
                         </div>
                     </div>
                 </div>
 
-                {/* <IdNavigatorButton prevPokemon={prevPokemon} id={id} nextPokemon={nextPokemon} /> */}
+                <IdNavigatorButton prevPokemon={prevPokemon} id={id} nextPokemon={nextPokemon} />
 
                 {pokemonSpecies &&
                     <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl bg-white">
