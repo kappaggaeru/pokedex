@@ -5,7 +5,7 @@ const PokemonArtworkComponent = ({ artworkUrl, id }: { artworkUrl: string | null
                 <img
                     src={artworkUrl}
                     alt={`Pokemon ${id}`}
-                    className="border border-red-500 object-cover h-[10rem]"
+                    className="object-cover h-[10rem]"
                 />
             ) : (
                 <p>Loading artwork...</p>

@@ -12,7 +12,7 @@ import CloseButton from "../buttons/close.button";
 
 const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
-    const [pokemonSpecie, setPokemonSpecie] = useState<Species | null>(null);
+    const [pokemonSpecies, setPokemonSpecie] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
     const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -97,45 +97,58 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
             <div className="relative h-full w-full">
                 <CloseButton onClick={clearCard} isVisible={true} />
 
-                {pokemonSpecie &&
+
+                {pokemonSpecies &&
                     <div className="flex flex-col m-[1rem] mx-[2.5rem]">
                         <div className="flex flex-row">
-                            <div className="w-14 h-14 bg-blue-400 border-white border-4 rounded-full mr-[1rem]">
-                                
-                            </div>
+                            <div className="w-14 h-14 bg-blue-400 border-white border-4 rounded-full mr-[1rem]"></div>
                             <div className=" flex flex-row align-baseline">
                                 <div className="w-3 h-3 border border-black bg-red-500 rounded-full mr-[.5rem]"></div>
                                 <div className="w-3 h-3 border border-black bg-yellow-500 rounded-full mr-[.5rem]"></div>
                                 <div className="w-3 h-3 border border-black bg-green-500 rounded-full"></div>
                             </div>
                         </div>
-                        {/* <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem]">
-                            <h4 className="text-3xl uppercase">{pokemonSpecie.name}</h4>
-                            <span>{pokemonSpecie.id}</span>
-                        </div> */}
                     </div>
                 }
 
                 {pokemonForm &&
-                    <div className="h-fit flex flex-col justify-center items-center px-[2rem] py-[1rem] bg-[#fafafa] m-[1rem] mx-[2.5rem] rounded border border-black">
+                    <div className=" h-fit flex flex-col justify-center items-center px-[2rem] pt-[1rem] mt-[1rem] mx-[2.5rem] rounded-xl border border-black border-b-0 rounded-b-none" style={{ backgroundColor: "var(--my-white)" }}>
                         <div className="flex flex-row justify-center mb-[1rem]">
                             <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
                             <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
                         </div>
                         <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
-                        <div className="flex flex-row justify-between items-center w-full mt-[1rem]">
-                            <div className="w-5 h-5 bg-red-600 border border-black rounded-full"></div>
-                            <div className=" w-[2rem] flex flex-col">
-                                <div className="w-full h-[2px] bg-stone-700"></div>
-                                <div className="w-full h-[2px] bg-stone-700 mt-1"></div>
-                                <div className="w-full h-[2px] bg-stone-700 mt-1"></div>
-                                <div className="w-full h-[2px] bg-stone-700 mt-1"></div>
-                            </div>
-                        </div>
                     </div>
                 }
 
-                {pokemonSpecie &&
+                <div className="flex flex-row mx-[2.5rem]">
+                    <div className="relative">
+                        <div className="absolute bottom-0 left-0 w-0 h-0 z-0"
+                            style={{
+                                borderLeft: "2.1rem solid black",
+                                borderTop: "2.1rem solid transparent"
+                            }}
+                        />
+                        <div className="absolute bottom-0 left-0 w-0 h-0 z-10"
+                            style={{
+                                borderLeft: "2rem solid var(--primary)",
+                                borderTop: "2rem solid transparent"
+                            }}
+                        />
+                    </div>
+                    <div className="w-full px-[2rem] content-center border border-black border-t-0 rounded-br-xl" style={{ backgroundColor: "var(--my-white)" }}>
+                        <div className="flex flex-row justify-between w-full py-[0.5rem]">
+                            {
+                                pokemonSpecies &&
+                                <div className="w-full flex justify-end text-black">
+                                    <h4 className="text-xl uppercase h-full">{pokemonSpecies.name}</h4>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                {pokemonSpecies &&
                     <div className="px-[1rem]">
                         <h1 className="text-xl">Stats</h1>
                         {statComponents}
