@@ -4,8 +4,8 @@ import SearchBarComponent from "./components/search-bar.component";
 
 export default function Home() {
     return (
-        <section className="px-[1.5rem] md:px-[4rem] xl:pt-[2rem] xl:max-w-7xl xl:m-auto">
-            <header>
+        <section className="md:px-[4rem] xl:pt-[2rem] xl:max-w-7xl xl:m-auto" style={{backgroundColor: "var(--primary)"}}>
+            <header className="p-[1rem]">
                 <SearchBarComponent />
             </header>
             <main>
