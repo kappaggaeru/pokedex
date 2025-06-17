@@ -27,7 +27,12 @@ const HomeComponent: React.FC = () => {
                     absolute md:static top-0 left-0 w-full h-full md:w-auto md:h-auto z-10
                 `}
             >
-                <PokemonCardComponent id={selectedId} clearCard={handleClear} />
+                <PokemonCardComponent
+                    key={selectedId}
+                    id={selectedId}
+                    clearCard={handleClear}
+                    setIdFromParent={(newId: number) => setSelectedId(newId)} 
+                />
             </div>
         </div>
     );

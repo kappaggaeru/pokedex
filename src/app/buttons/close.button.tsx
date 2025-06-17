@@ -5,7 +5,7 @@ const CloseButton = ({ onClick, isVisible }: { onClick: () => void; isVisible: b
         <button
             onClick={onClick}
             className={`
-                absolute bottom-4 left-1/2 transform -translate-x-1/2
+                fixed bottom-20 left-1/2 transform -translate-x-1/2 z-10
                 w-12 h-12 rounded-full bg-white/80 text-black shadow-md backdrop-blur-md
                 flex items-center justify-center
                 transition-all duration-300 ease-in-out

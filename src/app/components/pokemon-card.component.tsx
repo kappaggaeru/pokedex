@@ -9,8 +9,10 @@ import { Pokemon } from "../models/dto/pokemon-model";
 import { Species } from "../models/dto/species-model";
 import { Form } from "../models/dto/form-model";
 import CloseButton from "../buttons/close.button";
+import { MoveRight } from 'lucide-react';
+import { MoveLeft } from 'lucide-react';
 
-const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => {
+const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecies, setPokemonSpecie] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
@@ -55,6 +57,18 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
         };
     }, [id]);
 
+    const nextPokemon = () => {
+        if (id) {
+            setIdFromParent(id + 1);
+        }
+    };
+
+    const prevPokemon = () => {
+        if (id !== null && id > 1) {
+            setIdFromParent(id - 1);
+        }
+    };
+
 
     const statsColors: StatBarProps["color"][] = [
         "green", "red", "blue", "violet", "lightblue", "yellow"
@@ -94,9 +108,8 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
         );
     } else {
         return (
-            <div className="relative h-full w-full">
+            <div>
                 <CloseButton onClick={clearCard} isVisible={true} />
-
 
                 {pokemonSpecies &&
                     <div className="flex flex-col m-[1rem] mx-[2.5rem]">
@@ -148,8 +161,20 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
                     </div>
                 </div>
 
+                <div className="bg-slate-50 p-[2rem] mx-[2.5rem] my-[1rem] rounded-xl flex flex-row justify-between border border-black">
+                    <div className="bg-slate-200 p-[1rem] rounded-md cursor-pointer text-black" onClick={prevPokemon}>
+                        <MoveLeft className="w-6 h-6" />
+                    </div>
+                    <div className="bg-slate-200 p-[1rem] px-[2rem] rounded-md text-black font-bold text-xl">
+                        <span>{id}</span>
+                    </div>
+                    <div className="bg-slate-200 p-[1rem] rounded-md cursor-pointer text-black" onClick={nextPokemon}>
+                        <MoveRight className="w-6 h-6" />
+                    </div>
+                </div>
+
                 {pokemonSpecies &&
-                    <div className="px-[1rem]">
+                    <div className="px-[2.5rem] my-[2rem]">
                         <h1 className="text-xl">Stats</h1>
                         {statComponents}
                     </div>
