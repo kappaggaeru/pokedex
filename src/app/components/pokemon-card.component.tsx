@@ -9,10 +9,12 @@ import { Pokemon } from "../models/dto/pokemon-model";
 import { Species } from "../models/dto/species-model";
 import { Form } from "../models/dto/form-model";
 import CloseButton from "../buttons/close.button";
+import { MoveRight } from 'lucide-react';
+import { MoveLeft } from 'lucide-react';
 
-const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => {
+const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
-    const [pokemonSpecie, setPokemonSpecie] = useState<Species | null>(null);
+    const [pokemonSpecies, setPokemonSpecie] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
     const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -55,6 +57,18 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
         };
     }, [id]);
 
+    const nextPokemon = () => {
+        if (id) {
+            setIdFromParent(id + 1);
+        }
+    };
+
+    const prevPokemon = () => {
+        if (id !== null && id > 1) {
+            setIdFromParent(id - 1);
+        }
+    };
+
 
     const statsColors: StatBarProps["color"][] = [
         "green", "red", "blue", "violet", "lightblue", "yellow"
@@ -70,13 +84,6 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
             />
         ))
         : [];
-
-    // const pokemonTypes = pokemonForm?.types.map((type, index) =>
-    //     <span key={index}>
-    //         {type.type.name}
-    //         {index < pokemonForm.types.length - 1 && ', '}
-    //     </span>
-    // );
 
     if (id === null) {
         return (
@@ -101,24 +108,73 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard }) => 
         );
     } else {
         return (
-            <div className="relative h-full w-full">
+            <div>
                 <CloseButton onClick={clearCard} isVisible={true} />
 
-                {pokemonSpecie &&
-                    <div className="w-full flex flex-row justify-between items-center text-black pr-[1rem] pl-[1rem]">
-                        <h4 className="text-3xl uppercase">{pokemonSpecie.name}</h4>
-                        <span>{pokemonSpecie.id}</span>
+                {pokemonSpecies &&
+                    <div className="flex flex-col m-[1rem] mx-[2.5rem]">
+                        <div className="flex flex-row">
+                            <div className="w-14 h-14 bg-blue-400 border-white border-4 rounded-full mr-[1rem]"></div>
+                            <div className=" flex flex-row align-baseline">
+                                <div className="w-3 h-3 border border-black bg-red-500 rounded-full mr-[.5rem]"></div>
+                                <div className="w-3 h-3 border border-black bg-yellow-500 rounded-full mr-[.5rem]"></div>
+                                <div className="w-3 h-3 border border-black bg-green-500 rounded-full"></div>
+                            </div>
+                        </div>
                     </div>
                 }
 
                 {pokemonForm &&
-                    <div className="w-full h-fit flex justify-center items-center">
+                    <div className=" h-fit flex flex-col justify-center items-center px-[2rem] pt-[1rem] mt-[1rem] mx-[2.5rem] rounded-xl border border-black border-b-0 rounded-b-none" style={{ backgroundColor: "var(--my-white)" }}>
+                        <div className="flex flex-row justify-center mb-[1rem]">
+                            <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
+                            <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
+                        </div>
                         <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
                     </div>
                 }
 
-                {pokemonSpecie &&
-                    <div className="px-[1rem]">
+                <div className="flex flex-row mx-[2.5rem]">
+                    <div className="relative">
+                        <div className="absolute bottom-0 left-0 w-0 h-0 z-0"
+                            style={{
+                                borderLeft: "2.1rem solid black",
+                                borderTop: "2.1rem solid transparent"
+                            }}
+                        />
+                        <div className="absolute bottom-0 left-0 w-0 h-0 z-10"
+                            style={{
+                                borderLeft: "2rem solid var(--primary)",
+                                borderTop: "2rem solid transparent"
+                            }}
+                        />
+                    </div>
+                    <div className="w-full px-[2rem] content-center border border-black border-t-0 rounded-br-xl" style={{ backgroundColor: "var(--my-white)" }}>
+                        <div className="flex flex-row justify-between w-full py-[0.5rem]">
+                            {
+                                pokemonSpecies &&
+                                <div className="w-full flex justify-end text-black">
+                                    <h4 className="text-xl uppercase h-full">{pokemonSpecies.name}</h4>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-slate-50 p-[2rem] mx-[2.5rem] my-[1rem] rounded-xl flex flex-row justify-between border border-black">
+                    <div className="bg-slate-200 p-[1rem] rounded-md cursor-pointer text-black" onClick={prevPokemon}>
+                        <MoveLeft className="w-6 h-6" />
+                    </div>
+                    <div className="bg-slate-200 p-[1rem] px-[2rem] rounded-md text-black font-bold text-xl">
+                        <span>{id}</span>
+                    </div>
+                    <div className="bg-slate-200 p-[1rem] rounded-md cursor-pointer text-black" onClick={nextPokemon}>
+                        <MoveRight className="w-6 h-6" />
+                    </div>
+                </div>
+
+                {pokemonSpecies &&
+                    <div className="px-[2.5rem] my-[2rem]">
                         <h1 className="text-xl">Stats</h1>
                         {statComponents}
                     </div>
