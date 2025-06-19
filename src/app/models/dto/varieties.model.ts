@@ -1,4 +1,4 @@
-import { Generic } from "./generic-model";
+import { Generic } from "./generic.model";
 
 export interface Varieties {
     is_default: boolean;

@@ -83,7 +83,7 @@ export const getPokemonFormById = async (id: number) => {
     return response.json();
 }
 
-export const getArtwork = async (id: number) => {
+export const getArtworkById = async (id: number) => {
     const response = await fetch(`${ARTWORK_BASE_URL}/${id}.png`);
     if (!response.ok) {
         throw new Error('Error fetching artwork');
@@ -97,4 +97,13 @@ export const getSprite = async (id: number) => {
         throw new Error('Error fetching sprite');
     }
     return response.blob();
+}
+
+//evolution
+export const getEvolutionById = async (url: string) => {
+    const response = await fetch(`${url}`);
+    if (!response.ok) {
+        throw new Error('Error fetching evolution');
+    }
+    return response.json();
 }
