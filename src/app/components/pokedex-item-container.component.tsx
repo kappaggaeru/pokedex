@@ -1,5 +1,5 @@
 import React from 'react';
-import { PokedexItemProps } from '../models/props/pokedex-item-props';
+import { PokedexItemProps } from '../models/props/pokedex-item.props';
 import Image from 'next/image';
 
 const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, onSelect }) => {

@@ -1,5 +1,6 @@
-import { Generic } from "./generic-model";
-import { Varieties } from "./varieties-model";
+import { Flavor } from "./flavor.model";
+import { Generic } from "./generic.model";
+import { Varieties } from "./varieties.model";
 
 export interface Species {
     base_happiness: number;
@@ -8,6 +9,7 @@ export interface Species {
     egg_groups: Generic[];
     evolution_chain: Generic;
     evolves_from_species: Generic;
+    flavor_text_entries: Flavor[];
     habitat: Generic;
     id: number;
     is_legendary: boolean;

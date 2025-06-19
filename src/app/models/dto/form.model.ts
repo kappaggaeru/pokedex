@@ -1,5 +1,5 @@
-import { Generic } from "./generic-model";
-import { Type } from "./type-model";
+import { Generic } from "./generic.model";
+import { Type } from "./type.model";
 
 export interface Form {
     name: string;

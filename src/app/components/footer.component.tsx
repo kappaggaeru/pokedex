@@ -1,5 +1,5 @@
-export default function FooterComponent() {
 
+export default function FooterComponent() {
     return (
         <div className="max-w-5xl mx-auto px-4 py-8">
             <div className="flex flex-col items-center space-y-4">
@@ -10,10 +10,9 @@ export default function FooterComponent() {
                 </div>
                 <div className="text-center text-xl text-gray-500">
                     <p>
-                        {/* Made with ❤️ by */}
                         Made by
                         <a href="https://lautaroolivera.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-700 transition-colors duration-200 ml-1">
-                         Lautaro Olivera
+                            Lautaro Olivera
                         </a>
                     </p>
                 </div>

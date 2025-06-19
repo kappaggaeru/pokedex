@@ -1,45 +1,55 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getPokemonById, getPokemonFormById, getPokemonSpeciesById, getArtwork } from "../services/pokemon.service";
+import { getPokemonById, getPokemonFormById, getPokemonSpeciesById, getArtworkById, getSprite } from "../services/pokemon.service";
 import PokemonArtworkComponent from "./artwork.component";
 import { StatBar } from "./stat-bar.component";
-import { PokemonCardProps } from "../models/props/pokedex-card-props";
-import { StatBarProps } from "../models/props/pokedex-stat-props";
-import { Pokemon } from "../models/dto/pokemon-model";
-import { Species } from "../models/dto/species-model";
-import { Form } from "../models/dto/form-model";
+import { PokemonCardProps } from "../models/props/pokedex-card.props";
+import { StatBarProps } from "../models/props/pokedex-stat.props";
+import { Pokemon } from "../models/dto/pokemon.model";
+import { Species } from "../models/dto/species.model";
+import { Form } from "../models/dto/form.model";
 import CloseButton from "../buttons/close.button";
-import IdNavigatorButton from "../buttons/id-navigator.button";
+import { EvolutionChain } from "../models/dto/evolution-chain.model";
+import { Generic } from "../models/dto/generic.model";
+import EvolutionChainComponent from "./evolution-chain.component";
+import { EvolutionStage } from "../models/evolution-stage.model";
+import { ChipComponent } from "./chip.component";
 
 const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
-    const [pokemonSpecies, setPokemonSpecie] = useState<Species | null>(null);
+    const [pokemonSpecies, setPokemonSpecies] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
     const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
+    const [pokemonEvolution, setPokemonEvolution] = useState<EvolutionChain | null>(null);
+    const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
     const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         if (!id) return;
-
         setLoading(true);
-
         let objectUrlTemp: string | null = null;
-
         const fetchAllData = async () => {
             try {
                 const [pokemon, species, form, blob] = await Promise.all([
                     getPokemonById(id),
                     getPokemonSpeciesById(id),
                     getPokemonFormById(id),
-                    getArtwork(id)
+                    getArtworkById(id),
                 ]);
-
                 objectUrlTemp = URL.createObjectURL(blob);
 
                 setPokemonData(pokemon);
-                setPokemonSpecie(species);
+                setPokemonSpecies(species);
                 setPokemonForm(form);
                 setPokemonArtwork(objectUrlTemp);
+
+                if (species.evolution_chain.url) {
+                    const evolutionRes = await fetch(species.evolution_chain.url);
+                    const evolutionData = await evolutionRes.json();
+                    setPokemonEvolution(evolutionData);
+                }
+
             } catch (error) {
                 console.error("Error al obtener datos del Pokémon:", error);
             } finally {
@@ -56,18 +66,26 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         };
     }, [id]);
 
-    const nextPokemon = () => {
-        if (id) {
-            setIdFromParent(id + 1);
-        }
-    };
+    useEffect(() => {
+        if (pokemonEvolution) {
+            const evolutionChainList = flattenEvolutionChain(pokemonEvolution.chain);
 
-    const prevPokemon = () => {
-        if (id !== null && id > 1) {
-            setIdFromParent(id - 1);
+            Promise.all(
+                evolutionChainList.map(async (entry) => {
+                    const urlParts = entry.url.split('/');
+                    const id = +urlParts[urlParts.length - 2];
+                    const sprite = await getSprite(id); // Usa tu método actual
+                    return {
+                        id,
+                        name: entry.name ?? '',
+                        sprite: URL.createObjectURL(sprite), // o directo si ya devuelve url
+                    };
+                })
+            ).then(parsedEvolutionList => {
+                setEvolutionChainList(parsedEvolutionList); // Estado nuevo
+            });
         }
-    };
-
+    }, [pokemonEvolution]);
 
     const statsColors: StatBarProps["color"][] = [
         "green", "red", "blue", "violet", "lightblue", "yellow"
@@ -83,6 +101,43 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
             />
         ))
         : [];
+
+    let cleanedText = "";
+
+    pokemonSpecies?.flavor_text_entries.map((flavor) => {
+        if (flavor.language.name == 'en') {
+            cleanedText = formatFlavorText(flavor.flavor_text);
+        }
+    });
+
+    function formatFlavorText(flavor: string) {
+        return flavor.replace(/\f/g, ' ').replace(/\n/g, ' ');
+    }
+
+    const flattenEvolutionChain = (chain: any): Generic[] => {
+        const result: Generic[] = [];
+
+        const traverse = (node: any) => {
+            if (!node) return;
+            result.push({
+                name: node.species.name,
+                url: node.species.url
+            });
+            if (node.evolves_to.length > 0) {
+                traverse(node.evolves_to[0]); // solo tomamos la primera rama por simplicidad
+            }
+        };
+
+        traverse(chain);
+        return result;
+    };
+
+    const pokemonTypes = pokemonForm?.types.map((element, index) => (
+        <ChipComponent
+            key={index}
+            title={element.type.name ?? ''}
+        />
+    ));
 
     if (id === null) {
         return (
@@ -108,46 +163,57 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
     } else {
         return (
             <div>
-                {pokemonSpecies &&
-                    <div className="flex flex-row m-[1rem] justify-between">
-                        <div className="flex flex-row">
-                            <div className="w-14 h-14 bg-blue-400 border-white border-4 rounded-full mr-[1rem]"></div>
-                            <div className=" flex flex-row align-baseline">
-                                <div className="w-3 h-3 border border-black bg-red-500 rounded-full mr-[.5rem]"></div>
-                                <div className="w-3 h-3 border border-black bg-yellow-500 rounded-full mr-[.5rem]"></div>
-                                <div className="w-3 h-3 border border-black bg-green-500 rounded-full"></div>
-                            </div>
+                <div className="flex flex-row m-[1rem] justify-between">
+                    <div className="flex flex-row">
+                        <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem]"></div>
+                        <div className=" flex flex-row align-baseline">
+                            <div className="w-3 h-3 bg-red-500 rounded-full mr-[.5rem]"></div>
+                            <div className="w-3 h-3 bg-yellow-500 rounded-full mr-[.5rem]"></div>
+                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                         </div>
-                        <CloseButton onClick={clearCard} isVisible={true} />
                     </div>
-                }
+                    <CloseButton onClick={clearCard} isVisible={true} />
+                </div>
 
-                {pokemonForm &&
-                    <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] m-[1rem] mb-0 rounded-xl border border-gray-200/50 shadow-lg">
-                        <div className="flex flex-row justify-center mb-[1rem]">
-                            <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
-                            <div className="w-2 h-2 bg-red-600 border border-black mx-[0.5rem] rounded-full"></div>
+                <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] m-[1rem] mb-0 rounded-xl border border-gray-200/50 shadow-lg">
+                    <div className="flex flex-row justify-center mb-[1rem]">
+                        <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
+                        <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
+                    </div>
+                    <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
+                    {
+                        pokemonSpecies &&
+                        <div className="w-full flex justify-end items-center space-x-2 my-[0.3rem]">
+                            <span className="text-md text-gray-400">#{id}</span>
+                            <h4 className="text-xl uppercase text-black">{pokemonSpecies.name}</h4>
                         </div>
-                        <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
-                        {
-                            pokemonSpecies &&
-                            <div className="w-full flex justify-end items-center space-x-2 my-[0.3rem]">
-                                <span className="text-md text-gray-400">#{id}</span>
-                                <h4 className="text-xl uppercase text-black">{pokemonSpecies.name}</h4>
-                            </div>
-                        }
+                    }
+                </div>
+
+                <div className="border border-gray-200/50 shadow-xl p-[1rem] m-[1rem] rounded-xl flex flex-col text-black">
+                    <h3 className="text-xl font-bold">Description</h3>
+                    <p className="mt-[1rem]">{cleanedText}</p>
+                </div>
+
+                {evolutionChainList && evolutionChainList.length > 1 && (
+                    <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border border-gray-200/50">
+                        <h3 className="text-xl font-bold">Evolution chain</h3>
+                        <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
                     </div>
-                }
+                )}
 
-
-                <IdNavigatorButton prevPokemon={prevPokemon} id={id} nextPokemon={nextPokemon} />
-
-                {pokemonSpecies &&
-                    <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl bg-white">
-                        <h1 className="text-xl font-bold">Stats</h1>
-                        {statComponents}
+                <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border border-gray-200/50">
+                    <h3 className="text-xl font-bold mb-[1rem]">Types</h3>
+                    <div className="flex flex-row gap-3">
+                        {pokemonTypes}
                     </div>
-                }
+                </div>
+
+
+                <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border border-gray-200/50 mb-20">
+                    <h3 className="text-xl font-bold mb-[1rem]">Stats</h3>
+                    {statComponents}
+                </div>
             </div>
         );
     }

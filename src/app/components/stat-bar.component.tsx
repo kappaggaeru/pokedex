@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StatBarProps } from "../models/props/pokedex-stat-props";
+import { StatBarProps } from "../models/props/pokedex-stat.props";
 
 const colorClasses: Record<StatBarProps["color"], string> = {
     green: "bg-green-500",
@@ -12,7 +12,6 @@ const colorClasses: Record<StatBarProps["color"], string> = {
 
 export const StatBar: React.FC<StatBarProps> = ({ title, value, color }) => {
     const [animatedWidth, setAnimatedWidth] = useState(0);
-
 
     useEffect(() => {
         const clampedValue = Math.min(value, 100);

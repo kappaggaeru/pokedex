@@ -1,6 +1,6 @@
-import { Ability } from "./ability-model";
-import { Move } from "./move-model";
-import { Stat } from "./stat-model";
+import { Ability } from "./ability.model";
+import { Move } from "./move.model";
+import { Stat } from "./stat.model";
 
 export interface Pokemon {
     abilities: Ability[];
