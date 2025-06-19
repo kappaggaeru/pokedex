@@ -23,7 +23,7 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, onSelect }) => {
     });
     return (
         <div className="my-[1rem]">
-            <div className="flex flex-row items-center justify-between">
+            <div className="flex flex-row items-center justify-evenly">
                 {evolutionChain}
             </div>
         </div>

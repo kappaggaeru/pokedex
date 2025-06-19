@@ -1,12 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PokedexListComponent from "./pokedex-list.component";
 import PokemonCardComponent from "./pokemon-card.component";
+import ScrollTopButton from "../buttons/scroll-top.button";
 
 const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [seenIds, setSeenIds] = useState<Set<number>>(new Set());
+    const [showScrollTop, setShowScrollTop] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowScrollTop(window.scrollY > 100);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const handleSelect = (id: number) => {
         setSelectedId(id);
@@ -25,7 +36,6 @@ const HomeComponent: React.FC = () => {
     const markAsSeen = (id: number) => {
         setSeenIds(prev => new Set(prev).add(id));
     };
-
 
     return (
         <div className="overflow-auto mb-20 mt-20">
@@ -55,6 +65,7 @@ const HomeComponent: React.FC = () => {
                     />
                 </div>
             </div>
+            <ScrollTopButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} isVisible={showScrollTop} />
         </div>
     );
 };

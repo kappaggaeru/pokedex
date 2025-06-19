@@ -15,6 +15,14 @@ import EvolutionChainComponent from "./evolution-chain.component";
 import { EvolutionStage } from "../models/evolution-stage.model";
 import { ChipComponent } from "./chip.component";
 
+type EvolutionNode = {
+    species: {
+        name?: string;
+        url?: string;
+    };
+    evolves_to: EvolutionNode[];
+};
+
 const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecies, setPokemonSpecies] = useState<Species | null>(null);
@@ -114,14 +122,14 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         return flavor.replace(/\f/g, ' ').replace(/\n/g, ' ');
     }
 
-    const flattenEvolutionChain = (chain: any): Generic[] => {
+    const flattenEvolutionChain = (chain: EvolutionNode): Generic[] => {
         const result: Generic[] = [];
 
-        const traverse = (node: any) => {
+        const traverse = (node: EvolutionNode) => {
             if (!node) return;
             result.push({
-                name: node.species.name,
-                url: node.species.url
+                name: node.species.name ?? '',
+                url: node.species.url ?? ''
             });
             if (node.evolves_to.length > 0) {
                 traverse(node.evolves_to[0]); // solo tomamos la primera rama por simplicidad
