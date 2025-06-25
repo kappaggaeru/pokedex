@@ -14,6 +14,9 @@ import { Generic } from "../models/dto/generic.model";
 import EvolutionChainComponent from "./evolution-chain.component";
 import { EvolutionStage } from "../models/evolution-stage.model";
 import { ChipComponent } from "./chip.component";
+import { PokedexEntry } from "../models/pokedex-entry.model";
+import PokedexEntryComponent from "./pokedex-entry.component";
+import TypewriterText from "./typewriter-text.component";
 
 type EvolutionNode = {
     species: {
@@ -30,8 +33,8 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
     const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
     const [pokemonEvolution, setPokemonEvolution] = useState<EvolutionChain | null>(null);
     const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
+    const [entryText, setEntryText] = useState<string>("");
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         if (!id) return;
@@ -110,11 +113,15 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         ))
         : [];
 
-    let cleanedText = "";
+    const entries: PokedexEntry[] = [];
 
     pokemonSpecies?.flavor_text_entries.map((flavor) => {
         if (flavor.language.name == 'en') {
-            cleanedText = formatFlavorText(flavor.flavor_text);
+            entries.push({
+                language: flavor.language.name ?? '',
+                entry: formatFlavorText(flavor.flavor_text),
+                version: flavor.version.name ?? ''
+            });
         }
     });
 
@@ -198,13 +205,19 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     }
                 </div>
 
-                <div className="border border-gray-200/50 dark:border-gray-600/50 shadow-xl p-[1rem] m-[1rem] rounded-xl flex flex-col text-black dark:text-gray-300 dark:bg-slate-800">
-                    <h3 className="text-xl font-bold">Description</h3>
-                    <p className="mt-[1rem]">{cleanedText}</p>
+                {entries.length > 0 &&
+                    <div className="p-4 rounded-xl flex flex-col text-black dark:text-gray-300">
+                        <PokedexEntryComponent entries={entries} onEntryChange={setEntryText} />
+                    </div>
+                }
+
+                <div className="p-4 mx-4 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                    <h3 className="text-xl font-bold mb-4">Pokedex entry</h3>
+                    <TypewriterText text={entryText} speed={10}/>
                 </div>
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
-                    <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 ">
+                    <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                         <h3 className="text-xl font-bold">Evolution chain</h3>
                         <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
                     </div>
