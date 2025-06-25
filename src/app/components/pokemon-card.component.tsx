@@ -86,15 +86,15 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 evolutionChainList.map(async (entry) => {
                     const urlParts = entry.url.split('/');
                     const id = +urlParts[urlParts.length - 2];
-                    const sprite = await getSprite(id); // Usa tu método actual
+                    const sprite = await getSprite(id);
                     return {
                         id,
                         name: entry.name ?? '',
-                        sprite: URL.createObjectURL(sprite), // o directo si ya devuelve url
+                        sprite: URL.createObjectURL(sprite),
                     };
                 })
             ).then(parsedEvolutionList => {
-                setEvolutionChainList(parsedEvolutionList); // Estado nuevo
+                setEvolutionChainList(parsedEvolutionList);
             });
         }
     }, [pokemonEvolution]);
@@ -139,8 +139,8 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 name: node.species.name ?? '',
                 url: node.species.url ?? ''
             });
-            if (node.evolves_to.length > 0) {
-                traverse(node.evolves_to[0]); // solo tomamos la primera rama por simplicidad
+            for (const evolution of node.evolves_to) {
+                traverse(evolution);
             }
         };
 
@@ -188,7 +188,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                         </div>
                     </div>
-                    <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10"/>
+                    <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
                 </div>
 
                 <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-[0.5rem] rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-lg dark:bg-slate-800">
@@ -197,13 +197,15 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
                     </div>
                     <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
-                    {
-                        pokemonSpecies &&
-                        <div className="w-full flex justify-end items-center space-x-2 my-[0.3rem]">
-                            <span className="text-md text-gray-400">#{id}</span>
-                            <h4 className="text-xl uppercase text-black dark:text-gray-300">{pokemonSpecies.name}</h4>
-                        </div>
-                    }
+                    <div className="flex flex-row items-center w-full justify-between">
+                        {
+                            pokemonSpecies &&
+                            <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">
+                                <span className="text-md text-gray-400">#{id}</span>
+                                <h4 className="text-xl uppercase text-black dark:text-gray-300">{pokemonSpecies.name}</h4>
+                            </div>
+                        }
+                    </div>
                 </div>
 
                 {entries.length > 0 &&
@@ -218,19 +220,33 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 </div>
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
-                    <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                    <div className="p-[1rem] pb-0 my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                         <h3 className="text-xl font-bold">Evolution chain</h3>
                         <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
                     </div>
                 )}
 
+
                 <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
-                    <h3 className="text-xl font-bold mb-[1rem]">Types</h3>
-                    <div className="flex flex-row gap-3">
-                        {pokemonTypes}
+                    <h3 className="text-xl font-bold mb-[1rem]">Information</h3>
+                    <div className="flex flex-row justify-evenly">
+                        <div className="flex flex-col text-center">
+                            <h5 className="text-gray-500">Height</h5>
+                            <span className="bold">{pokemonData?.height ? pokemonData?.height / 10 : 0} m</span>
+                        </div>
+                        <div className="flex flex-col text-center">
+                            <h5 className="text-gray-500">Weight</h5>
+                            <span className="bold">{pokemonData?.weight ? pokemonData?.weight / 10 : 0} kg</span>
+                        </div>
                     </div>
                 </div>
 
+                <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                    <h3 className="text-xl font-bold mb-[1rem]">Types</h3>
+                    <div className="flex flex-row gap-2">
+                        {pokemonTypes}
+                    </div>
+                </div>
 
                 <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20">
                     <h3 className="text-xl font-bold mb-[1rem]">Stats</h3>

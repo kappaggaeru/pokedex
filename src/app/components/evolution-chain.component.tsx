@@ -10,12 +10,14 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, onSelect }) => {
 
     const evolutionChain = chain.flatMap((stage) => {
         const element = (
-            <div
-                key={`stage-${stage.id}`}
-                onClick={() => onSelect(stage.id)}
-                className="text-center cursor-pointer border dark:bg-slate-700 border-gray-200/50 dark:border-gray-600/50 flex flex-row items-center rounded-xl"
-            >
-                <img src={stage.sprite} alt={stage.name} className="w-20 h-20 object-contain" />
+            <div key={`stage-${stage.id}`} className="text-center">
+                <div
+                    onClick={() => onSelect(stage.id)}
+                    className="text-center cursor-pointer border dark:bg-slate-700 border-gray-200/50 dark:border-gray-600/50 flex flex-row items-center rounded-xl"
+                >
+                    <img src={stage.sprite} alt={stage.name} className="w-20 h-20 object-contain" />
+                </div>
+                <span className="text-sm text-gray-500 capitalize">{stage.name}</span>
             </div>
         );
 
@@ -23,7 +25,7 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, onSelect }) => {
     });
     return (
         <div className="my-[1rem]">
-            <div className="flex flex-row items-center justify-evenly">
+            <div className="flex flex-row items-center justify-evenly flex-wrap gap-2">
                 {evolutionChain}
             </div>
         </div>
