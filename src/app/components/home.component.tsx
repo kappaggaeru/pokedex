@@ -60,7 +60,7 @@ const HomeComponent: React.FC = () => {
                     col-span-1 md:col-span-2 xl:col-span-3 overflow-auto
                     ${selectedId ? "block" : "hidden"}
                     md:block
-                    xl: px-4
+                    xl:px-4
                     `}
                 >
                     <PokemonCardComponent
