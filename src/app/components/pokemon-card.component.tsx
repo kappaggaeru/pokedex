@@ -16,7 +16,7 @@ import { EvolutionStage } from "../models/evolution-stage.model";
 import { ChipComponent } from "./chip.component";
 import { PokedexEntry } from "../models/pokedex-entry.model";
 import PokedexEntryComponent from "./pokedex-entry.component";
-import TypewriterText from "./typewriter-text.component";
+import FadeText from "./text/fade-text.component";
 
 type EvolutionNode = {
     species: {
@@ -190,7 +190,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <CloseButton onClick={clearCard} isVisible={true} />
                 </div>
 
-                <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] m-[1rem] mb-0 rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-lg dark:bg-slate-800">
+                <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-[0.5rem] rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-lg dark:bg-slate-800">
                     <div className="flex flex-row justify-center mb-[1rem]">
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
@@ -206,24 +206,24 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 </div>
 
                 {entries.length > 0 &&
-                    <div className="p-4 rounded-xl flex flex-col text-black dark:text-gray-300">
+                    <div className="py-4 px-[0.5rem] rounded-xl flex flex-col text-black dark:text-gray-300">
                         <PokedexEntryComponent entries={entries} onEntryChange={setEntryText} />
                     </div>
                 }
 
-                <div className="p-4 mx-4 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                <div className="p-4 mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                     <h3 className="text-xl font-bold mb-4">Pokedex entry</h3>
-                    <TypewriterText text={entryText} speed={10}/>
+                    <FadeText key={entryText} text={entryText} />
                 </div>
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
-                    <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                    <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                         <h3 className="text-xl font-bold">Evolution chain</h3>
                         <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
                     </div>
                 )}
 
-                <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                     <h3 className="text-xl font-bold mb-[1rem]">Types</h3>
                     <div className="flex flex-row gap-3">
                         {pokemonTypes}
@@ -231,7 +231,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 </div>
 
 
-                <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20">
+                <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20">
                     <h3 className="text-xl font-bold mb-[1rem]">Stats</h3>
                     {statComponents}
                 </div>

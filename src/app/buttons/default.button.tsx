@@ -21,9 +21,10 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
                 w-12 h-12 rounded-full
                 bg-white dark:bg-slate-800
                 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white
+                hover:scale-110 duration-300
                 border border-gray-200/50 dark:border-gray-600/50
                 flex items-center justify-center
-                transition-all duration-200
+                transition-all
                 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"}
                 ${className}
                 `}

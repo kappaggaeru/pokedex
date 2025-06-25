@@ -39,19 +39,19 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries, onEntryChange }) => {
 
     return (
         <div>
-            <div className="flex flex-row justify-evenly flex-wrap">
+            <div className="flex flex-row justify-between flex-wrap">
                 <DefaultButton onClick={prevVersion} isVisible={true} icon={ArrowLeft} className="shadow-lg" />
-                <div className="p-2 bg-white dark:bg-slate-800 rounded-full border border-gray-200/50 dark:border-gray-600/50 flex items-center">
+                <div className="p-2 bg-white dark:bg-slate-800 rounded-full border border-gray-200/50 dark:border-gray-600/50 flex items-center shadow-xl">
                     <select
                         value={entries[currentIndex].version}
                         onChange={handleSelectChange}
                         name="versionSelector"
-                        className="bg-white dark:bg-slate-800 w-fit focus:border-0 uppercase text-center"
+                        className="bg-white dark:bg-slate-800 w-fit focus:border-0 uppercase text-center focus:outline-none"
                     >
                         {versions}
                     </select>
                 </div>
-                <DefaultButton onClick={nextVersion} isVisible={true} icon={ArrowRight} />
+                <DefaultButton onClick={nextVersion} isVisible={true} icon={ArrowRight} className="shadow-lg"/>
             </div>
         </div>
     );

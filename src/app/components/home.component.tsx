@@ -42,7 +42,7 @@ const HomeComponent: React.FC = () => {
             <div className="overflow-auto grid grid-cols-1 md:grid-cols-4 xl:grid-cols-8 gap-4">
                 <div
                     className={`
-                    col-span-1 md:col-span-2 xl:col-span-5 overflow-auto px-[1rem]
+                    col-span-1 md:col-span-2 xl:col-span-5 overflow-auto
                     ${selectedId ? "hidden" : "block"}
                     md:block
                     `}
