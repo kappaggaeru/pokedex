@@ -13,7 +13,7 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, onSelect }) => {
             <div
                 key={`stage-${stage.id}`}
                 onClick={() => onSelect(stage.id)}
-                className="text-center cursor-pointer border border-gray-200/50 flex flex-row items-center rounded-xl"
+                className="text-center cursor-pointer border dark:bg-slate-700 border-gray-200/50 dark:border-gray-600/50 flex flex-row items-center rounded-xl"
             >
                 <img src={stage.sprite} alt={stage.name} className="w-20 h-20 object-contain" />
             </div>

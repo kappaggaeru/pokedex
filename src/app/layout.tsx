@@ -12,13 +12,13 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className="transition-colors duration-300">
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
             </head>
-            <body className="min-h-screen bg-gray-50">
+            <body className="min-h-screen bg-gray-50 dark:bg-black">
                 {children}
             </body>
         </html>

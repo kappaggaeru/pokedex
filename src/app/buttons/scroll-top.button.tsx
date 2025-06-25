@@ -6,7 +6,11 @@ const ScrollTopButton = ({ onClick, isVisible }: { onClick: () => void; isVisibl
             onClick={onClick}
             className={`
                 fixed bottom-5 right-5 z-50
-                w-12 h-12 bg-white/80 backdrop-blur-md rounded-full border border-gray-200/50 shadow-lg
+                w-12 h-12 
+                bg-white/80 dark:bg-slate-800/80 
+                text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white
+                border border-gray-200/50 dark:border-gray-600/50 shadow-lg
+                backdrop-blur-md rounded-full  
                 flex items-center justify-center transition-opacity duration-300
                 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}
             `}

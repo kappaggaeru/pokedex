@@ -160,11 +160,11 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         return (
             <div className="h-[40rem] w-full flex items-center justify-center">
                 <div className="animate-pulse w-full p-4 space-y-4">
-                    <div className="h-6 bg-gray-300 rounded w-1/3 mx-auto" />
-                    <div className="h-40 bg-gray-300 rounded" />
-                    <div className="h-4 bg-gray-300 rounded w-2/3 mx-auto" />
-                    <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto" />
-                    <div className="h-4 bg-gray-300 rounded w-1/4 mx-auto" />
+                    <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mx-auto" />
+                    <div className="h-40 bg-gray-300 dark:bg-gray-600 rounded" />
+                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-2/3 mx-auto" />
+                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mx-auto" />
+                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/4 mx-auto" />
                 </div>
             </div>
         );
@@ -183,7 +183,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <CloseButton onClick={clearCard} isVisible={true} />
                 </div>
 
-                <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] m-[1rem] mb-0 rounded-xl border border-gray-200/50 shadow-lg">
+                <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] m-[1rem] mb-0 rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-lg dark:bg-slate-800">
                     <div className="flex flex-row justify-center mb-[1rem]">
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
@@ -193,24 +193,24 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                         pokemonSpecies &&
                         <div className="w-full flex justify-end items-center space-x-2 my-[0.3rem]">
                             <span className="text-md text-gray-400">#{id}</span>
-                            <h4 className="text-xl uppercase text-black">{pokemonSpecies.name}</h4>
+                            <h4 className="text-xl uppercase text-black dark:text-gray-300">{pokemonSpecies.name}</h4>
                         </div>
                     }
                 </div>
 
-                <div className="border border-gray-200/50 shadow-xl p-[1rem] m-[1rem] rounded-xl flex flex-col text-black">
+                <div className="border border-gray-200/50 dark:border-gray-600/50 shadow-xl p-[1rem] m-[1rem] rounded-xl flex flex-col text-black dark:text-gray-300 dark:bg-slate-800">
                     <h3 className="text-xl font-bold">Description</h3>
                     <p className="mt-[1rem]">{cleanedText}</p>
                 </div>
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
-                    <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border border-gray-200/50">
+                    <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 ">
                         <h3 className="text-xl font-bold">Evolution chain</h3>
                         <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
                     </div>
                 )}
 
-                <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border border-gray-200/50">
+                <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                     <h3 className="text-xl font-bold mb-[1rem]">Types</h3>
                     <div className="flex flex-row gap-3">
                         {pokemonTypes}
@@ -218,7 +218,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 </div>
 
 
-                <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border border-gray-200/50 mb-20">
+                <div className="p-[1rem] m-[1rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20">
                     <h3 className="text-xl font-bold mb-[1rem]">Stats</h3>
                     {statComponents}
                 </div>
