@@ -27,7 +27,7 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect, seenIds }) => {
         }
     };
 
-    const pokedexItems = Array.from({ length: 300 }, (_, i) => {
+    const pokedexItems = Array.from({ length: 400 }, (_, i) => {
         const id = i + 1;
         return (
             <PokedexItemContainer

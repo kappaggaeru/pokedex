@@ -17,6 +17,13 @@ export default function FooterComponent() {
                         </a>
                     </p>
                 </div>
+                <div className="text-center text-sm text-gray-500">
+                    <p>{`
+                        This site is not affiliated with "The Pokémon Company" and does not own or claim any rights to any Nintendo trademark or the Pokémon trademark.
+                    `}
+                    </p>
+                    <p>All shown data belongs to <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300 transition-colors duration-200">PokeAPI</a></p>
+                </div>
             </div>
         </div>
     );
