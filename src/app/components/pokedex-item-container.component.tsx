@@ -6,7 +6,7 @@ const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, 
     return (
         <div
             className={`rounded-lg hover:cursor-pointer w-[4rem] h-[4rem] font-bold text-center content-center text-black 
-        ${viewed ? 'bg-gray-200' : 'bg-orange-100'}`}
+        ${viewed ? 'bg-gray-200 dark:bg-gray-300' : 'bg-orange-100 '}`}
             onClick={() => onSelect(id)}
         >
             {viewed && sprite ? (

@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { StatBarProps } from "../models/props/pokedex-stat.props";
 
 const colorClasses: Record<StatBarProps["color"], string> = {
-    green: "bg-green-500",
-    red: "bg-red-500",
-    blue: "bg-blue-500",
-    violet: "bg-violet-500",
-    lightblue: "bg-sky-400",
-    yellow: "bg-yellow-400",
+    green: "bg-green-500 dark:bg-green-400",
+    red: "bg-red-500 dark:bg-red-400",
+    blue: "bg-blue-500 dark:bg-blue-400",
+    violet: "bg-violet-500 dark:bg-violet-400",
+    lightblue: "bg-sky-400 dark:bg-sky-300",
+    yellow: "bg-yellow-400 dark:bg-yellow-300",
 };
 
 export const StatBar: React.FC<StatBarProps> = ({ title, value, color }) => {
@@ -28,7 +28,7 @@ export const StatBar: React.FC<StatBarProps> = ({ title, value, color }) => {
                 <h5 className="capitalize">{title}</h5>
                 <span>{value}</span>
             </div>
-            <div className="relative h-2 rounded-xl bg-black bg-opacity-10 overflow-hidden">
+            <div className="relative h-2 rounded-xl bg-black dark:bg-slate-700 bg-opacity-10 overflow-hidden transition-colors duration-200">
                 <div
                     className={`h-2 rounded-xl transition-all duration-500 ${colorClasses[color]}`}
                     style={{ width: `${animatedWidth}%` }}

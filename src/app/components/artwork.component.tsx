@@ -1,6 +1,6 @@
 const PokemonArtworkComponent = ({ artworkUrl, id }: { artworkUrl: string | null, id: number }) => {
     return (
-        <div className="rounded w-full bg-blue-200 flex justify-center">
+        <div className="rounded w-full bg-blue-200 dark:bg-blue-400 flex justify-center">
             {artworkUrl ? (
                 <img
                     src={artworkUrl}
