@@ -3,7 +3,7 @@ import React from "react";
 
 interface DefaultButtonProps {
     onClick: () => void;
-    isVisible?: true;
+    isVisible: boolean;
     icon: LucideIcon;
     className?: string;
 }
@@ -18,16 +18,17 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
         <button
             onClick={onClick}
             className={`
-                w-12 h-12 rounded-full
-                bg-white dark:bg-slate-800
-                text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white
-                hover:scale-110 duration-300
-                border border-gray-200/50 dark:border-gray-600/50
-                flex items-center justify-center
-                transition-all
-                ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"}
-                ${className}
-                `}
+        w-12 h-12 rounded-full
+        bg-white/80 dark:bg-slate-800/80
+        text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white
+        border border-gray-200/50 dark:border-gray-600/50
+        shadow-lg backdrop-blur-xl
+        flex items-center justify-center
+        transition-all duration-300
+        hover:scale-110
+        ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"}
+        ${className}
+      `}
         >
             <Icon className="w-6 h-6" />
         </button>

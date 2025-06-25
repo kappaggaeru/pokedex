@@ -1,5 +1,6 @@
 import { SunMoon } from 'lucide-react';
 import { useEffect } from 'react';
+import DefaultButton from './default.button';
 
 const ThemeButton = () => {
 
@@ -23,15 +24,7 @@ const ThemeButton = () => {
     }
 
     return (
-        <button
-            className="w-12 h-12 
-            bg-white/80 dark:bg-gray-800/80 
-            backdrop-blur-md rounded-full
-            border border-gray-200/50 dark:border-gray-600/50 shadow-lg flex items-center justify-center  transition-colors duration-200"
-            onClick={toggleTheme}
-        >
-            <SunMoon className="w-6 h-6 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" />
-        </button>
+        <DefaultButton onClick={toggleTheme} isVisible={true} icon={SunMoon}/>
     );
 }
 export default ThemeButton;

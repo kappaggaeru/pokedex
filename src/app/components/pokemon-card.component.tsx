@@ -8,7 +8,6 @@ import { StatBarProps } from "../models/props/pokedex-stat.props";
 import { Pokemon } from "../models/dto/pokemon.model";
 import { Species } from "../models/dto/species.model";
 import { Form } from "../models/dto/form.model";
-import CloseButton from "../buttons/close.button";
 import { EvolutionChain } from "../models/dto/evolution-chain.model";
 import { Generic } from "../models/dto/generic.model";
 import EvolutionChainComponent from "./evolution-chain.component";
@@ -17,6 +16,8 @@ import { ChipComponent } from "./chip.component";
 import { PokedexEntry } from "../models/pokedex-entry.model";
 import PokedexEntryComponent from "./pokedex-entry.component";
 import FadeText from "./text/fade-text.component";
+import DefaultButton from "../buttons/default.button";
+import { X } from "lucide-react";
 
 type EvolutionNode = {
     species: {
@@ -187,7 +188,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                         </div>
                     </div>
-                    <CloseButton onClick={clearCard} isVisible={true} />
+                    <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10"/>
                 </div>
 
                 <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-[0.5rem] rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-lg dark:bg-slate-800">

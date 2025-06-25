@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import PokedexListComponent from "./pokedex-list.component";
 import PokemonCardComponent from "./pokemon-card.component";
-import ScrollTopButton from "../buttons/scroll-top.button";
+import DefaultButton from "../buttons/default.button";
+import { ArrowUp } from "lucide-react";
 
 const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -37,6 +38,10 @@ const HomeComponent: React.FC = () => {
         setSeenIds(prev => new Set(prev).add(id));
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     return (
         <div className="overflow-auto mb-20 mt-20">
             <div className="overflow-auto grid grid-cols-1 md:grid-cols-4 xl:grid-cols-8 gap-4">
@@ -65,7 +70,7 @@ const HomeComponent: React.FC = () => {
                     />
                 </div>
             </div>
-            <ScrollTopButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} isVisible={showScrollTop} />
+            <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className="fixed bottom-5 right-5 z-20" />
         </div>
     );
 };
