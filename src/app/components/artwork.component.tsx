@@ -1,6 +1,25 @@
 const PokemonArtworkComponent = ({ artworkUrl, id }: { artworkUrl: string | null, id: number }) => {
     return (
-        <div className="rounded w-full bg-blue-200 dark:bg-blue-400 flex justify-center">
+        <div 
+            className="rounded-lg w-full flex justify-center bg-[#207b55] dark:bg-[#012d1b]"
+            style={{
+                backgroundImage: `
+                    repeating-linear-gradient(
+                        to right,
+                        rgba(255, 165, 100, 0.2) 0px,
+                        rgba(255, 165, 100, 0.2) 1px,
+                        transparent 1px,
+                        transparent 20px
+                    ),
+                    repeating-linear-gradient(
+                        to bottom,
+                        rgba(255, 165, 100, 0.2) 0px,
+                        rgba(255, 165, 100, 0.2) 1px,
+                        transparent 1px,
+                        transparent 20px
+                    )
+                `,
+            }}>
             {artworkUrl ? (
                 <img
                     src={artworkUrl}

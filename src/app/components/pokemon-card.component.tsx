@@ -179,7 +179,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
     } else {
         return (
             <div>
-                <div className="flex flex-row m-[1rem] justify-between">
+                <div className="flex flex-row m-[1rem] mx-6 justify-between">
                     <div className="flex flex-row">
                         <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem]"></div>
                         <div className=" flex flex-row align-baseline">
@@ -191,7 +191,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
                 </div>
 
-                <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-[0.5rem] rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-lg dark:bg-slate-800">
+                <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-xl dark:bg-slate-800">
                     <div className="flex flex-row justify-center mb-[1rem]">
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
@@ -209,25 +209,25 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 </div>
 
                 {entries.length > 0 &&
-                    <div className="py-4 px-[0.5rem] rounded-xl flex flex-col text-black dark:text-gray-300">
+                    <div className="py-4 px-[1rem] m-[1rem] rounded-xl flex flex-col text-black dark:text-gray-300">
                         <PokedexEntryComponent entries={entries} onEntryChange={setEntryText} />
                     </div>
                 }
 
-                <div className="p-4 mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                <div className="p-4 mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                     <h3 className="text-xl font-bold mb-4">Pokedex entry</h3>
                     <FadeText key={entryText} text={entryText} />
                 </div>
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
-                    <div className="p-[1rem] pb-0 my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                    <div className="p-[1rem] pb-0 my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                         <h3 className="text-xl font-bold">Evolution chain</h3>
                         <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
                     </div>
                 )}
 
 
-                <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                <div className="p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                     <h3 className="text-xl font-bold mb-[1rem]">Information</h3>
                     <div className="flex flex-row justify-evenly">
                         <div className="flex flex-col text-center">
@@ -241,14 +241,14 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     </div>
                 </div>
 
-                <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                <div className="p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                     <h3 className="text-xl font-bold mb-[1rem]">Types</h3>
                     <div className="flex flex-row gap-2">
                         {pokemonTypes}
                     </div>
                 </div>
 
-                <div className="p-[1rem] my-[1rem] mx-[0.5rem] shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20">
+                <div className="p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20">
                     <h3 className="text-xl font-bold mb-[1rem]">Stats</h3>
                     {statComponents}
                 </div>
