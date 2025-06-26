@@ -16,5 +16,5 @@ export interface Species {
     is_mythical: boolean;
     name: string;
     shape: Generic;
-    varieties: Varieties;
+    varieties: Varieties[];
 }

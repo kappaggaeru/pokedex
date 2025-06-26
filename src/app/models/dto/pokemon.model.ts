@@ -4,6 +4,7 @@ import { Stat } from "./stat.model";
 
 export interface Pokemon {
     abilities: Ability[];
+    name: string;
     height: number;
     moves: Move[];
     stats: Stat[];

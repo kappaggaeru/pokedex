@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getPokemonById, getPokemonFormById, getPokemonSpeciesById, getArtworkById, getSprite } from "../services/pokemon.service";
+import { getPokemonById, getArtworkById, getSprite } from "../services/pokemon.service";
 import PokemonArtworkComponent from "./artwork.component";
 import { StatBar } from "./stat-bar.component";
 import { PokemonCardProps } from "../models/props/pokedex-card.props";
@@ -18,6 +18,7 @@ import PokedexEntryComponent from "./pokedex-entry.component";
 import FadeText from "./text/fade-text.component";
 import DefaultButton from "../buttons/default.button";
 import { X } from "lucide-react";
+import { Varieties } from "../models/dto/varieties.model";
 
 type EvolutionNode = {
     species: {
@@ -34,21 +35,25 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
     const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
     const [pokemonEvolution, setPokemonEvolution] = useState<EvolutionChain | null>(null);
     const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
+    const [varietiesList, setVarietiesList] = useState<EvolutionStage[]>([]);
     const [entryText, setEntryText] = useState<string>("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!id) return;
+
         setLoading(true);
         let objectUrlTemp: string | null = null;
+
         const fetchAllData = async () => {
             try {
-                const [pokemon, species, form, blob] = await Promise.all([
-                    getPokemonById(id),
-                    getPokemonSpeciesById(id),
-                    getPokemonFormById(id),
-                    getArtworkById(id),
+                const pokemon = await getPokemonById(id);
+                const [species, form] = await Promise.all([
+                    fetch(pokemon.species.url).then(res => res.json()),
+                    fetch(pokemon.forms[0].url).then(res => res.json())
                 ]);
+
+                const blob = await getArtworkById(pokemon.id);
                 objectUrlTemp = URL.createObjectURL(blob);
 
                 setPokemonData(pokemon);
@@ -63,7 +68,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 }
 
             } catch (error) {
-                console.error("Error al obtener datos del Pokémon:", error);
+                console.error("Error fetching pokemon data:", error);
             } finally {
                 setLoading(false);
             }
@@ -98,6 +103,34 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
             });
         }
     }, [pokemonEvolution]);
+
+    useEffect(() => {
+        if (pokemonSpecies && pokemonSpecies.varieties.length > 1) {
+            const varietiesList = flattenVarietiesList(pokemonSpecies.varieties);
+            const objectUrls: string[] = [];
+
+            Promise.all(
+                varietiesList.map(async (entry) => {
+                    const urlParts = entry.url.split('/');
+                    const id = +urlParts[urlParts.length - 2];
+                    const sprite = await getSprite(id);
+                    const objectUrl = URL.createObjectURL(sprite);
+                    objectUrls.push(objectUrl);
+                    return {
+                        id,
+                        name: entry.name ? entry.name.replace(/-/g, ' ') : '',
+                        sprite: objectUrl
+                    };
+                })
+            ).then(parsedVarietiesList => {
+                setVarietiesList(parsedVarietiesList);
+            });
+
+            return () => {
+                objectUrls.forEach(url => URL.revokeObjectURL(url));
+            };
+        }
+    }, [pokemonSpecies]);
 
     const statsColors: StatBarProps["color"][] = [
         "green", "red", "blue", "violet", "lightblue", "yellow"
@@ -148,12 +181,30 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         return result;
     };
 
+    const flattenVarietiesList = (list: Varieties[]): Generic[] => {
+        const result: Generic[] = [];
+
+        list.forEach((node) => {
+            if (!node) return;
+            const variantName = node.pokemon.name ? formatVariantName(node.pokemon.name) : '';
+            result.push({
+                name: variantName,
+                url: node.pokemon.url ?? ''
+            });
+        });
+
+        return result;
+    };
+
     const pokemonTypes = pokemonForm?.types.map((element, index) => (
         <ChipComponent
             key={index}
             title={element.type.name ?? ''}
         />
     ));
+
+    const formatVariantName = (name: string) =>
+        name.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 
     if (id === null) {
         return (
@@ -181,7 +232,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
             <div>
                 <div className="flex flex-row m-[1rem] mx-6 justify-between">
                     <div className="flex flex-row">
-                        <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem]"></div>
+                        <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem] ring-2 border border-gray-200/50 dark:border-gray-600/50"></div>
                         <div className=" flex flex-row align-baseline">
                             <div className="w-3 h-3 bg-red-500 rounded-full mr-[.5rem]"></div>
                             <div className="w-3 h-3 bg-yellow-500 rounded-full mr-[.5rem]"></div>
@@ -199,10 +250,10 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
                     <div className="flex flex-row items-center w-full justify-between">
                         {
-                            pokemonSpecies &&
+                            pokemonData &&
                             <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">
                                 <span className="text-md text-gray-400">#{id}</span>
-                                <h4 className="text-xl uppercase text-black dark:text-gray-300">{pokemonSpecies.name}</h4>
+                                <h4 className="text-xl uppercase text-black dark:text-gray-300">{formatVariantName(pokemonData.name)}</h4>
                             </div>
                         }
                     </div>
@@ -223,6 +274,15 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <div className="p-[1rem] pb-0 my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                         <h3 className="text-xl font-bold">Evolution chain</h3>
                         <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
+                    </div>
+                )}
+
+
+                {varietiesList && varietiesList.length > 1 && (
+
+                    <div className="p-[1rem] pb-0 my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                        <h3 className="text-xl font-bold">Varieties</h3>
+                        <EvolutionChainComponent chain={varietiesList} onSelect={setIdFromParent} />
                     </div>
                 )}
 

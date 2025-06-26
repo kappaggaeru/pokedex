@@ -99,11 +99,11 @@ export const getSprite = async (id: number) => {
     return response.blob();
 }
 
-//evolution
-export const getEvolutionById = async (url: string) => {
+// generic fetch
+export const getByUrl = async (url: string) => {
     const response = await fetch(`${url}`);
     if (!response.ok) {
-        throw new Error('Error fetching evolution');
+        throw new Error('Error fetching data');
     }
     return response.json();
 }
