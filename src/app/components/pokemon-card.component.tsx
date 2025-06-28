@@ -15,10 +15,8 @@ import { EvolutionStage } from "../models/evolution-stage.model";
 import { ChipComponent } from "./chip.component";
 import { PokedexEntry } from "../models/pokedex-entry.model";
 import PokedexEntryComponent from "./pokedex-entry.component";
-import FadeText from "./text/fade-text.component";
 import DefaultButton from "../buttons/default.button";
 import { X } from "lucide-react";
-import { Varieties } from "../models/dto/varieties.model";
 import { usePokemonTier } from "../context/pokemonContext";
 
 type EvolutionNode = {
@@ -198,20 +196,20 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         return result;
     };
 
-    const flattenVarietiesList = (list: Varieties[]): Generic[] => {
-        const result: Generic[] = [];
+    // const flattenVarietiesList = (list: Varieties[]): Generic[] => {
+    //     const result: Generic[] = [];
 
-        list.forEach((node) => {
-            if (!node) return;
-            const variantName = node.pokemon.name ? formatVariantName(node.pokemon.name) : '';
-            result.push({
-                name: variantName,
-                url: node.pokemon.url ?? ''
-            });
-        });
+    //     list.forEach((node) => {
+    //         if (!node) return;
+    //         const variantName = node.pokemon.name ? formatVariantName(node.pokemon.name) : '';
+    //         result.push({
+    //             name: variantName,
+    //             url: node.pokemon.url ?? ''
+    //         });
+    //     });
 
-        return result;
-    };
+    //     return result;
+    // };
 
     const pokemonTypes = pokemonForm?.types.map((element, index) => (
         <ChipComponent

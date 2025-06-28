@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { PokedexEntry } from "../models/pokedex-entry.model";
 import FadeText from "./text/fade-text.component";
-import { usePokemonTier } from "../context/pokemonContext";
 
 type Props = {
     entries: PokedexEntry[];
@@ -10,7 +9,6 @@ type Props = {
 const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const currentEntry = entries[currentIndex];
-    const { tier } = usePokemonTier();
 
     const handlePrev = () => {
         setCurrentIndex((prev) => (prev === 0 ? entries.length - 1 : prev - 1));
@@ -33,7 +31,6 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
             <FadeText key={currentEntry.entry} text={currentEntry.entry} />
             <div className={`
             mt-4 flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300 underline
-
             `}>
                 <button onClick={handlePrev}>
                     prev
