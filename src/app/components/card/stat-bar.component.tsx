@@ -28,7 +28,7 @@ export const StatBar: React.FC<StatBarProps> = ({ title, value, color }) => {
                 <h5 className="capitalize">{title}</h5>
                 <span>{value}</span>
             </div>
-            <div className="relative h-2 rounded-xl bg-black dark:bg-slate-700 bg-opacity-10 overflow-hidden transition-colors duration-300">
+            <div className="relative h-2 rounded-xl bg-black dark:bg-slate-700 bg-opacity-10 overflow-hidden">
                 <div
                     className={`h-2 rounded-xl transition-all duration-300 ${colorClasses[color]}`}
                     style={{ width: `${animatedWidth}%` }}

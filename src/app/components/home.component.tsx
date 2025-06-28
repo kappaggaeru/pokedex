@@ -5,14 +5,12 @@ import PokedexListComponent from "./list/pokedex-list.component";
 import PokemonCardComponent from "./card/pokemon-card.component";
 import DefaultButton from "../buttons/default.button";
 import { ArrowUp } from "lucide-react";
-import { useMenu } from "../context/menuContext";
-import MenuComponent from "./menu.component";
 
 const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [seenIds, setSeenIds] = useState<Set<number>>(new Set());
     const [showScrollTop, setShowScrollTop] = useState(false);
-    const { showMenu } = useMenu();
+    
 
     useEffect(() => {
         const handleScroll = () => {
@@ -47,7 +45,7 @@ const HomeComponent: React.FC = () => {
 
     return (
         <div>
-            <div className={`${!showMenu ? "block" : "hidden"} overflow-auto mb-20 mt-20`}>
+            <div className={`overflow-auto mb-20 mt-20`}>
                 <div className="overflow-auto grid grid-cols-1 md:grid-cols-4 xl:grid-cols-8 gap-4">
                     <div
                         className={`
@@ -77,11 +75,7 @@ const HomeComponent: React.FC = () => {
                 </div>
                 <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className="fixed bottom-5 right-5 z-20" />
             </div>
-            <div className={`${showMenu ? "block" : "hidden"}`}>
-                <MenuComponent />
-            </div>
         </div>
-
     );
 };
 

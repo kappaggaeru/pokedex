@@ -10,10 +10,10 @@ export default function Home() {
         <PokemonProvider>
             <MenuProvider>
                 <section>
-                    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-4">
+                    <div className="fixed top-0 py-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl border border-red-500 bg-blue-200">
                         <HeaderComponent />
                     </div>
-                    <main className="max-w-5xl mx-auto xl:py-6">
+                    <main className="max-w-5xl mx-auto">
                         <HomeComponent />
                     </main>
                     <footer className="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-gray-600/50 mt-20">
