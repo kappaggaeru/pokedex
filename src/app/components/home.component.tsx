@@ -10,7 +10,6 @@ const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [seenIds, setSeenIds] = useState<Set<number>>(new Set());
     const [showScrollTop, setShowScrollTop] = useState(false);
-    
 
     useEffect(() => {
         const handleScroll = () => {
