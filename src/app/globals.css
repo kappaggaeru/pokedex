@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 .geist-font {
-  font-family: "Geist", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Geist", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 :root {
@@ -26,4 +26,23 @@ body {
     color: var(--foreground);
     background: var(--background);
     font-family: "geist", Arial, sans-serif;
+}
+
+/* Gradientes de fondo + borde */
+.bg-legendary {
+    @apply bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 dark:from-yellow-700 dark:via-yellow-800 dark:to-yellow-600 border border-yellow-400 dark:border-yellow-600;
+}
+
+.bg-mythical {
+    @apply bg-gradient-to-r from-gray-200 via-white to-gray-300 dark:from-slate-600 dark:via-slate-700 dark:to-slate-500 border border-gray-400 dark:border-gray-500;
+}
+
+
+/* Glows */
+.glow-legendary {
+    animation: glow-yellow 2.5s infinite ease-in-out;
+}
+
+.glow-mythical {
+    animation: glow-silver 2.5s infinite ease-in-out;
 }

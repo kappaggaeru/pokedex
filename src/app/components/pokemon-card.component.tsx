@@ -19,6 +19,7 @@ import FadeText from "./text/fade-text.component";
 import DefaultButton from "../buttons/default.button";
 import { X } from "lucide-react";
 import { Varieties } from "../models/dto/varieties.model";
+import { usePokemonTier } from "../context/pokemonContext";
 
 type EvolutionNode = {
     species: {
@@ -29,6 +30,7 @@ type EvolutionNode = {
 };
 
 const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
+    const { setTier } = usePokemonTier();
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecies, setPokemonSpecies] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
@@ -82,6 +84,16 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
             }
         };
     }, [id]);
+
+    useEffect(() => {
+        if (pokemonSpecies?.is_legendary) {
+            setTier("legendary");
+        } else if (pokemonSpecies?.is_mythical) {
+            setTier("mythical");
+        } else {
+            setTier("normal");
+        }
+    }, [pokemonSpecies]);
 
     useEffect(() => {
         if (pokemonEvolution) {
@@ -228,6 +240,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
             </div>
         );
     } else {
+
         return (
             <div>
                 <div className="flex flex-row m-[1rem] mx-6 justify-between">
@@ -242,29 +255,58 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
                 </div>
 
-                <div className="relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-xl dark:bg-slate-800">
-                    {pokemonSpecies?.is_legendary &&
-                        <div className="absolute top-0 left-0 py-1 px-4 bg-yellow-300 dark:bg-yellow-600 rounded-tl-xl rounded-br-xl">
-                            <span className="uppercase text-xs ">legendary</span>
+                <div
+                    className={`
+                        relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-500
+                        before:absolute before:inset-0 before:rounded-xl before:blur-md before:z-[-1]
+                        ${pokemonSpecies?.is_legendary
+                            ? 'border-yellow-400 dark:border-yellow-600 bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 dark:from-yellow-700 dark:via-yellow-800 dark:to-yellow-600 before:animate-glow-yellow'
+                            : pokemonSpecies?.is_mythical
+                                ? 'border-gray-400 dark:border-gray-500 bg-gradient-to-r from-gray-200 via-white to-gray-300 dark:from-slate-600 dark:via-slate-700 dark:to-slate-500 before:animate-glow-silver'
+                                : 'border-gray-200/50 dark:border-gray-600/50 bg-white dark:bg-slate-800'
+                        }`}
+                >
+
+                    {(pokemonSpecies?.is_legendary || pokemonSpecies?.is_mythical) && (
+                        <div
+                            className={`absolute top-0 left-0 py-1 px-4 rounded-tl-xl rounded-br-xl text-xs uppercase text-white font-semibold backdrop-blur-sm bg-gradient-to-r ${pokemonSpecies?.is_legendary
+                                ? 'from-yellow-400/70 to-yellow-600/70'
+                                : 'from-gray-400/70 to-gray-600/70'
+                                }`}
+                        >
+                            {pokemonSpecies?.is_legendary ? "legendary" : "mythical"}
                         </div>
-                    }
+                    )}
+
+
                     <div className="flex flex-row justify-center mb-[1rem]">
-                        <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
-                        <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
+                        <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div>
+                        <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div>
                     </div>
+
                     <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
+
                     <div className="flex flex-row items-center w-full justify-between">
-                        {
-                            pokemonData &&
+                        {pokemonData && (
                             <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">
                                 <span className="text-md text-gray-400">#{id}</span>
-                                <h4 className="text-xl uppercase text-black dark:text-gray-300">{formatVariantName(pokemonData.name)}</h4>
+                                <h4 className="text-xl uppercase text-black dark:text-gray-300">
+                                    {formatVariantName(pokemonData.name)}
+                                </h4>
                             </div>
-                        }
+                        )}
                     </div>
                 </div>
 
-                <div className="mt-4 p-4 mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+
+                <div className={`
+                    mt-4 p-4 mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 border-gray-200/50 dark:border-gray-600/50
+                    ${pokemonSpecies?.is_legendary
+                        ? 'bg-legendary glow-legendary'
+                        : pokemonSpecies?.is_mythical
+                            ? 'bg-mythical glow-mythical'
+                            : 'bg-white dark:bg-slate-800'
+                    }`}>
                     <h3 className="text-xl font-bold mb-4">Pokedex entry</h3>
                     <FadeText key={entryText} text={entryText} />
                 </div>
@@ -276,7 +318,15 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 }
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
-                    <div className="p-[1rem] pb-0 mb-4 mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                    <div className={`
+                    p-[1rem] pb-0 my-4 mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 border-gray-200/50 dark:border-gray-600/50
+                    ${pokemonSpecies?.is_legendary
+                            ? 'bg-legendary glow-legendary'
+                            : pokemonSpecies?.is_mythical
+                                ? 'bg-mythical glow-mythical'
+                                : 'bg-white dark:bg-slate-800'
+                        }
+                    `}>
                         <h3 className="text-xl font-bold">Evolution chain</h3>
                         <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
                     </div>
@@ -285,35 +335,67 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
                 {varietiesList && varietiesList.length > 1 && (
 
-                    <div className="p-[1rem] pb-0 my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                    <div className={`
+                        p-[1rem] pb-0 my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300  border-gray-200/50 dark:border-gray-600/50
+                        ${pokemonSpecies?.is_legendary
+                            ? 'bg-legendary glow-legendary'
+                            : pokemonSpecies?.is_mythical
+                                ? 'bg-mythical glow-mythical'
+                                : 'bg-white dark:bg-slate-800'
+                        }
+                    `}>
                         <h3 className="text-xl font-bold">Varieties</h3>
                         <EvolutionChainComponent chain={varietiesList} onSelect={setIdFromParent} />
                     </div>
                 )}
 
 
-                <div className="p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                <div className={`
+                    p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 border-gray-200/50 dark:border-gray-600/50
+                    ${pokemonSpecies?.is_legendary
+                        ? 'bg-legendary glow-legendary'
+                        : pokemonSpecies?.is_mythical
+                            ? 'bg-mythical glow-mythical'
+                            : 'bg-white dark:bg-slate-800'
+                    }
+                    `}>
                     <h3 className="text-xl font-bold mb-[1rem]">Information</h3>
                     <div className="flex flex-row justify-evenly">
                         <div className="flex flex-col text-center">
-                            <h5 className="text-gray-500">Height</h5>
+                            <h5 className="text-gray-500 dark:text-gray-400">Height</h5>
                             <span className="bold">{pokemonData?.height ? pokemonData?.height / 10 : 0} m</span>
                         </div>
                         <div className="flex flex-col text-center">
-                            <h5 className="text-gray-500">Weight</h5>
+                            <h5 className="text-gray-500 dark:text-gray-400">Weight</h5>
                             <span className="bold">{pokemonData?.weight ? pokemonData?.weight / 10 : 0} kg</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                <div className={`
+                p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 border-gray-200/50 dark:border-gray-600/50
+                ${pokemonSpecies?.is_legendary
+                        ? 'bg-legendary glow-legendary'
+                        : pokemonSpecies?.is_mythical
+                            ? 'bg-mythical glow-mythical'
+                            : 'bg-white dark:bg-slate-800'
+                    }
+                `}>
                     <h3 className="text-xl font-bold mb-[1rem]">Types</h3>
                     <div className="flex flex-row gap-2">
                         {pokemonTypes}
                     </div>
                 </div>
 
-                <div className="p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20">
+                <div className={`
+                p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20
+                ${pokemonSpecies?.is_legendary
+                        ? 'bg-legendary glow-legendary'
+                        : pokemonSpecies?.is_mythical
+                            ? 'bg-mythical glow-mythical'
+                            : 'bg-white dark:bg-slate-800'
+                    }
+                `}>
                     <h3 className="text-xl font-bold mb-[1rem]">Stats</h3>
                     {statComponents}
                 </div>
