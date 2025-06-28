@@ -117,20 +117,26 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
     useEffect(() => {
         if (pokemonSpecies && pokemonSpecies.varieties.length > 1) {
-            const varietiesList = flattenVarietiesList(pokemonSpecies.varieties.slice(1));
+            const baseName = pokemonSpecies.name.toLowerCase();
+            let allVarieties = [...pokemonSpecies.varieties];
+
+            if ((allVarieties[0].pokemon.name?.toLowerCase() ?? '') === baseName) {
+                allVarieties = allVarieties.slice(1);
+            }
+
             const objectUrls: string[] = [];
 
             Promise.all(
-                varietiesList.map(async (entry) => {
-                    const urlParts = entry.url.split('/');
+                allVarieties.map(async (entry) => {
+                    const urlParts = entry.pokemon.url.split('/');
                     const id = +urlParts[urlParts.length - 2];
                     const sprite = await getSprite(id);
                     const objectUrl = URL.createObjectURL(sprite);
                     objectUrls.push(objectUrl);
                     return {
                         id,
-                        name: entry.name ? entry.name.replace(/-/g, ' ') : '',
-                        sprite: objectUrl
+                        name: entry.pokemon.name ? entry.pokemon.name.replace(/-/g, ' ') : '',
+                        sprite: objectUrl,
                     };
                 })
             ).then(parsedVarietiesList => {
@@ -306,7 +312,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                             ? 'bg-mythical glow-mythical'
                             : 'bg-white dark:bg-slate-800'
                     }`}>
-                        <PokedexEntryComponent entries={entries} />
+                    <PokedexEntryComponent entries={entries} />
                 </div>
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
@@ -326,7 +332,6 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
 
                 {varietiesList && varietiesList.length > 1 && (
-
                     <div className={`
                         p-[1rem] pb-0 my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300  border-gray-200/50 dark:border-gray-600/50
                         ${pokemonSpecies?.is_legendary
