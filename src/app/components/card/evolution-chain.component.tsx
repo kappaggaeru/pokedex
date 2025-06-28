@@ -1,4 +1,4 @@
-import { EvolutionStage } from "../models/evolution-stage.model";
+import { EvolutionStage } from "../../models/evolution-stage.model";
 import PokedexLinkContainer from "./pokedex-link-container.component";
 
 type Props = {

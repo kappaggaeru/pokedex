@@ -1,23 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getPokemonById, getArtworkById, getSprite } from "../services/pokemon.service";
+import { getPokemonById, getArtworkById, getSprite } from "../../services/pokemon.service";
 import PokemonArtworkComponent from "./artwork.component";
 import { StatBar } from "./stat-bar.component";
-import { PokemonCardProps } from "../models/props/pokedex-card.props";
-import { StatBarProps } from "../models/props/pokedex-stat.props";
-import { Pokemon } from "../models/dto/pokemon.model";
-import { Species } from "../models/dto/species.model";
-import { Form } from "../models/dto/form.model";
-import { EvolutionChain } from "../models/dto/evolution-chain.model";
-import { Generic } from "../models/dto/generic.model";
-import EvolutionChainComponent from "./evolution-chain.component";
-import { EvolutionStage } from "../models/evolution-stage.model";
+import { PokemonCardProps } from "../../models/props/pokedex-card.props";
+import { StatBarProps } from "../../models/props/pokedex-stat.props";
+import { Pokemon } from "../../models/dto/pokemon.model";
+import { Species } from "../../models/dto/species.model";
+import { Form } from "../../models/dto/form.model";
+import { EvolutionChain } from "../../models/dto/evolution-chain.model";
+import { Generic } from "../../models/dto/generic.model";
+import EvolutionChainComponent from "../card/evolution-chain.component";
+import { EvolutionStage } from "../../models/evolution-stage.model";
 import { ChipComponent } from "./chip.component";
-import { PokedexEntry } from "../models/pokedex-entry.model";
+import { PokedexEntry } from "../../models/pokedex-entry.model";
 import PokedexEntryComponent from "./pokedex-entry.component";
-import DefaultButton from "../buttons/default.button";
+import DefaultButton from "../../buttons/default.button";
 import { X } from "lucide-react";
-import { usePokemonTier } from "../context/pokemonContext";
+import { usePokemonTier } from "../../context/pokemonContext";
 
 type EvolutionNode = {
     species: {
@@ -260,7 +260,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
                 <div
                     className={`
-                        relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-500
+                        relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-300
                         before:absolute before:inset-0 before:rounded-xl before:blur-md before:z-[-1]
                         ${pokemonSpecies?.is_legendary
                             ? 'border-yellow-400 dark:border-yellow-600 bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 dark:from-yellow-700 dark:via-yellow-800 dark:to-yellow-600 before:animate-glow-yellow'

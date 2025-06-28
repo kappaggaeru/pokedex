@@ -8,11 +8,10 @@ const FadeText: React.FC<Props> = ({ text }) => {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        // Reiniciar animación cuando cambia el texto
         setShow(false);
         const timeout = setTimeout(() => {
             setShow(true);
-        }, 10); // pequeño delay para permitir el reinicio del fade
+        }, 10);
 
         return () => clearTimeout(timeout);
     }, [text]);

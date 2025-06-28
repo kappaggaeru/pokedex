@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import PokedexItemContainer from "./pokedex-item-container.component";
-import { getSprite } from "../services/pokemon.service";
+import { getSprite } from "../../services/pokemon.service";
 
 type Props = {
     onSelect: (id: number) => void;

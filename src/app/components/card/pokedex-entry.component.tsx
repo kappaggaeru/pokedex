@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { PokedexEntry } from "../models/pokedex-entry.model";
-import FadeText from "./text/fade-text.component";
+import { PokedexEntry } from "../../models/pokedex-entry.model";
+import FadeText from "../text/fade-text.component";
 
 type Props = {
     entries: PokedexEntry[];
