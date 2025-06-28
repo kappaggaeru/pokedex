@@ -242,7 +242,12 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
                 </div>
 
-                <div className="h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-xl dark:bg-slate-800">
+                <div className="relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border border-gray-200/50 dark:border-gray-600/50 shadow-xl dark:bg-slate-800">
+                    {pokemonSpecies?.is_legendary &&
+                        <div className="absolute top-0 left-0 py-1 px-4 bg-yellow-300 dark:bg-yellow-600 rounded-tl-xl rounded-br-xl">
+                            <span className="uppercase text-xs ">legendary</span>
+                        </div>
+                    }
                     <div className="flex flex-row justify-center mb-[1rem]">
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
                         <div className="w-2 h-2 bg-red-600  mx-[0.5rem] rounded-full"></div>
@@ -259,19 +264,19 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     </div>
                 </div>
 
-                {entries.length > 0 &&
-                    <div className="py-4 px-[1rem] m-[1rem] rounded-xl flex flex-col text-black dark:text-gray-300">
-                        <PokedexEntryComponent entries={entries} onEntryChange={setEntryText} />
-                    </div>
-                }
-
-                <div className="p-4 mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                <div className="mt-4 p-4 mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                     <h3 className="text-xl font-bold mb-4">Pokedex entry</h3>
                     <FadeText key={entryText} text={entryText} />
                 </div>
 
+                {entries.length > 0 &&
+                    <div className="pt-4 px-[1rem] rounded-xl flex flex-col text-black dark:text-gray-300">
+                        <PokedexEntryComponent entries={entries} onEntryChange={setEntryText} />
+                    </div>
+                }
+
                 {evolutionChainList && evolutionChainList.length > 1 && (
-                    <div className="p-[1rem] pb-0 my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
+                    <div className="p-[1rem] pb-0 mb-4 mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50">
                         <h3 className="text-xl font-bold">Evolution chain</h3>
                         <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
                     </div>
