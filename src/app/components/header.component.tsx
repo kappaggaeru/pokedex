@@ -8,9 +8,13 @@ import MenuComponent from "./menu.component";
 import SearchBarComponent from "./nav/search-bar.component";
 
 const HeaderComponent: React.FC = () => {
-    const { showMenu, toggleMenu } = useMenu();
+    const { showMenu } = useMenu();
     return (
-        <div>
+        <div className={`
+            fixed top-0 py-4 left-1/2 transform -translate-x-1/2 z-50
+            w-full max-w-4xl
+            ${showMenu ? "bg-white/50 dark:bg-slate-800/80 backdrop-blur-md" : ""}
+            `}>
             <div className={`
                 flex flex-row gap-4 items-center px-4
                 `}>
@@ -36,7 +40,7 @@ const HeaderComponent: React.FC = () => {
 
             {showMenu && (
                 <div className={`${showMenu ? "block" : "hidden"}`}>
-                    <MenuComponent isOpen={showMenu} onClose={toggleMenu} />
+                    <MenuComponent isOpen={showMenu} />
                 </div>
             )
             }

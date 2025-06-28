@@ -4,9 +4,8 @@ import SettingsButton from "../buttons/settings.button";
 import SupportButton from "../buttons/support.button";
 import ThemeButton from "../buttons/theme.button";
 import ToggleThemeButton from "../buttons/toggle-theme.button";
-import MenuButton from "../buttons/menu.button";
 
-export const MenuComponent = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
 
     useEffect(() => {
         if (isOpen) {
@@ -20,7 +19,7 @@ export const MenuComponent = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
     }, [isOpen]);
 
     return (
-        <div className="h-screen pt-10  border border-cyan-300">
+        <div className="h-screen pt-4 md:hidden">
             <div className="flex flex-col gap-8 ">
                 <div className="flex flex-col justify-center gap-4 px-4">
                     <div className="w-full flex justify-center">
@@ -48,7 +47,6 @@ export const MenuComponent = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }
