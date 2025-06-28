@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react';
-import { usePokemonTier } from '../context/pokemonContext';
+import { usePokemonTier } from '../../context/pokemonContext';
 export default function SearchBarComponent() {
     const { tier } = usePokemonTier();
     return (

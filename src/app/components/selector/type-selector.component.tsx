@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { getPokemonTypes } from "../services/pokemon.service";
-import { GenericWrapper } from "../models/dto/generic-wrapper.model";
-import { Generic } from "../models/dto/generic.model";
+import { getPokemonTypes } from "../../services/pokemon.service";
+import { GenericWrapper } from "../../models/dto/generic-wrapper.model";
+import { Generic } from "../../models/dto/generic.model";
 
 const TypeSelectorComponent: React.FC = () => {
     const [types, setTypes] = useState<GenericWrapper | null>(null);

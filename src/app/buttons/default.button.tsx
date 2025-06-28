@@ -1,16 +1,10 @@
-import { LucideIcon } from "lucide-react";
 import React from "react";
 import { usePokemonTier } from "../context/pokemonContext";
-
-interface DefaultButtonProps {
-    onClick: () => void;
-    isVisible: boolean;
-    icon: LucideIcon;
-    className?: string;
-}
+import { DefaultButtonProps } from "../models/props/default-buttons.props";
 
 const DefaultButton: React.FC<DefaultButtonProps> = ({
     onClick,
+    title,
     isVisible,
     icon: Icon,
     className = "",
@@ -20,8 +14,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
         <button
             onClick={onClick}
             className={`
-                w-12 h-12 rounded-full
-                
+                ${title ? "w-fit p-2 px-4" : "w-12"} h-12 rounded-full
                 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white
                 border border-gray-200/50 dark:border-gray-600/50
                 shadow-lg backdrop-blur-xl
@@ -38,7 +31,15 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
                 }
             `}
         >
-            <Icon className="w-6 h-6" />
+            {title &&
+                <div className="flex flex-row gap-2">
+                    <Icon className="w-6 h-6" />
+                    {title}
+                </div>
+            }
+            {!title &&
+                <Icon className="w-6 h-6" />
+            }
         </button>
     );
 };
