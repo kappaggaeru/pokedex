@@ -5,11 +5,11 @@ const PokedexLinkContainer: React.FC<PokedexItemProps> = ({ id, name, sprite, on
         <div key={`stage-${id}`} className="text-center">
             <div
                 onClick={() => onSelect(id)}
-                className="text-center cursor-pointer border dark:bg-slate-700 border-gray-200/50 dark:border-gray-600/50 flex flex-row items-center rounded-xl"
+                className="cursor-pointer border bg-white dark:bg-slate-600 border-gray-200/50 dark:border-gray-600/50 flex flex-row items-center justify-center rounded-xl"
             >
-                <img src={sprite} alt={`sprite_${name}`} className="w-20 h-20 object-contain " />
+                <img src={sprite} alt={`sprite_${name}`} className="w-20 h-20 object-contain flex items-center" />
             </div>
-            <span className="text-sm text-gray-500 capitalize">{name}</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400 capitalize">{name}</span>
         </div>
     );
 }
