@@ -1,57 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { PokedexEntry } from "../models/pokedex-entry.model";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import DefaultButton from "../buttons/default.button";
+import FadeText from "./text/fade-text.component";
+import { usePokemonTier } from "../context/pokemonContext";
 
 type Props = {
     entries: PokedexEntry[];
-    onEntryChange: (text: string) => void;
 }
 
-const PokedexEntryComponent: React.FC<Props> = ({ entries, onEntryChange }) => {
+const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const currentEntry = entries[currentIndex];
+    const { tier } = usePokemonTier();
 
-    useEffect(() => {
-        onEntryChange(entries[currentIndex].entry);
-    }, [currentIndex]);
-
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const index = entries.findIndex((entry) => entry.version === e.target.value);
-        if (index !== -1) {
-            setCurrentIndex(index);
-        }
-    }
-
-    const prevVersion = () => {
-        setCurrentIndex((prev) => (prev - 1 + entries.length) % entries.length);
+    const handlePrev = () => {
+        setCurrentIndex((prev) => (prev === 0 ? entries.length - 1 : prev - 1));
     };
 
-    const nextVersion = () => {
-        setCurrentIndex((prev) => (prev + 1) % entries.length);
-    }
-
-
-    const versions = entries.map((entry, index) => (
-        <option key={index} value={entry.version}>
-            {entry.version}
-        </option>
-    ));
+    const handleNext = () => {
+        setCurrentIndex((prev) => (prev === entries.length - 1 ? 0 : prev + 1));
+    };
 
     return (
         <div>
-            <div className="flex flex-row justify-between flex-wrap">
-                <DefaultButton onClick={prevVersion} isVisible={true} icon={ArrowLeft} className="shadow-lg" />
-                <div className="p-2 bg-white dark:bg-slate-800 rounded-full border border-gray-200/50 dark:border-gray-600/50 flex items-center shadow-xl">
-                    <select
-                        value={entries[currentIndex].version}
-                        onChange={handleSelectChange}
-                        name="versionSelector"
-                        className="bg-white dark:bg-slate-800 w-fit focus:border-0 uppercase text-center focus:outline-none"
-                    >
-                        {versions}
-                    </select>
-                </div>
-                <DefaultButton onClick={nextVersion} isVisible={true} icon={ArrowRight} className="shadow-lg"/>
+            <h3 className="text-xl font-bold mb-4">
+                Pokedex entry
+                {currentEntry?.version && (
+                    <span className="text-sm font-medium italic ml-2 text-gray-500 dark:text-gray-400">
+                        ({currentEntry.version})
+                    </span>
+                )}
+            </h3>
+            <FadeText key={currentEntry.entry} text={currentEntry.entry} />
+            <div className={`
+            mt-4 flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300 underline
+
+            `}>
+                <button onClick={handlePrev}>
+                    prev
+                </button>
+                <button onClick={handleNext}>
+                    next
+                </button>
             </div>
         </div>
     );

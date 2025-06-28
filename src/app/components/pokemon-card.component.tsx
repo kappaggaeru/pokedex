@@ -38,7 +38,6 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
     const [pokemonEvolution, setPokemonEvolution] = useState<EvolutionChain | null>(null);
     const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
     const [varietiesList, setVarietiesList] = useState<EvolutionStage[]>([]);
-    const [entryText, setEntryText] = useState<string>("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -118,7 +117,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
     useEffect(() => {
         if (pokemonSpecies && pokemonSpecies.varieties.length > 1) {
-            const varietiesList = flattenVarietiesList(pokemonSpecies.varieties);
+            const varietiesList = flattenVarietiesList(pokemonSpecies.varieties.slice(1));
             const objectUrls: string[] = [];
 
             Promise.all(
@@ -307,15 +306,8 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                             ? 'bg-mythical glow-mythical'
                             : 'bg-white dark:bg-slate-800'
                     }`}>
-                    <h3 className="text-xl font-bold mb-4">Pokedex entry</h3>
-                    <FadeText key={entryText} text={entryText} />
+                        <PokedexEntryComponent entries={entries} />
                 </div>
-
-                {entries.length > 0 &&
-                    <div className="pt-4 px-[1rem] rounded-xl flex flex-col text-black dark:text-gray-300">
-                        <PokedexEntryComponent entries={entries} onEntryChange={setEntryText} />
-                    </div>
-                }
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
                     <div className={`
