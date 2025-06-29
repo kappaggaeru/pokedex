@@ -13,11 +13,9 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
     const toggleMenu = () => {
         setShowMenu(prevShowMenu => {
             const newShowMenu = !prevShowMenu;
-
-            if (typeof window !== 'undefined') {
-                console.log('oculto algo aca??');
-            }
-
+            // if (typeof window !== 'undefined') {
+            //     console.log('oculto algo aca??');
+            // }
             return newShowMenu;
         })
     };

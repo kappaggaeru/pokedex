@@ -1,9 +1,6 @@
 import { useEffect } from "react";
-import AchievementsButton from "../buttons/achievement.button";
-import SettingsButton from "../buttons/settings.button";
-import SupportButton from "../buttons/support.button";
-import ThemeButton from "../buttons/theme.button";
-import ToggleThemeButton from "../buttons/toggle-theme.button";
+import ModalTriggerButton from "../buttons/modal-trigger.button";
+import { Coffee, Settings, SunMoon, Trophy } from "lucide-react";
 
 export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
 
@@ -17,19 +14,16 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
             <div className="flex flex-col gap-8 ">
                 <div className="flex flex-col justify-center gap-4 px-4">
                     <div className="w-full flex justify-center">
-                        <AchievementsButton />
+                        <ModalTriggerButton modal="achievements" title="Achievements" icon={Trophy} enabled={false} />
                     </div>
                     <div className="w-full flex justify-center">
-                        <SettingsButton />
+                        <ModalTriggerButton modal="settings" title="Settings" icon={Settings} enabled={false} />
                     </div>
                     <div className="w-full flex justify-center">
-                        <SupportButton />
+                        <ModalTriggerButton modal="support" title="Support" icon={Coffee} enabled={false} />
                     </div>
                     <div className="w-full flex justify-center">
-                        <ThemeButton />
-                    </div>
-                    <div className="w-full flex justify-center">
-                        <ToggleThemeButton />
+                        <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} enabled={true} />
                     </div>
                 </div>
                 <div className="flex justify-center">
