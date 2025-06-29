@@ -1,4 +1,4 @@
-import { AchievementCardComponent } from "../card/achievement/achievement-card.component"
+import { AchievementCardComponent } from "../card/achievement-card.component"
 
 type achievementModel = {
     title: string;

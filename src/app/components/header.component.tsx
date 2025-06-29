@@ -1,7 +1,6 @@
 import { Coffee, Settings, SunMoon, Trophy } from "lucide-react";
 import MenuButton from "../buttons/menu.button";
 import ModalTriggerButton from "../buttons/modal-trigger.button";
-import ToggleThemeButton from "../buttons/toggle-theme.button";
 import { useMenu } from "../context/menuContext";
 import MenuComponent from "./menu.component";
 import SearchBarComponent from "./nav/search-bar.component";
@@ -32,9 +31,6 @@ const HeaderComponent: React.FC = () => {
                 </div>
                 <div className="hidden md:block">
                     <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} />
-                </div>
-                <div className="hidden md:block">
-                    <ToggleThemeButton />
                 </div>
                 <div className="md:hidden">
                     <MenuButton />

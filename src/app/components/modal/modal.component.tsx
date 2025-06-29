@@ -8,14 +8,17 @@ export const ModalComponent = ({ children, isOpen, title }: { children: ReactNod
             fixed top-0 bottom-0 right-0 h-screen p-4
             transition-all duration-300 z-50
             text-black dark:text-gray-300
-            bg-gray-50 dark:bg-slate-800
+            bg-white dark:bg-slate-800
+            border-l border-gray-200/50 dark:border-gray-600/50
+            md:rounded-tl-3xl md:rounded-bl-3xl
+            shadow-[rgba(0,0,15,0.5)_10px_10px_10px_10px]
             w-full md:w-[50%] lg:w-[40%] xl:w-[30%]
             ${isOpen ? "translate-x-full" : "translate-x-0"}
             `}
         >
             <div className="w-full h-fit mb-4">
                 <div className="flex flex-row justify-between items-center">
-                    <h1 className="capitalize text-xl">{title}</h1>
+                    <h1 className="capitalize text-xl text-gray-500">{title}</h1>
                     <CloseModalButton />
                 </div>
             </div>

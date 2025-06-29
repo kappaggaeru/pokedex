@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import ToggleThemeButton from "../buttons/toggle-theme.button";
 import ModalTriggerButton from "../buttons/modal-trigger.button";
 import { Coffee, Settings, SunMoon, Trophy } from "lucide-react";
 
@@ -25,9 +24,6 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
                     </div>
                     <div className="w-full flex justify-center">
                         <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} />
-                    </div>
-                    <div className="w-full flex justify-center">
-                        <ToggleThemeButton />
                     </div>
                 </div>
                 <div className="flex justify-center">

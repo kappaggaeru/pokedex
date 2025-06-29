@@ -226,7 +226,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
             <div className="h-[40rem] w-full flex items-center justify-center text-gray-500">
                 <div className="p-4 text-center">
                     <h2 className="text-xl font-semibold">Select a Pokémon</h2>
-                    <p className="text-sm">Click on a item from the list to view the details.</p>
+                    <p className="text-sm">Click on a item from the list to view the details</p>
                 </div>
             </div>
         );
