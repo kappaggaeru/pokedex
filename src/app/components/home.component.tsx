@@ -74,9 +74,11 @@ const HomeComponent: React.FC = () => {
                     <div className={`col-span-1 md:col-span-2 xl:col-span-3 overflow-auto ${selectedId ? "block" : "hidden"} md:block`}>
                         <PokemonCardComponent key={selectedId} id={selectedId} clearCard={handleClear} setIdFromParent={handleSetIdFromParent} />
                     </div>
-                    <ModalComponent isOpen={showModal} title={currentModal}>
-                        {renderModal()}
-                    </ModalComponent>
+                    {currentModal !== "" &&
+                        <ModalComponent isOpen={showModal} title={currentModal}>
+                            {renderModal()}
+                        </ModalComponent>
+                    }
                 </div>
                 <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className="fixed bottom-5 right-5 z-20" />
             </div>

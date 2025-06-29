@@ -18,7 +18,7 @@ export const ModalComponent = ({ children, isOpen, title }: { children: ReactNod
         >
             <div className="w-full h-fit mb-4">
                 <div className="flex flex-row justify-between items-center">
-                    <h1 className="capitalize text-xl text-gray-500">{title}</h1>
+                    <h1 className="capitalize text-xl text-gray-600 dark:text-gray-400 cursor-default">{title}</h1>
                     <CloseModalButton />
                 </div>
             </div>
