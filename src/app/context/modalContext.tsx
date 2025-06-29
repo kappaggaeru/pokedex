@@ -2,9 +2,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 interface ModalContextType {
     showModal: boolean;
-    currentModal: string;
     toggleModal: () => void;
-    setActiveModal: (modal: string) => void;
 }
 
 
@@ -12,7 +10,6 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 export const ModalProvider = ({ children }: {children: ReactNode }) => {
     const [showModal, setShowModal] = useState(false);
-    const [currentModal, setCurrentModal] = useState("");
 
     const toggleModal = () => {
         setShowModal(prevShowModal => {
@@ -20,12 +17,8 @@ export const ModalProvider = ({ children }: {children: ReactNode }) => {
         })
     };
 
-    const setActiveModal = (modal: string) => {
-        setCurrentModal(modal);
-    }
-
     return (
-        <ModalContext value={{ showModal, currentModal, toggleModal, setActiveModal }}>
+        <ModalContext value={{ showModal, toggleModal }}>
             {children}
         </ModalContext>
     );

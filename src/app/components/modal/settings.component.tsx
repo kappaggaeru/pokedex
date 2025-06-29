@@ -1,6 +1,5 @@
+import { ReactNode } from "react"
 
-export const SettingsComponent: React.FC = () => {
-    return (
-        <h1>soy settings</h1>
-    )
-}
+export const SettingsComponent: ReactNode = (
+    <h1>soy settings</h1>
+);

@@ -12,10 +12,14 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
     const setActiveTheme = (theme: string) => {
         const html = document.documentElement;
-        // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        // const systemTheme = prefersDark ? "dark" : "light";
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const systemTheme = prefersDark ? "dark" : "light";
 
-        // const newTheme = theme === "system" ? systemTheme : theme;
+        const newTheme = theme === "system" ? systemTheme : theme;
+
+        console.log(prefersDark);
+        console.log(newTheme);
+        
 
         if (theme !== currentTheme) {
             html.classList.remove(currentTheme);
