@@ -1,7 +1,6 @@
-import AchievementsButton from "../buttons/achievement.button";
+import { Coffee, Settings, SunMoon, Trophy } from "lucide-react";
 import MenuButton from "../buttons/menu.button";
-import SettingsButton from "../buttons/settings.button";
-import SupportButton from "../buttons/support.button";
+import ModalTriggerButton from "../buttons/modal-trigger.button";
 import ToggleThemeButton from "../buttons/toggle-theme.button";
 import { useMenu } from "../context/menuContext";
 import MenuComponent from "./menu.component";
@@ -9,6 +8,7 @@ import SearchBarComponent from "./nav/search-bar.component";
 
 const HeaderComponent: React.FC = () => {
     const { showMenu } = useMenu();
+
     return (
         <div className={`
             fixed top-0 py-4 left-1/2 transform -translate-x-1/2 z-50
@@ -22,13 +22,16 @@ const HeaderComponent: React.FC = () => {
                     <SearchBarComponent />
                 </div>
                 <div className="hidden md:block">
-                    <AchievementsButton />
+                    <ModalTriggerButton modal="achievements" title="Achievements" icon={Trophy} />
                 </div>
                 <div className="hidden md:block">
-                    <SettingsButton />
+                    <ModalTriggerButton modal="settings" title="Settings" icon={Settings} />
                 </div>
                 <div className="hidden md:block">
-                    <SupportButton />
+                    <ModalTriggerButton modal="support" title="Support" icon={Coffee} />
+                </div>
+                <div className="hidden md:block">
+                    <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} />
                 </div>
                 <div className="hidden md:block">
                     <ToggleThemeButton />
