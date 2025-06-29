@@ -7,12 +7,11 @@ export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon
     const { currentTheme, setActiveTheme } = useTheme();
 
     useEffect(() => {
-        setChecked(title == currentTheme);
-    })
+        setChecked(title === currentTheme);
+    }, [title, currentTheme]);
 
     function onThemeChange(theme: string) {
         setActiveTheme(theme);
-        setChecked(theme === currentTheme);
     }
 
     return (
@@ -23,7 +22,11 @@ export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon
         ${enabled && checked ? "border-indigo-300 dark:border-indigo-500" : ""}
         ${enabled && checked ? "bg-indigo-100 dark:bg-indigo-900" : "bg-white dark:bg-slate-800/20"}
         `}
-            onClick={() => { enabled ? onThemeChange(title) : () => { } }}>
+            onClick={() => {
+                if (enabled) {
+                    onThemeChange(title);
+                }
+            }}>
             <div className="flex flex-row justify-between w-full p-4">
                 <div className={`
                     flex flex-row gap-4
@@ -48,7 +51,7 @@ export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon
                     value={title}
                     checked={checked}
                     disabled={!enabled}
-                    onChange={() => setChecked}
+                    onChange={e => setChecked(e.target.checked)}
                     name="theme_selected">
                 </input>
             </div>
