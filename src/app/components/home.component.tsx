@@ -74,16 +74,9 @@ const HomeComponent: React.FC = () => {
                     <div className={`col-span-1 md:col-span-2 xl:col-span-3 overflow-auto ${selectedId ? "block" : "hidden"} md:block`}>
                         <PokemonCardComponent key={selectedId} id={selectedId} clearCard={handleClear} setIdFromParent={handleSetIdFromParent} />
                     </div>
-                    <div className={`
-                        fixed top-0 bottom-0 right-0 h-screen
-                        transition-all duration-300 z-50
-                        border bg-red-300 w-full md:w-[50%] xl:w-[30%]
-                        ${showModal ? "translate-x-full" : "translate-x-0"}
-                    `}>
-                        <ModalComponent>
-                            {renderModal()}
-                        </ModalComponent>
-                    </div>
+                    <ModalComponent isOpen={showModal} title={currentModal}>
+                        {renderModal()}
+                    </ModalComponent>
                 </div>
                 <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className="fixed bottom-5 right-5 z-20" />
             </div>
