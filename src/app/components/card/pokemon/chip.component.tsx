@@ -1,4 +1,4 @@
-import { typeColorMap } from "../../consts/type-color-map";
+import { typeColorMap } from "../../../consts/type-color-map";
 
 type ChipProps = {
     title: string;
