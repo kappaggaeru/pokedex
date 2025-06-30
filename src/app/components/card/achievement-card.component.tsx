@@ -8,12 +8,12 @@ export const AchievementCardComponent = ({ title, desc, goal }: { title: string;
             <div className="
                 rounded-xl w-[30%] md:w-[40%] h-20 border border-gray-200/50 dark:border-gray-600/50
                 flex items-center justify-center
-                text-black dark:text-white
+                text-black dark:text-gray-300
             ">
                 <span>{goal}</span>
             </div>
             <div className="flex flex-col overflow-hidden w-full">
-                <p className="text-md bold">{title}</p>
+                <p className="text-md bold dark:text-gray-300">{title}</p>
                 <span className="text-sm text-gray-700 dark:text-gray-400">{desc}</span>
             </div>
         </div>
