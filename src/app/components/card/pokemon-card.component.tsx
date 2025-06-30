@@ -115,12 +115,12 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
     useEffect(() => {
         if (pokemonSpecies && pokemonSpecies.varieties.length > 1) {
-            const baseName = pokemonSpecies.name.toLowerCase();
-            let allVarieties = [...pokemonSpecies.varieties];
+            // const baseName = pokemonSpecies.name.toLowerCase();
+            const allVarieties = [...pokemonSpecies.varieties];
 
-            if ((allVarieties[0].pokemon.name?.toLowerCase() ?? '') === baseName) {
-                allVarieties = allVarieties.slice(1);
-            }
+            // if ((allVarieties[0].pokemon.name?.toLowerCase() ?? '') === baseName) {
+            //     allVarieties = allVarieties.slice(1);
+            // }
 
             const objectUrls: string[] = [];
 

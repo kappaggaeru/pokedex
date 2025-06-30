@@ -3,7 +3,6 @@ export const AchievementCardComponent = ({ title, desc, goal }: { title: string;
     return (
         <div className="rounded-2xl bg-slate-50 dark:bg-slate-800/20 p-2
         flex flex-row gap-3 w-full border border-gray-200/50 dark:border-gray-600/50
-        shadow-md
         ">
             <div className="
                 rounded-xl w-[30%] md:w-[40%] h-20 border border-gray-200/50 dark:border-gray-600/50

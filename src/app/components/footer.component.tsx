@@ -25,6 +25,9 @@ export default function FooterComponent() {
                     `}
                     </p>
                     <p className="p-4">All shown data belongs to <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">PokeAPI</a></p>
+                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">Report an issue</p>
+                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">Source code</p>
+                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">PokéApi</p>
                 </div>
             </div>
         </div>
