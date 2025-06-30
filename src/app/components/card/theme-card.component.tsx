@@ -3,16 +3,12 @@ import { ThemeCardProps } from "@/app/models/props/theme-card.props";
 import { useEffect, useState } from "react";
 
 export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon, enabled }) => {
-    const [checked, setChecked] = useState<boolean>(false);
+    const [checked, setChecked] = useState(false);
     const { currentTheme, setActiveTheme } = useTheme();
 
     useEffect(() => {
         setChecked(title === currentTheme);
     }, [title, currentTheme]);
-
-    function onThemeChange(theme: string) {
-        setActiveTheme(theme);
-    }
 
     return (
         <div className={`rounded-lg p-2
@@ -24,7 +20,7 @@ export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon
         `}
             onClick={() => {
                 if (enabled) {
-                    onThemeChange(title);
+                    setActiveTheme(title);
                 }
             }}>
             <div className="flex flex-row justify-between w-full p-4">
