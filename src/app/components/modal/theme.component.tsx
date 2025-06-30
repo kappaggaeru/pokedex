@@ -17,7 +17,7 @@ const entries: ThemeCardProps[] = [
     {
         title: "system",
         icon: Laptop,
-        enabled: false
+        enabled: true
     },
     {
         title: "retro",

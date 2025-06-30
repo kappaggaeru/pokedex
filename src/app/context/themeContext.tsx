@@ -14,20 +14,14 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         const html = document.documentElement;
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const systemTheme = prefersDark ? "dark" : "light";
-
         const newTheme = theme === "system" ? systemTheme : theme;
 
-        console.log(prefersDark);
-        console.log(newTheme);
-        
-
-        if (theme !== currentTheme) {
+        if (newTheme !== currentTheme) {
             html.classList.remove(currentTheme);
-            html.classList.add(theme);
+            html.classList.add(newTheme);
         }
 
-        setCurrentTheme(theme);
-        // setUserPreference(theme);
+        setCurrentTheme(newTheme);
     }
 
     return (

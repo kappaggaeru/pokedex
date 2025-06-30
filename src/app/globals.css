@@ -15,24 +15,6 @@
     --my-white: #fafafa;
 }
 
-/* ::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-    border: 3px var(--bg-scrollbar) solid;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--foreground);
-}
-
-::-webkit-scrollbar-thumb:active {
-    background: var(--foreground);
-}
-
-::-webkit-scrollbar {
-    width: 3px;
-    background: var(--bg-scrollbar);
-} */
 
 @media (prefers-color-scheme: dark) {
     :root {
