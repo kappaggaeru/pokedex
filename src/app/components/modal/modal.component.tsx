@@ -14,7 +14,7 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
 
     return (
         <div className={`
-            fixed top-0 bottom-0 right-0 h-screen
+            fixed top-0 bottom-0 right-0 h-screen pb-4
             transition-all duration-300 z-50
             text-black dark:text-gray-300
             bg-white dark:bg-slate-800
