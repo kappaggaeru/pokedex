@@ -1,7 +1,6 @@
 import { Gamepad, Laptop, Moon, Sun } from "lucide-react";
 import { ThemeCardComponent } from "../card/theme-card.component";
 import { ThemeCardProps } from "@/app/models/props/theme-card.props";
-import { ReactNode } from "react";
 
 const entries: ThemeCardProps[] = [
     {
@@ -30,7 +29,7 @@ const fullEntries = entries.map((entry, index) => (
     <ThemeCardComponent key={index} title={entry.title} icon={entry.icon} enabled={entry.enabled} />
 ));
 
-export const ThemeComponent: ReactNode = (
+export const ThemeComponent: React.FC = () => (
     <div className="flex flex-col gap-4">
         {fullEntries}
     </div>

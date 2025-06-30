@@ -38,26 +38,31 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                             title="achievements"
                             isOpen={achievementsVisible}
                             toggleContainer={() => setAchievementsVisible(!achievementsVisible)}
-                            children={AchievementsComponent}
-                        />
+                        >
+                            <AchievementsComponent />
+                        </MenuModalContainerComponent>
                         <MenuModalContainerComponent
                             title="settings"
                             isOpen={settingsVisible}
                             toggleContainer={() => setSettingsVisible(!settingsVisible)}
-                            children={SettingsComponent}
-                        />
+                        >
+                            <SettingsComponent />
+                        </MenuModalContainerComponent>
                         <MenuModalContainerComponent
                             title="Theme"
                             isOpen={themeVisible}
                             toggleContainer={() => setThemeVisible(!themeVisible)}
-                            children={ThemeComponent}
-                        />
+
+                        >
+                            <ThemeComponent />
+                        </MenuModalContainerComponent>
                         <MenuModalContainerComponent
                             title="Support"
                             isOpen={supportVisible}
                             toggleContainer={() => setSupportVisible(!supportVisible)}
-                            children={SupportComponent}
-                        />
+                        >
+                            <SupportComponent />
+                        </MenuModalContainerComponent>
                     </div>
                 </div>
             </div>

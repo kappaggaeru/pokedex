@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { AchievementCardComponent } from "../card/achievement-card.component"
 
 type achievementModel = {
@@ -85,7 +84,8 @@ const fullEntries =
     entries.map((entry, index) => (
         <AchievementCardComponent key={index} title={entry.title} desc={entry.description} goal={entry.goal} />
     ));
-export const AchievementsComponent: ReactNode = (
+
+export const AchievementsComponent: React.FC = () => (
     <div>
         <div className="flex flex-col gap-6">
             {fullEntries}

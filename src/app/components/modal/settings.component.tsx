@@ -1,5 +1,4 @@
 import { SettingCardProps } from "@/app/models/props/setting-card.props";
-import { ReactNode } from "react"
 import { SettingCardComponent } from "../card/setting-card.component";
 
 const arraySettings: SettingCardProps[] = [
@@ -15,7 +14,7 @@ const settings = arraySettings.map((e, index) => (
     <SettingCardComponent key={index} title={e.title} />
 ));
 
-export const SettingsComponent: ReactNode = (
+export const SettingsComponent: React.FC = () => (
     <div className="flex flex-col gap-4">
         {settings}
     </div>
