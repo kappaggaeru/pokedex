@@ -7,12 +7,14 @@ import DefaultButton from "../buttons/default.button";
 import { ArrowUp } from "lucide-react";
 import { ModalComponent } from "./modal/modal.component";
 import { useModal } from "../context/modalContext";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [seenIds, setSeenIds] = useState<Set<number>>(new Set());
     const [showScrollTop, setShowScrollTop] = useState(false);
     const { showModal } = useModal();
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -22,6 +24,18 @@ const HomeComponent: React.FC = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    useEffect(() => {
+        if (isMobile && showModal) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isMobile, showModal]);
 
     const handleSelect = (id: number) => {
         setSelectedId(id);

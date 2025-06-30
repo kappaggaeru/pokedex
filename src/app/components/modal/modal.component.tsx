@@ -29,7 +29,7 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                 <div className="overflow-auto h-full">
                     <div className="flex flex-col gap-4 mx-4 pb-4 pt-4">
                         <div className="flex flex-row justify-between items-center">
-                            <h1 className="capitalize text-xl text-gray-600 dark:text-gray-300 cursor-default">Pokedex</h1>
+                            <h1 className="capitalize text-2xl text-gray-600 dark:text-gray-300 cursor-default">Pokedex</h1>
                             <CloseModalButton />
                         </div>
                         <MenuModalContainerComponent
