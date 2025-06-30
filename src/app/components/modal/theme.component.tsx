@@ -31,8 +31,7 @@ const fullEntries = entries.map((entry, index) => (
 ));
 
 export const ThemeComponent: ReactNode = (
-
-        <div className="flex flex-col gap-4">
-            {fullEntries}
-        </div>
+    <div className="flex flex-col gap-4">
+        {fullEntries}
+    </div>
 )
