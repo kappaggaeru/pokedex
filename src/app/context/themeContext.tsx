@@ -1,40 +1,73 @@
-import { createContext, ReactNode, useContext, useState } from "react"
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+
+export type ThemeOption = "light" | "dark" | "retro" | "system";
+type AppliedTheme = "light" | "dark" | "retro"; // lo que realmente se aplica
 
 interface ThemeContextType {
-    currentTheme: string;
-    setActiveTheme: (theme: string) => void;
+    currentTheme: ThemeOption; // lo elegido por el usuario (puede ser "system")
+    setActiveTheme: (theme: ThemeOption) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-    const [currentTheme, setCurrentTheme] = useState("light");
+    const [currentTheme, setCurrentTheme] = useState<ThemeOption>("light");
 
-    const setActiveTheme = (theme: string) => {
+    const getSystemTheme = (): AppliedTheme => {
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        return prefersDark ? "dark" : "light";
+    };
+
+    const applyTheme = (theme: ThemeOption) => {
         const html = document.documentElement;
-        // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        // const systemTheme = prefersDark ? "dark" : "light";
+        const resolvedTheme = theme === "system" ? getSystemTheme() : theme;
 
-        // const newTheme = theme === "system" ? systemTheme : theme;
-
-        if (theme !== currentTheme) {
-            html.classList.remove(currentTheme);
-            html.classList.add(theme);
-        }
+        html.classList.remove("light", "dark", "retro");
+        html.classList.add(resolvedTheme);
 
         setCurrentTheme(theme);
-        // setUserPreference(theme);
-    }
+    };
+
+    // Al iniciar la app
+    useEffect(() => {
+        const storedTheme = (localStorage.getItem("theme") as ThemeOption) || "system";
+        applyTheme(storedTheme);
+    }, []);
+
+    // Escuchar cambios en el sistema si el tema actual es "system"
+    useEffect(() => {
+        if (currentTheme !== "system") return;
+
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        const handler = () => {
+            const systemTheme = getSystemTheme();
+            const html = document.documentElement;
+
+            // Verificamos si el tema aplicado es distinto al nuevo del sistema
+            if (!html.classList.contains(systemTheme)) {
+                html.classList.remove("light", "dark", "retro");
+                html.classList.add(systemTheme);
+            }
+        };
+
+        mediaQuery.addEventListener("change", handler);
+        return () => mediaQuery.removeEventListener("change", handler);
+    }, [currentTheme]);
+
+    const setActiveTheme = (theme: ThemeOption) => {
+        localStorage.setItem("theme", theme);
+        applyTheme(theme);
+    };
 
     return (
-        <ThemeContext value={{ currentTheme, setActiveTheme }}>
+        <ThemeContext.Provider value={{ currentTheme, setActiveTheme }}>
             {children}
-        </ThemeContext>
-    )
-}
+        </ThemeContext.Provider>
+    );
+};
 
 export const useTheme = () => {
     const context = useContext(ThemeContext);
     if (!context) throw new Error("useTheme must be used within ThemeProvider");
     return context;
-}
+};

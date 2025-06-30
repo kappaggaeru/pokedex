@@ -1,18 +1,9 @@
 import { useTheme } from "@/app/context/themeContext";
 import { ThemeCardProps } from "@/app/models/props/theme-card.props";
-import { useEffect, useState } from "react";
 
 export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon, enabled }) => {
-    const [checked, setChecked] = useState<boolean>(false);
     const { currentTheme, setActiveTheme } = useTheme();
-
-    useEffect(() => {
-        setChecked(title === currentTheme);
-    }, [title, currentTheme]);
-
-    function onThemeChange(theme: string) {
-        setActiveTheme(theme);
-    }
+    const checked = title === currentTheme;
 
     return (
         <div className={`rounded-lg p-2
@@ -23,10 +14,11 @@ export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon
         ${enabled && checked ? "bg-indigo-100 dark:bg-indigo-900" : "bg-white dark:bg-slate-800/20"}
         `}
             onClick={() => {
-                if (enabled) {
-                    onThemeChange(title);
+                if (enabled && !checked) {
+                    setActiveTheme(title);
                 }
             }}>
+
             <div className="flex flex-row justify-between w-full p-4">
                 <div className={`
                     flex flex-row gap-4
@@ -36,7 +28,9 @@ export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon
                     <Icon className="w-6 h-6" />
                     <p className="capitalize">{title}</p>
                 </div>
-                <input id={title}
+
+                <input
+                    id={title}
                     className={`
                         box-content h-1.5 w-1.5 appearance-none rounded-full border-[5px] 
                         bg-clip-padding ring-0 outline-none
@@ -51,10 +45,14 @@ export const ThemeCardComponent: React.FC<ThemeCardProps> = ({ title, icon: Icon
                     value={title}
                     checked={checked}
                     disabled={!enabled}
-                    onChange={e => setChecked(e.target.checked)}
-                    name="theme_selected">
-                </input>
+                    onChange={() => {
+                        if (enabled && !checked) {
+                            setActiveTheme(title);
+                        }
+                    }}
+                    name="theme_selected"
+                />
             </div>
         </div>
-    )
-}
+    );
+};

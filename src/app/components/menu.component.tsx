@@ -14,16 +14,16 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
             <div className="flex flex-col gap-8 ">
                 <div className="flex flex-col justify-center gap-4 px-4">
                     <div className="w-full flex justify-center">
-                        <ModalTriggerButton modal="achievements" title="Achievements" icon={Trophy} enabled={false} />
+                        <ModalTriggerButton modal="achievements" title="Achievements" icon={Trophy} />
                     </div>
                     <div className="w-full flex justify-center">
-                        <ModalTriggerButton modal="settings" title="Settings" icon={Settings} enabled={false} />
+                        <ModalTriggerButton modal="settings" title="Settings" icon={Settings} />
                     </div>
                     <div className="w-full flex justify-center">
-                        <ModalTriggerButton modal="support" title="Support" icon={Coffee} enabled={false} />
+                        <ModalTriggerButton modal="support" title="Support" icon={Coffee} />
                     </div>
                     <div className="w-full flex justify-center">
-                        <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} enabled={true} />
+                        <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} />
                     </div>
                 </div>
                 <div className="flex justify-center">

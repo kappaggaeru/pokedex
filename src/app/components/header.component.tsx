@@ -21,16 +21,16 @@ const HeaderComponent: React.FC = () => {
                     <SearchBarComponent />
                 </div>
                 <div className="hidden md:block">
-                    <ModalTriggerButton modal="achievements" title="Achievements" icon={Trophy} enabled={false} />
+                    <ModalTriggerButton modal="achievements" title="Achievements" icon={Trophy} />
                 </div>
                 <div className="hidden md:block">
-                    <ModalTriggerButton modal="settings" title="Settings" icon={Settings} enabled={false} />
+                    <ModalTriggerButton modal="settings" title="Settings" icon={Settings} />
                 </div>
                 <div className="hidden md:block">
-                    <ModalTriggerButton modal="support" title="Support" icon={Coffee} enabled={false} />
+                    <ModalTriggerButton modal="support" title="Support" icon={Coffee} />
                 </div>
                 <div className="hidden md:block">
-                    <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} enabled={true} />
+                    <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} />
                 </div>
                 <div className="md:hidden">
                     <MenuButton />

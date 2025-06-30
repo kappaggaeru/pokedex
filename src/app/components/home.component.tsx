@@ -7,16 +7,12 @@ import DefaultButton from "../buttons/default.button";
 import { ArrowUp } from "lucide-react";
 import { ModalComponent } from "./modal/modal.component";
 import { useModal } from "../context/modalContext";
-import { AchievementsComponent } from "./modal/achievements.component";
-import { SettingsComponent } from "./modal/settings.component";
-import { SupportComponent } from "./modal/support.component";
-import { ThemeComponent } from "./modal/theme.component";
 
 const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [seenIds, setSeenIds] = useState<Set<number>>(new Set());
     const [showScrollTop, setShowScrollTop] = useState(false);
-    const { showModal, currentModal } = useModal();
+    const { showModal } = useModal();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -49,20 +45,6 @@ const HomeComponent: React.FC = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    const renderModal = () => {
-        switch (currentModal) {
-            case "achievements":
-                return <AchievementsComponent />;
-            case "settings":
-                return <SettingsComponent />;
-            case "support":
-                return <SupportComponent />;
-            case "theme":
-                return <ThemeComponent />;
-            default:
-                return null;
-        }
-    }
 
     return (
         <div>
@@ -74,11 +56,8 @@ const HomeComponent: React.FC = () => {
                     <div className={`col-span-1 md:col-span-2 xl:col-span-3 overflow-auto ${selectedId ? "block" : "hidden"} md:block`}>
                         <PokemonCardComponent key={selectedId} id={selectedId} clearCard={handleClear} setIdFromParent={handleSetIdFromParent} />
                     </div>
-                    {currentModal !== "" &&
-                        <ModalComponent isOpen={showModal} title={currentModal}>
-                            {renderModal()}
-                        </ModalComponent>
-                    }
+                    <ModalComponent isOpen={showModal}>
+                    </ModalComponent>
                 </div>
                 <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className="fixed bottom-5 right-5 z-20" />
             </div>
