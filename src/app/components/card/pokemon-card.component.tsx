@@ -245,7 +245,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
     } else {
 
         return (
-            <div>
+            <div className="max-w-md mx-auto">
                 <div className="flex flex-row m-[1rem] mx-6 justify-between">
                     <div className="flex flex-row">
                         <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem] ring-2 border border-gray-200/50 dark:border-gray-600/50"></div>
