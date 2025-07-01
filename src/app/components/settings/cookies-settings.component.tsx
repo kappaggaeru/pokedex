@@ -13,7 +13,7 @@ export const CookiesSettingsComponent: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 cursor-default">
             <div className="text-gray-500 dark:text-gray-400">
                 <h3>This site uses cookies to ensure you get the best experience on our website.</h3>
             </div>
