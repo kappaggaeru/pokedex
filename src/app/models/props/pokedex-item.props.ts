@@ -3,5 +3,6 @@ export type PokedexItemProps = {
     name?: string;
     sprite?: string;
     viewed?: boolean;
+    loading: boolean;
     onSelect: (id: number) => void;
 }

@@ -2,7 +2,12 @@ import React from 'react';
 import { PokedexItemProps } from '../../models/props/pokedex-item.props';
 import Image from 'next/image';
 
-const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, onSelect }) => {
+const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, loading, onSelect }) => {
+
+    const spinner = (
+        <div className="w-6 h-6 m-auto border-2 border-gray-500 dark:border-2 dark:border-gray-200 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
+    );
+
     return (
         <div
             className={`
@@ -11,13 +16,14 @@ const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, 
                 ${viewed ? 'bg-gray-200 dark:bg-gray-500' : 'bg-orange-100 dark:bg-slate-700'}`}
             onClick={() => onSelect(id)}
         >
-            {viewed && sprite ? (
+            {loading ? (
+                spinner
+            ) : sprite ? (
                 <Image src={sprite} alt={`Pokemon ${id}`} className='w-full h-full object-contain' width={200} height={200} />
             ) : (
                 <span>{id}</span>
             )}
-        </div>
-
+        </div >
     );
 }
 

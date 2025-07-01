@@ -10,12 +10,16 @@ type Props = {
     onSelect: (id: number) => void;
 };
 
+type ViewedState = {
+    loading: boolean;
+    sprite?: string;
+};
+
 const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
     const [hasMounted, setHasMounted] = useState(false);
-    const [viewedMap, setViewedMap] = useState<Record<number, string>>({});
+    const [viewedMap, setViewedMap] = useState<Record<number, ViewedState>>({});
     const { capturePokemon } = usePokemon();
     const [cookies] = useCookies(["capturedList"]);
-
 
     const seenIds = React.useMemo(() => {
         const raw = cookies.capturedList;
@@ -32,32 +36,35 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
 
         const preloadCapturedSprites = async () => {
             const raw = cookies.capturedList;
-            const capturedList = typeof raw === "string" ? raw : ""; // si no es string, falla
+            const capturedList = typeof raw === "string" ? raw : "";
             const ids = capturedList
                 .split(",")
                 .filter((v) => v !== "")
                 .map(Number);
 
-            const newEntries: Record<number, string> = {};
-            await Promise.all(
-                ids.map(async (id) => {
-                    if (!viewedMap[id]) {
-                        try {
-                            const blob = await getSprite(id);
-                            const objectURL = URL.createObjectURL(blob);
-                            newEntries[id] = objectURL;
-                        } catch (e) {
-                            console.error(`Error loading sprite for id: ${id}`, e);
-                        }
-                    }
-                })
-            );
+            for (const id of ids) {
+                if (!viewedMap[id]) {
+                    // Marcamos como cargando
+                    setViewedMap((prev) => ({
+                        ...prev,
+                        [id]: { loading: true },
+                    }));
 
-            if (Object.keys(newEntries).length > 0) {
-                setViewedMap((prev) => ({
-                    ...prev,
-                    ...newEntries,
-                }));
+                    try {
+                        const blob = await getSprite(id);
+                        const objectURL = URL.createObjectURL(blob);
+                        setViewedMap((prev) => ({
+                            ...prev,
+                            [id]: { loading: false, sprite: objectURL },
+                        }));
+                    } catch (e) {
+                        console.error(`Error loading sprite for id: ${id}`, e);
+                        setViewedMap((prev) => ({
+                            ...prev,
+                            [id]: { loading: false },
+                        }));
+                    }
+                }
             }
         };
 
@@ -69,26 +76,40 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
     const handleSelect = async (id: number) => {
         onSelect(id);
         capturePokemon(id);
-        if (viewedMap[id]) return;
+
+        if (viewedMap[id]?.sprite) return;
+
+        setViewedMap((prev) => ({
+            ...prev,
+            [id]: { loading: true },
+        }));
+
         try {
             const blob = await getSprite(id);
             const objectURL = URL.createObjectURL(blob);
             setViewedMap((prev) => ({
                 ...prev,
-                [id]: objectURL,
+                [id]: { loading: false, sprite: objectURL },
             }));
         } catch (error) {
             console.error("Error fetching sprite", error);
+            setViewedMap((prev) => ({
+                ...prev,
+                [id]: { loading: false },
+            }));
         }
     };
 
     const pokedexItems = Array.from({ length: 400 }, (_, i) => {
         const id = i + 1;
+        const viewedData = viewedMap[id];
+
         return (
             <PokedexItemContainer
                 key={id}
                 id={id}
-                sprite={viewedMap[id] ?? null}
+                sprite={viewedData?.sprite ?? ''}
+                loading={viewedData?.loading ?? false}
                 viewed={seenIds.has(id)}
                 onSelect={handleSelect}
             />
