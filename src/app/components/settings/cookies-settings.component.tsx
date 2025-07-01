@@ -13,24 +13,24 @@ export const CookiesSettingsComponent: React.FC = () => {
     }
 
     return (
-        <div className="">
+        <div className="flex flex-col gap-4">
             <div className="text-gray-500 dark:text-gray-400">
-                <p>Capture list:</p>
+                <h3>This site uses cookies to maintain the pokemon that were capturated.</h3>
+            </div>
+            <div className="text-gray-500 dark:text-gray-400">
+                <p className="pb-2">Capture list:</p>
                 {typeof window !== 'undefined' && (
                     <textarea name="capturedList" id="capturedList" value={cookies.capturedList} onChange={() => { }}
                         className="border border-gray-200/50 dark:border-gray-600/50 w-full bg-white dark:bg-slate-800 rounded-md p-4"
                     />
                 )}
-            </div>
-            <div className="
-                w-fit
-                border border-gray-200/50 dark:border-gray-600/50 p-2 px-4 rounded-xl cursor-pointer
+                <div onClick={handleClearList} className="w-fit
+                border border-gray-200/50 dark:border-gray-600/50 p-2 px-6 rounded-xl cursor-pointer
                 bg-white dark:bg-slate-800 hover:bg-red-400 dark:hover:bg-red-400 
-                text-gray-500 hover:text-gray-100 dark:text-gray-400 dark:hover:text-gray-100
-                "
-                onClick={handleClearList}
-            >
-                <h5 className="capitalize ">Delete all cookies</h5>
+                text-gray-500 hover:text-gray-100 dark:text-gray-400 dark:hover:text-gray-100"
+                >
+                    <h5>Clear list</h5>
+                </div>
             </div>
         </div>
     );
