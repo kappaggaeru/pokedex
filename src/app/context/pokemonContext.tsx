@@ -16,6 +16,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [tier, setTier] = useState<PokemonTier>("normal");
     const [capturedIds, setCapturedIds] = useState<number[]>([]);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
+    const cookieExpiration = 60 * 60 * 24 * 30;
 
     useEffect(() => {
         const raw = cookies.capturedList;
@@ -30,8 +31,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
 
         const newList = [...capturedIds, id];
         setCapturedIds(newList); // actualiza en memoria
-        setCookie("capturedList", newList.join(","), { path: "/" }); // actualiza cookie
-        console.log("pokemon capturado -> ", id);
+        setCookie("capturedList", newList.join(","), { path: "/", maxAge: cookieExpiration }); // actualiza cookie
     };
 
 

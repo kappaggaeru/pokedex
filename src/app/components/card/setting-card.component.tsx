@@ -14,10 +14,9 @@ export const SettingCardComponent: React.FC<SettingCardProps> = ({ title, childr
                 <h5 className="capitalize text-gray-500 dark:text-gray-400">{title}</h5>
             </div>
             {isChilOpen &&
-            <div className="p-4">
-
-                {children}
-            </div>
+                <div className="p-4">
+                    {children}
+                </div>
             }
         </div>
     );

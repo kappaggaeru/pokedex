@@ -11,7 +11,7 @@ import { useIsMobile } from "../hooks/useIsMobile";
 
 const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
-    const [seenIds, setSeenIds] = useState<Set<number>>(new Set());
+    // const [seenIds, setSeenIds] = useState<Set<number>>(new Set());
     const [showScrollTop, setShowScrollTop] = useState(false);
     const { showModal } = useModal();
     const isMobile = useIsMobile();
@@ -39,7 +39,7 @@ const HomeComponent: React.FC = () => {
 
     const handleSelect = (id: number) => {
         setSelectedId(id);
-        markAsSeen(id);
+        // markAsSeen(id);
     }
 
     const handleClear = () => {
@@ -48,12 +48,13 @@ const HomeComponent: React.FC = () => {
 
     const handleSetIdFromParent = (id: number) => {
         setSelectedId(id);
-        markAsSeen(id);
+        // markAsSeen(id);
+
     }
 
-    const markAsSeen = (id: number) => {
-        setSeenIds(prev => new Set(prev).add(id));
-    };
+    // const markAsSeen = (id: number) => {
+    //     setSeenIds(prev => new Set(prev).add(id));
+    // };
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -65,7 +66,7 @@ const HomeComponent: React.FC = () => {
             <div className={`overflow-auto mb-20 mt-20`}>
                 <div className="overflow-auto grid grid-cols-1 md:grid-cols-4 xl:grid-cols-8 gap-4">
                     <div className={`col-span-1 md:col-span-2 xl:col-span-5 overflow-auto ${selectedId ? "hidden" : "block"} md:block md:mx-4 mx-6`}>
-                        <PokedexListComponent onSelect={handleSelect} seenIds={seenIds} />
+                        <PokedexListComponent onSelect={handleSelect} />
                     </div>
                     <div className={`col-span-1 md:col-span-2 xl:col-span-3 overflow-auto ${selectedId ? "block" : "hidden"} md:block`}>
                         <PokemonCardComponent key={selectedId} id={selectedId} clearCard={handleClear} setIdFromParent={handleSetIdFromParent} />

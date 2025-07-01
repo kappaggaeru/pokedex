@@ -11,7 +11,7 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, onSelect }) => {
 
     const evolutionChain = chain.flatMap((stage) => {
         const element = (
-            <PokedexLinkContainer key={`stage-${stage.id}`} id={stage.id} name={stage.name} sprite={stage.sprite} onSelect={() => onSelect(stage.id)} />
+            <PokedexLinkContainer key={`stage-${stage.id}`} id={stage.id} name={stage.name} sprite={stage.sprite} loading={true} onSelect={() => onSelect(stage.id)} />
         );
 
         return [element];
