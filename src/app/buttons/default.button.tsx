@@ -1,5 +1,5 @@
 import React from "react";
-import { usePokemonTier } from "../context/pokemonContext";
+import { usePokemon } from "../context/pokemonContext";
 import { DefaultButtonProps } from "../models/props/default-buttons.props";
 
 const DefaultButton: React.FC<DefaultButtonProps> = ({
@@ -9,7 +9,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
     icon: Icon,
     className = "",
 }) => {
-    const { tier } = usePokemonTier();
+    const { tier } = usePokemon();
     return (
         <button
             onClick={onClick}

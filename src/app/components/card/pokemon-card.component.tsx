@@ -17,7 +17,7 @@ import { PokedexEntry } from "../../models/pokedex-entry.model";
 import PokedexEntryComponent from "./pokemon/pokedex-entry.component";
 import DefaultButton from "../../buttons/default.button";
 import { X } from "lucide-react";
-import { usePokemonTier } from "../../context/pokemonContext";
+import { usePokemon } from "../../context/pokemonContext";
 
 type EvolutionNode = {
     species: {
@@ -28,7 +28,7 @@ type EvolutionNode = {
 };
 
 const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
-    const { setTier } = usePokemonTier();
+    const { setTier } = usePokemon();
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecies, setPokemonSpecies] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);

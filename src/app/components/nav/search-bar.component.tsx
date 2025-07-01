@@ -1,7 +1,7 @@
 import { Search } from 'lucide-react';
-import { usePokemonTier } from '../../context/pokemonContext';
+import { usePokemon } from '../../context/pokemonContext';
 export default function SearchBarComponent() {
-    const { tier } = usePokemonTier();
+    const { tier } = usePokemon();
     return (
         <div className={`
             backdrop-blur-md rounded-full

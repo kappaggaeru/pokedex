@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PokedexItemContainer from "./pokedex-item-container.component";
 import { getSprite } from "../../services/pokemon.service";
+import { usePokemon } from "@/app/context/pokemonContext";
 
 type Props = {
     onSelect: (id: number) => void;
@@ -10,10 +11,20 @@ type Props = {
 };
 
 const PokedexListComponent: React.FC<Props> = ({ onSelect, seenIds }) => {
+    const [hasMounted, setHasMounted] = useState(false);
     const [viewedMap, setViewedMap] = useState<Record<number, string>>({});
+    const { capturePokemon } = usePokemon();
+    
+
+    useEffect(() => {
+        setHasMounted(true);
+    }, []);
+
+    if (!hasMounted) return null;
 
     const handleSelect = async (id: number) => {
         onSelect(id);
+        capturePokemon(id);
         if (viewedMap[id]) return;
         try {
             const blob = await getSprite(id);
