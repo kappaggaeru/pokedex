@@ -18,7 +18,7 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, onSelect }) => {
     });
     return (
         <div className="my-[1rem]">
-            <div className="flex flex-row items-center justify-evenly flex-wrap gap-y-2">
+            <div className="flex flex-row items-center justify-evenly flex-wrap gap-2">
                 {evolutionChain}
             </div>
         </div>
