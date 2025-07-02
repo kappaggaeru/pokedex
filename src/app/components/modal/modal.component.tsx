@@ -18,7 +18,7 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
             transition-all duration-300 z-50
             text-black dark:text-gray-300
             bg-white/50 dark:bg-slate-800/50 backdrop-blur-md
-            border-l border-gray-200/50 dark:border-gray-600/50
+            md:border-l border-gray-200/50 dark:border-gray-600/50
             md:rounded-tl-xl md:rounded-bl-xl
             shadow-[rgba(0,0,15,0.5)_10px_10px_10px_10px]
             w-full md:w-[50%] lg:w-[40%] xl:w-[30%] 2xl:w-[25%]
@@ -54,13 +54,15 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                         >
                             <ThemeComponent />
                         </MenuModalContainerComponent>
-                        <MenuModalContainerComponent
-                            title="Support"
-                            isOpen={supportVisible}
-                            toggleContainer={() => setSupportVisible(!supportVisible)}
-                        >
-                            <SupportComponent />
-                        </MenuModalContainerComponent>
+                        <div className="mb-20 md:mb-0">
+                            <MenuModalContainerComponent
+                                title="Support"
+                                isOpen={supportVisible}
+                                toggleContainer={() => setSupportVisible(!supportVisible)}
+                            >
+                                <SupportComponent />
+                            </MenuModalContainerComponent>
+                        </div>
                     </div>
                 </div>
             </div>

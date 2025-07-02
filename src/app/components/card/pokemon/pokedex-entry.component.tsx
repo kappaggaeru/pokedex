@@ -30,13 +30,21 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
             </h3>
             <FadeText key={currentEntry.entry} text={currentEntry.entry} />
             <div className={`
-            mt-4 flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300 underline
+            mt-4 flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300
             `}>
-                <button onClick={handlePrev}>
-                    prev
+                <button onClick={handlePrev} className="
+                    border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
+                    hover:scale-110 transition-all duration-300
+                    focus:border-indigo-400 focus:dark:border-indigo-500
+                ">
+                    Previous
                 </button>
-                <button onClick={handleNext}>
-                    next
+                <button onClick={handleNext} className="
+                    border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
+                    hover:scale-110 transition-all duration-300
+                    focus:border-indigo-400 focus:dark:border-indigo-500
+                ">
+                    Next
                 </button>
             </div>
         </div>
