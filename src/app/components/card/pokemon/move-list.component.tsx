@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { MoveComponent } from "./moves.component";
 import { Pokemon } from "@/app/models/dto/pokemon.model";
 import { Generic } from "@/app/models/dto/generic.model";
+import { Effect } from "@/app/models/dto/effect.model";
+import { Flavor } from "@/app/models/dto/flavor.model";
 
 export const MovesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
     const [moves, setMoves] = useState<MoveProps[]>([]);
@@ -20,11 +22,11 @@ export const MovesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
                         const moveData = await getByUrl(moveObj.move.url);
 
                         const englishEffectEntry = moveData.effect_entries.find(
-                            (entry: any) => entry.language.name === "en"
+                            (entry: Effect) => entry.language.name === "en"
                         );
 
                         const englishFlavorText = moveData.flavor_text_entries.find(
-                            (entry: any) => entry.language.name === "en"
+                            (entry: Flavor) => entry.language.name === "en"
                         );
                         const formattedMove: MoveProps = {
                             name: moveData.name,
