@@ -1,9 +1,6 @@
-import { useMenu } from "../context/menuContext";
-
 export default function FooterComponent() {
-    const { showMenu } = useMenu();
     return (
-        <div className={`${showMenu ? "hidden" : "block"} max-w-5xl mx-auto px-4 py-8`}>
+        <div className="max-w-5xl mx-auto px-4 py-8">
             <div className="flex flex-col items-center space-y-4">
                 <div className="flex items-center space-x-6">
                     <a href="https://github.com/kappaggaeru" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"

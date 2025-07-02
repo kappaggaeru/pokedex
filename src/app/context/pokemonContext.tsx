@@ -40,9 +40,9 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <PokemonContext.Provider value={{ tier, setTier, capturePokemon, clearCapturedList }}>
+        <PokemonContext value={{ tier, setTier, capturePokemon, clearCapturedList }}>
             {children}
-        </PokemonContext.Provider>
+        </PokemonContext>
     );
 };
 

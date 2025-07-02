@@ -21,3 +21,7 @@ export const formatText = (
 
     return formatted;
 };
+
+export const formatFlavorText = (flavor: string): string => {
+    return flavor.replace(/\f/g, ' ').replace(/\n/g, ' ');
+}

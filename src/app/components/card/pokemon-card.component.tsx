@@ -9,7 +9,6 @@ import { EvolutionChain } from "../../models/dto/evolution-chain.model";
 import { Generic } from "../../models/dto/generic.model";
 import EvolutionChainComponent from "./pokemon/evolution-chain.component";
 import { EvolutionStage } from "../../models/evolution-stage.model";
-import { PokedexEntry } from "../../models/pokedex-entry.model";
 import PokedexEntryComponent from "./pokemon/pokedex-entry.component";
 import { usePokemon } from "../../context/pokemonContext";
 import { MovesList } from "./pokemon/move-list.component";
@@ -138,23 +137,6 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         }
     }, [pokemonSpecies]);
 
-
-    const entries: PokedexEntry[] = [];
-
-    pokemonSpecies?.flavor_text_entries.map((flavor) => {
-        if (flavor.language.name == 'en') {
-            entries.push({
-                language: flavor.language.name ?? '',
-                entry: formatFlavorText(flavor.flavor_text),
-                version: flavor.version.name ?? ''
-            });
-        }
-    });
-
-    function formatFlavorText(flavor: string) {
-        return flavor.replace(/\f/g, ' ').replace(/\n/g, ' ');
-    }
-
     const flattenEvolutionChain = (chain: EvolutionNode): Generic[] => {
         const result: Generic[] = [];
 
@@ -200,9 +182,11 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
             <div className="max-w-md mx-auto">
                 <ArtworkContainerComponent id={id} name={pokemonData?.name ?? ''} pokemonArtwork={pokemonArtwork} clearCard={clearCard} />
 
-                <GenericCardContainerComponent>
-                    <PokedexEntryComponent entries={entries} />
-                </GenericCardContainerComponent>
+                {pokemonSpecies &&
+                    <GenericCardContainerComponent>
+                        <PokedexEntryComponent entries={pokemonSpecies?.flavor_text_entries} />
+                    </GenericCardContainerComponent>
+                }
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
                     <GenericCardContainerComponent title="evolution chain">
@@ -232,13 +216,11 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     </GenericCardContainerComponent>
                 }
 
-                {
-                    pokemonData?.moves && pokemonData?.moves.length > 0 && (
-                        <GenericCardContainerComponent title="moves">
-                            <MovesList pokemonData={pokemonData} />
-                        </GenericCardContainerComponent>
-                    )
-                }
+                {pokemonData?.moves && pokemonData?.moves.length > 0 && (
+                    <GenericCardContainerComponent title="moves">
+                        <MovesList pokemonData={pokemonData} />
+                    </GenericCardContainerComponent>
+                )}
             </div >
         );
     }

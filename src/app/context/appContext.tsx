@@ -1,9 +1,9 @@
 import { createContext, ReactNode, useContext } from "react";
 import { PokemonProvider } from "./pokemonContext";
-import { MenuProvider } from "./menuContext";
 import { ModalProvider } from "./modalContext";
 import { ThemeProvider } from "./themeContext";
 import { CookiesProvider } from "react-cookie";
+import { LanguageProvider } from "./languageContext";
 
 const PokemonContext = createContext(undefined);
 const MenuContext = createContext(undefined);
@@ -19,13 +19,13 @@ const AppProviders = ({ children }: { children: ReactNode }) => {
     return (
         <CookiesProvider>
             <PokemonProvider>
-                <MenuProvider>
-                    <ModalProvider>
-                        <ThemeProvider>
+                <ModalProvider>
+                    <ThemeProvider>
+                        <LanguageProvider>
                             {children}
-                        </ThemeProvider>
-                    </ModalProvider>
-                </MenuProvider>
+                        </LanguageProvider>
+                    </ThemeProvider>
+                </ModalProvider>
             </PokemonProvider>
         </CookiesProvider>
     )
