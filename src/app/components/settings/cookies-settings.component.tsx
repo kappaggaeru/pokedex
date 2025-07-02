@@ -1,3 +1,4 @@
+"use client";
 import { usePokemon } from "@/app/context/pokemonContext";
 import { useCookies } from "react-cookie";
 
@@ -21,7 +22,7 @@ export const CookiesSettingsComponent: React.FC = () => {
                 <p className="pb-2">Captured list:</p>
                 {typeof window !== 'undefined' && (
                     <textarea name="capturedList" id="capturedList" value={cookies.capturedList} onChange={() => { }}
-                        className="border border-gray-200/50 dark:border-gray-600/50 w-full bg-white dark:bg-slate-800 rounded-md p-4"
+                        className="border border-gray-200/50 dark:border-gray-600/50 w-full h-40 bg-white dark:bg-slate-800 rounded-md p-4"
                     />
                 )}
                 <div onClick={handleClearList} className="w-full
