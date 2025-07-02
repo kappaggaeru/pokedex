@@ -7,14 +7,14 @@ export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, eff
             <div className="flex flex-row-reverse gap-4 items-center ">
                 <div className="flex flex-col w-full gap-2">
                     <div className="flex flex-row justify-between">
-                        <p className="text-lg bold capitalize">{name}</p>
+                        <p className="text-lg bolder capitalize">{name}</p>
                         <div>
                             <ChipComponent title={type} />
                         </div>
                     </div>
-                    <p className="text-gray-600">{description}</p>
-                    <span className="text-sm text-gray-400">{effect}</span>
-                    <div className="flex flex-row justify-evenly">
+                    <p className="text-gray-600 dark:text-gray-400">{description}</p>
+                    <span className="text-sm text-gray-400 dark:text-gray-500">{effect}</span>
+                    <div className="flex flex-row justify-evenly text-gray-600 dark:text-gray-300">
                         <div>
                             <span title="accuracy">{accuracy} ACC</span>
                         </div>
