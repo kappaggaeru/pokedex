@@ -1,14 +1,16 @@
 import CloseModalButton from "../../buttons/close-modal.button"
 import { AchievementsComponent } from "./achievements.component";
-import { SettingsComponent } from "./settings.component";
+import { CookiesComponent } from "./cookies.component";
 import { SupportComponent } from "./support.component";
 import { ThemeComponent } from "./theme.component";
 import { useState } from "react";
 import { MenuModalContainerComponent } from "./menu-modal-container.component";
+import { LanguageComponent } from "./language.component";
 
 export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
     const [achievementsVisible, setAchievementsVisible] = useState(false);
-    const [settingsVisible, setSettingsVisible] = useState(false);
+    const [languageVisible, setLanguageVisible] = useState(false);
+    const [cookiesVisible, setCookiesVisible] = useState(false);
     const [supportVisible, setSupportVisible] = useState(false);
     const [themeVisible, setThemeVisible] = useState(false);
 
@@ -40,11 +42,18 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                             <AchievementsComponent />
                         </MenuModalContainerComponent>
                         <MenuModalContainerComponent
-                            title="settings"
-                            isOpen={settingsVisible}
-                            toggleContainer={() => setSettingsVisible(!settingsVisible)}
+                            title="language"
+                            isOpen={languageVisible}
+                            toggleContainer={() => setLanguageVisible(!languageVisible)}
                         >
-                            <SettingsComponent />
+                            <LanguageComponent />
+                        </MenuModalContainerComponent>
+                        <MenuModalContainerComponent
+                            title="cookies"
+                            isOpen={cookiesVisible}
+                            toggleContainer={() => setCookiesVisible(!cookiesVisible)}
+                        >
+                            <CookiesComponent />
                         </MenuModalContainerComponent>
                         <MenuModalContainerComponent
                             title="Theme"
