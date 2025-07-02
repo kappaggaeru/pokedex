@@ -1,7 +1,7 @@
 import { MoveProps } from "@/app/models/props/move.props";
 import { getByUrl } from "@/app/services/pokemon.service";
 import { useEffect, useState } from "react";
-import { MoveComponent } from "./moves.component";
+import { MoveComponent } from "./move.component";
 import { Pokemon } from "@/app/models/dto/pokemon.model";
 import { Generic } from "@/app/models/dto/generic.model";
 import { Effect } from "@/app/models/dto/effect.model";

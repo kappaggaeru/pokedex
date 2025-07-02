@@ -1,0 +1,64 @@
+import { ArtworkContainerProps } from "@/app/models/props/artwork-container.props";
+import PokemonArtworkComponent from "./artwork.component";
+import { usePokemon } from "@/app/context/pokemonContext";
+import { formatText } from "@/app/utils/stringUtils";
+import DefaultButton from "@/app/buttons/default.button";
+import { X } from "lucide-react";
+
+export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, clearCard }) => {
+    const { tier } = usePokemon();
+
+    return (
+        <div>
+            <div className="flex flex-row m-[1rem] mx-6 justify-between">
+                <div className="flex flex-row">
+                    <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem] ring-2 border border-gray-200/50 dark:border-gray-600/50"></div>
+                    <div className=" flex flex-row align-baseline">
+                        <div className="w-3 h-3 bg-red-500 rounded-full mr-[.5rem]"></div>
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full mr-[.5rem]"></div>
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                </div>
+                <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
+            </div>
+            <div
+                className={`
+                relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-300
+                before:absolute before:inset-0 before:rounded-xl before:blur-md before:z-[-1]
+                ${tier == "legendary" ? 'border-yellow-400 dark:border-yellow-600 bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 dark:from-yellow-700 dark:via-yellow-800 dark:to-yellow-600 before:animate-glow-yellow'
+                        : tier == "mythical" ? 'border-gray-400 dark:border-gray-500 bg-gradient-to-r from-gray-200 via-white to-gray-300 dark:from-slate-600 dark:via-slate-700 dark:to-slate-500 before:animate-glow-silver'
+                            : 'border-gray-200/50 dark:border-gray-600/50 bg-white dark:bg-slate-800'
+                    }`}
+            >
+
+                {(tier == "legendary" || tier == "mythical") && (
+                    <div
+                        className={`
+                        absolute top-0 left-0 py-1 px-4 rounded-tl-xl rounded-br-xl 
+                        text-xs uppercase text-white font-semibold backdrop-blur-sm 
+                        bg-gradient-to-r ${tier == "legendary" ? 'from-yellow-400/70 to-yellow-600/70' : 'from-gray-400/70 to-gray-600/70'
+                            }`}
+                    >
+                        {tier == "legendary" ? "legendary" : "mythical"}
+                    </div>
+                )}
+
+                <div className="flex flex-row justify-center mb-[1rem]">
+                    <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div>
+                    <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div>
+                </div>
+
+                <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
+
+                <div className="flex flex-row items-center w-full justify-between">
+                    <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">
+                        <span className="text-md text-gray-400">#{id}</span>
+                        <h4 className="text-xl uppercase text-black dark:text-gray-300">
+                            {formatText(name, "-")}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
