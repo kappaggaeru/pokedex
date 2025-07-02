@@ -13,6 +13,8 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [currentTheme, setCurrentTheme] = useState<ThemeOption>("light");
 
+    //TODO guardar el tema elegido en cookies
+
     const getSystemTheme = (): AppliedTheme => {
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         return prefersDark ? "dark" : "light";

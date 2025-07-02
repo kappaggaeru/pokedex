@@ -18,6 +18,7 @@ import PokedexEntryComponent from "./pokemon/pokedex-entry.component";
 import DefaultButton from "../../buttons/default.button";
 import { X } from "lucide-react";
 import { usePokemon } from "../../context/pokemonContext";
+import { MovesList } from "./pokemon/move-list.component";
 
 type EvolutionNode = {
     species: {
@@ -59,6 +60,10 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 setPokemonSpecies(species);
                 setPokemonForm(form);
                 setPokemonArtwork(objectUrlTemp);
+
+                console.log(pokemon);
+                console.log(species);
+                console.log(form);
 
                 if (species.evolution_chain.url) {
                     const evolutionRes = await fetch(species.evolution_chain.url);
@@ -220,6 +225,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
     const formatVariantName = (name: string) =>
         name.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+
 
     if (id === null) {
         return (
@@ -383,7 +389,10 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 </div>
 
                 <div className={`
-                p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl border text-black dark:text-gray-300 bg-white dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50 mb-20
+                p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl
+                border border-gray-200/50 dark:border-gray-600/50
+                text-black dark:text-gray-300
+                bg-white dark:bg-slate-800 
                 ${pokemonSpecies?.is_legendary
                         ? 'bg-legendary glow-legendary'
                         : pokemonSpecies?.is_mythical
@@ -394,6 +403,26 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <h3 className="text-xl font-bold mb-[1rem]">Stats</h3>
                     {statComponents}
                 </div>
+
+                {pokemonData?.moves && (
+                    <div className={`
+                p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl mb-20
+                border border-gray-200/50 dark:border-gray-600/50
+                text-black dark:text-gray-300
+                bg-white dark:bg-slate-800 
+                ${pokemonSpecies?.is_legendary
+                            ? 'bg-legendary glow-legendary'
+                            : pokemonSpecies?.is_mythical
+                                ? 'bg-mythical glow-mythical'
+                                : 'bg-white dark:bg-slate-800'
+                        }
+                `}>
+                        <h3 className="text-xl font-bold mb-[1rem]">Moves</h3>
+                        <div>
+                            <MovesList pokemonData={pokemonData} />
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
