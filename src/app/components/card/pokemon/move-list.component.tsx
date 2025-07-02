@@ -83,6 +83,11 @@ export const MovesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
         );
     };
 
+    const total = allMoves.length;
+    const start = currentIndex + 1;
+    const end = currentIndex + 3 > total ? ((currentIndex + 3 - 1) % total) + 1 : currentIndex + 3;
+
+    const indicatorText = `Showing ${start}–${end > start ? end : total} of ${total}`;
 
     if (allMoves.length === 0) return null;
 
@@ -101,6 +106,10 @@ export const MovesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
                         type={move.type}
                     />
                 ))}
+            </div>
+
+            <div className="text-gray-500 dark:text-gray-300">
+                {indicatorText}
             </div>
 
             <div className="flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300">

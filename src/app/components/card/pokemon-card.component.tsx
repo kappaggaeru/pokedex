@@ -18,6 +18,7 @@ import { ArtworkContainerComponent } from "./pokemon/artwork-container.component
 import { StatsComponent } from "./pokemon/stats.component";
 import { EvolutionNode } from "@/app/models/evolution-node.model";
 import { TypesContainerComponent } from "./pokemon/types.component";
+import { AbilitiesList } from "./pokemon/ability-list.component";
 
 const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
     const { setTier } = usePokemon();
@@ -220,6 +221,14 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     <GenericCardContainerComponent title="moves">
                         <MovesList pokemonData={pokemonData} />
                     </GenericCardContainerComponent>
+                )}
+
+                {pokemonData?.abilities && pokemonData.abilities.length > 0 && (
+                    <div className="mb-20">
+                        <GenericCardContainerComponent title="abilities">
+                            <AbilitiesList pokemonData={pokemonData} />
+                        </GenericCardContainerComponent>
+                    </div>
                 )}
             </div >
         );
