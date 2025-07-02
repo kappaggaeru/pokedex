@@ -19,6 +19,7 @@ import DefaultButton from "../../buttons/default.button";
 import { X } from "lucide-react";
 import { usePokemon } from "../../context/pokemonContext";
 import { MovesList } from "./pokemon/move-list.component";
+import { formatText } from "@/app/utils/stringUtils";
 
 type EvolutionNode = {
     species: {
@@ -223,9 +224,6 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         />
     ));
 
-    const formatVariantName = (name: string) =>
-        name.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-
 
     if (id === null) {
         return (
@@ -300,7 +298,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                             <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">
                                 <span className="text-md text-gray-400">#{id}</span>
                                 <h4 className="text-xl uppercase text-black dark:text-gray-300">
-                                    {formatVariantName(pokemonData.name)}
+                                    {formatText(pokemonData.name, "-")}
                                 </h4>
                             </div>
                         )}
@@ -404,7 +402,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                     {statComponents}
                 </div>
 
-                {pokemonData?.moves && (
+                {pokemonData?.moves && pokemonData?.moves.length > 0 && (
                     <div className={`
                 p-[1rem] my-[1rem] mx-6 shadow-xl rounded-xl mb-20
                 border border-gray-200/50 dark:border-gray-600/50
