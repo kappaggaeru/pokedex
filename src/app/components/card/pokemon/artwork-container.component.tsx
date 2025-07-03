@@ -4,6 +4,7 @@ import { usePokemon } from "@/app/context/pokemonContext";
 import { formatText } from "@/app/utils/stringUtils";
 import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
+import SciFiLeds from "./sci-fi-leds.component";
 
 export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, clearCard }) => {
     const { tier } = usePokemon();
@@ -12,12 +13,7 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
         <div>
             <div className="flex flex-row m-[1rem] mx-6 justify-between">
                 <div className="flex flex-row">
-                    <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem] ring-2 border border-gray-200/50 dark:border-gray-600/50"></div>
-                    <div className=" flex flex-row align-baseline">
-                        <div className="w-3 h-3 bg-red-500 rounded-full mr-[.5rem]"></div>
-                        <div className="w-3 h-3 bg-yellow-500 rounded-full mr-[.5rem]"></div>
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
+                    <SciFiLeds />
                 </div>
                 <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
             </div>

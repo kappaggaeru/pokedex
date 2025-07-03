@@ -47,3 +47,40 @@ body {
 .glow-mythical {
     animation: glow-silver 2.5s infinite ease-in-out;
 }
+
+@layer utilities {
+    .glow-blue {
+        box-shadow:
+            0 0 8px 2px rgba(255, 255, 255, 0.2),
+            0 0 20px 4px rgba(59, 130, 246, 0.4);
+    }
+
+    .animate-pulse-blue {
+        animation: pulse-blue 2s ease-in-out infinite alternate;
+    }
+
+    .animate-led-onoff {
+        animation: led-onoff 1.5s steps(1, start) infinite;
+    }
+
+    @keyframes pulse-blue {
+        0% {
+            filter: brightness(0.8);
+            transform: scale(0.98);
+        }
+
+        100% {
+            filter: brightness(1.4);
+            transform: scale(1.02);
+        }
+    }
+
+    @keyframes led-onoff {
+    0%, 100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
