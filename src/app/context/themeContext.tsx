@@ -28,6 +28,18 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         html.classList.add(resolvedTheme);
 
         setCurrentTheme(theme);
+
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) {
+            const hexColor =
+                resolvedTheme === "light"
+                    ? "#f9fafb"   // Tailwind: bg-gray-50
+                    : resolvedTheme === "dark"
+                        ? "#000000"   // Tailwind: bg-black
+                        : "#242126"; // Por si tenés algún modo extra tipo retro
+
+            themeColor.setAttribute("content", hexColor);
+        }
     };
 
     // Al iniciar la app
