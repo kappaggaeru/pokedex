@@ -11,6 +11,14 @@ export const getPokemonTotalCount = async () => {
     return response.json();
 }
 
+export const getPokedexData = async () => {
+    const response = await fetch(`${POKEMON_API_BASE_URL}/pokedex/1/`);
+    if (!response.ok) {
+        throw new Error('Error fetching pokedex data');
+    }
+    return response.json();
+}
+
 // full data of a pokemon
 export const getPokemonById = async (id: number) => {
     const response = await fetch(`${POKEMON_API_BASE_URL}/pokemon/${id}`);

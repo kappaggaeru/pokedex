@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import PokedexItemContainer from "./pokedex-item-container.component";
-import { getSprite } from "../../services/pokemon.service";
+import { getPokedexData, getSprite } from "../../services/pokemon.service";
 import { usePokemon } from "@/app/context/pokemonContext";
 import { useCookies } from "react-cookie";
 import { useHasMounted } from "@/app/hooks/useHasMounted";
@@ -18,9 +18,21 @@ type ViewedState = {
 
 const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
     const hasMounted = useHasMounted();
+    const [pokemonList, setPokemonList] = useState<{ id: number, name: string }[]>([]);
     const [viewedMap, setViewedMap] = useState<Record<number, ViewedState>>({});
-    const { capturePokemon } = usePokemon();
     const [cookies] = useCookies(["capturedList"]);
+    const { capturePokemon } = usePokemon();
+    const generations = [
+        { name: "Kanto", count: 151 },
+        { name: "Johto", count: 100 },
+        { name: "Hoenn", count: 135 },
+        { name: "Sinnoh", count: 107 },
+        { name: "Unova", count: 156 },
+        { name: "Kalos", count: 72 },
+        { name: "Alola", count: 88 },
+        { name: "Galar", count: 96 },
+        { name: "Paldea", count: 120 },
+    ];
 
     const seenIds = React.useMemo(() => {
         const raw = cookies.capturedList;
@@ -31,6 +43,24 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
             .map(Number);
         return new Set<number>(ids);
     }, [cookies.capturedList]);
+
+    useEffect(() => {
+        const fetchPokedex = async () => {
+            try {
+                const data = await getPokedexData();
+                const entries = data.pokemon_entries.map((entry: any) => ({
+                    id: entry.entry_number,
+                    name: entry.pokemon_species.name
+                }));
+                setPokemonList(entries);
+            } catch (e) {
+                console.error("Error loading pokedex:", e);
+            }
+        };
+
+        if (hasMounted) fetchPokedex();
+    }, [hasMounted]);
+
 
     useEffect(() => {
         if (hasMounted) {
@@ -72,7 +102,6 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
         }
     }, [hasMounted, cookies.capturedList]);
 
-    if (!hasMounted) return null;
 
     const handleSelect = async (id: number) => {
         onSelect(id);
@@ -101,25 +130,49 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
         }
     };
 
-    const pokedexItems = Array.from({ length: 400 }, (_, i) => {
-        const id = i + 1;
-        const viewedData = viewedMap[id];
+    const getSegmentedList = () => {
+        let index = 0;
+        const segments = generations.map((gen) => {
+            const items = pokemonList.slice(index, index + gen.count).map(({ id }) => {
+                const viewedData = viewedMap[id];
+                return (
+                    <PokedexItemContainer
+                        key={id}
+                        id={id}
+                        sprite={viewedData?.sprite ?? ''}
+                        loading={viewedData?.loading ?? false}
+                        viewed={seenIds.has(id)}
+                        onSelect={handleSelect}
+                    />
+                );
+            });
 
-        return (
-            <PokedexItemContainer
-                key={id}
-                id={id}
-                sprite={viewedData?.sprite ?? ''}
-                loading={viewedData?.loading ?? false}
-                viewed={seenIds.has(id)}
-                onSelect={handleSelect}
-            />
-        );
-    });
+            const segment = (
+                <div key={gen.name} className="flex flex-col">
+                    <div className="flex flex-row gap-2 items-center">
+                        <p className="text-gray-500 pl-4 text-nowrap">
+                            {gen.name} ({index + 1} - {index + gen.count})
+                        </p>
+                        <div className="w-full border border-gray-200/50 dark:border-gray-600/50"></div>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-[1rem] py-[1rem]">
+                        {items}
+                    </div>
+                </div>
+            );
+
+            index += gen.count;
+            return segment;
+        });
+
+        return segments;
+    };
+
+    if (!hasMounted) return null;
 
     return (
         <div className="flex flex-wrap justify-center gap-[1rem] py-[1rem]">
-            {pokedexItems}
+            {getSegmentedList()}
         </div>
     );
 };
