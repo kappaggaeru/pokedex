@@ -11,7 +11,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-    const [currentTheme, setCurrentTheme] = useState<ThemeOption>("light");
+    const [currentTheme, setCurrentTheme] = useState<ThemeOption>("system");
 
     //TODO guardar el tema elegido en cookies
 

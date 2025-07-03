@@ -5,6 +5,7 @@ import PokedexItemContainer from "./pokedex-item-container.component";
 import { getSprite } from "../../services/pokemon.service";
 import { usePokemon } from "@/app/context/pokemonContext";
 import { useCookies } from "react-cookie";
+import { useHasMounted } from "@/app/hooks/useHasMounted";
 
 type Props = {
     onSelect: (id: number) => void;
@@ -16,7 +17,7 @@ type ViewedState = {
 };
 
 const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
-    const [hasMounted, setHasMounted] = useState(false);
+    const hasMounted = useHasMounted();
     const [viewedMap, setViewedMap] = useState<Record<number, ViewedState>>({});
     const { capturePokemon } = usePokemon();
     const [cookies] = useCookies(["capturedList"]);
@@ -32,44 +33,44 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
     }, [cookies.capturedList]);
 
     useEffect(() => {
-        setHasMounted(true);
+        if (hasMounted) {
+            const preloadCapturedSprites = async () => {
+                const raw = cookies.capturedList;
+                const capturedList = typeof raw === "string" ? raw : "";
+                const ids = capturedList
+                    .split(",")
+                    .filter((v) => v !== "")
+                    .map(Number);
 
-        const preloadCapturedSprites = async () => {
-            const raw = cookies.capturedList;
-            const capturedList = typeof raw === "string" ? raw : "";
-            const ids = capturedList
-                .split(",")
-                .filter((v) => v !== "")
-                .map(Number);
-
-            for (const id of ids) {
-                if (!viewedMap[id]) {
-                    // Marcamos como cargando
-                    setViewedMap((prev) => ({
-                        ...prev,
-                        [id]: { loading: true },
-                    }));
-
-                    try {
-                        const blob = await getSprite(id);
-                        const objectURL = URL.createObjectURL(blob);
+                for (const id of ids) {
+                    if (!viewedMap[id]) {
+                        // Marcamos como cargando
                         setViewedMap((prev) => ({
                             ...prev,
-                            [id]: { loading: false, sprite: objectURL },
+                            [id]: { loading: true },
                         }));
-                    } catch (e) {
-                        console.error(`Error loading sprite for id: ${id}`, e);
-                        setViewedMap((prev) => ({
-                            ...prev,
-                            [id]: { loading: false },
-                        }));
+
+                        try {
+                            const blob = await getSprite(id);
+                            const objectURL = URL.createObjectURL(blob);
+                            setViewedMap((prev) => ({
+                                ...prev,
+                                [id]: { loading: false, sprite: objectURL },
+                            }));
+                        } catch (e) {
+                            console.error(`Error loading sprite for id: ${id}`, e);
+                            setViewedMap((prev) => ({
+                                ...prev,
+                                [id]: { loading: false },
+                            }));
+                        }
                     }
                 }
-            }
-        };
+            };
 
-        preloadCapturedSprites();
-    }, []);
+            preloadCapturedSprites();
+        }
+    }, [hasMounted, cookies.capturedList]);
 
     if (!hasMounted) return null;
 

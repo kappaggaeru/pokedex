@@ -2,7 +2,7 @@ import { LanguageOption, useLanguage } from "@/app/context/languageContext";
 import { LanguageCardProps } from "@/app/models/props/language-card.props";
 
 const LanguageCardComponent: React.FC<LanguageCardProps> = ({ title, code, enabled = true }) => {
-    const { language, setLanguage } = useLanguage();
+    const { language, setActiveLanguage } = useLanguage();
     const checked = code === language;
 
     return (
@@ -16,7 +16,7 @@ const LanguageCardComponent: React.FC<LanguageCardProps> = ({ title, code, enabl
         `}
             onClick={() => {
                 if (enabled && !checked) {
-                    setLanguage(code as LanguageOption);
+                    setActiveLanguage(code as LanguageOption);
                 }
             }}
         >
@@ -47,7 +47,7 @@ const LanguageCardComponent: React.FC<LanguageCardProps> = ({ title, code, enabl
                     disabled={!enabled}
                     onChange={() => {
                         if (enabled && !checked) {
-                            setLanguage(code as LanguageOption);
+                            setActiveLanguage(code as LanguageOption);
                         }
                     }}
                     name="language_selected"

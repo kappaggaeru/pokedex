@@ -1,8 +1,10 @@
 
 export const AchievementCardComponent = ({ title, desc, goal }: { title: string; desc: string; goal: number }) => {
     return (
-        <div className="rounded-2xl bg-slate-50 dark:bg-slate-800/20 p-2
-        flex flex-row gap-3 w-full border border-gray-200/50 dark:border-gray-600/50
+        <div className="
+            rounded-2xl bg-slate-50 dark:bg-slate-800/20 p-2
+            flex flex-row gap-3 items-center w-full
+            border border-gray-200/50 dark:border-gray-600/50
         ">
             <div className="
                 rounded-xl w-[7rem] h-20 border border-gray-200/50 dark:border-gray-600/50

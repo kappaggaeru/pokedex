@@ -1,9 +1,21 @@
 "use client";
 import { usePokemon } from "@/app/context/pokemonContext";
+import { useHasMounted } from "@/app/hooks/useHasMounted";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 export const CookiesSettingsComponent: React.FC = () => {
+    const hasMounted = useHasMounted();
     const [cookies] = useCookies(["capturedList"]);
+    const [captured, setCaptured] = useState("");
+
+    useEffect(() => {
+        if (hasMounted) {
+            const cookieValue = cookies.capturedList || "";
+            setCaptured(cookieValue);
+        }
+    }, [cookies.capturedList, hasMounted]);
+
     const { clearCapturedList } = usePokemon();
 
     const handleClearList = () => {
@@ -13,6 +25,8 @@ export const CookiesSettingsComponent: React.FC = () => {
         }
     }
 
+    if (!hasMounted) return null;
+
     return (
         <div className="flex flex-col gap-4 cursor-default">
             <div className="text-gray-500 dark:text-gray-400">
@@ -20,14 +34,15 @@ export const CookiesSettingsComponent: React.FC = () => {
             </div>
             <div className="text-gray-500 dark:text-gray-400">
                 <p className="pb-2">Captured list:</p>
-                {typeof window !== 'undefined' && (
-                    <textarea name="capturedList" id="capturedList" value={cookies.capturedList} onChange={() => { }}
-                        className="border border-gray-200/50 dark:border-gray-600/50 w-full h-40 bg-white dark:bg-slate-800 rounded-md p-4"
-                    />
-                )}
+                <textarea
+                    name="capturedList"
+                    id="capturedList"
+                    value={captured}
+                    onChange={() => { }}
+                    className="border border-gray-200/50 dark:border-gray-600/50 w-full h-40 bg-white dark:bg-slate-800 rounded-md p-4"
+                />
                 <div onClick={handleClearList} className="w-full
-                text-center
-                border border-gray-200/50 dark:border-gray-600/50 p-2 px-6 rounded-xl cursor-pointer
+                border border-gray-200/50 dark:border-gray-600/50 p-2 px-6 rounded-md cursor-pointer text-center
                 bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600
                 text-gray-100 hover:text-gray-100 dark:text-gray-100 dark:hover:text-gray-100"
                 >
