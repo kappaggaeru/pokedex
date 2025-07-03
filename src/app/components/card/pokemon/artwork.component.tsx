@@ -1,36 +1,42 @@
 const PokemonArtworkComponent = ({ artworkUrl, id }: { artworkUrl: string | null, id: number }) => {
     return (
-        <div 
-            className="rounded-lg w-full flex justify-center bg-[#207b55] dark:bg-[#012d1b] ring-1 ring-gray-500/50"
-            style={{
-                backgroundImage: `
-                    repeating-linear-gradient(
+        <div className="relative overflow-hidden rounded-lg w-full bg-[#207b55] dark:bg-[#012d1b] ring-1 ring-gray-500/50">
+            <div
+                className="absolute top-0 left-0 w-[200%] h-[200%] pointer-events-none"
+                style={{
+                    backgroundImage: `
+                        repeating-linear-gradient(
                         to right,
                         rgba(255, 165, 100, 0.2) 0px,
                         rgba(255, 165, 100, 0.2) 1px,
                         transparent 1px,
                         transparent 20px
-                    ),
-                    repeating-linear-gradient(
+                        ),
+                        repeating-linear-gradient(
                         to bottom,
                         rgba(255, 165, 100, 0.2) 0px,
                         rgba(255, 165, 100, 0.2) 1px,
                         transparent 1px,
                         transparent 20px
-                    )
-                `,
-            }}
-            >
-            {artworkUrl ? (
-                <img
-                    src={artworkUrl}
-                    alt={`Pokemon ${id}`}
-                    className="object-cover h-[10rem]"
-                />
-            ) : (
-                <p>Loading artwork...</p>
-            )}
+                        )
+                    `,
+                    backgroundSize: `20px 20px`,
+                    animation: "move-grid 2s linear infinite",
+                }}
+            />
+            <div className="flex justify-center">
+                {artworkUrl ? (
+                    <img
+                        src={artworkUrl}
+                        alt={`Pokemon ${id}`}
+                        className="relative object-cover h-[10rem] z-10"
+                    />
+                ) : (
+                    <p className="relative z-10">Loading artwork...</p>
+                )}
+            </div>
         </div>
+
     );
 };
 
