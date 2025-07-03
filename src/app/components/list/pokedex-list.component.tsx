@@ -23,6 +23,7 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
     const [viewedMap, setViewedMap] = useState<Record<number, ViewedState>>({});
     const [cookies] = useCookies(["capturedList"]);
     const { capturePokemon } = usePokemon();
+    const [loading, setLoading] = useState(true);
     const generations = [
         { name: "Kanto", count: 151, roman: "I" },
         { name: "Johto", count: 100, roman: "II" },
@@ -57,6 +58,8 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
                 setPokemonList(entries);
             } catch (e) {
                 console.error("Error loading pokedex:", e);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -152,9 +155,9 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
 
             const segment = (
                 <div key={gen.name} className="flex flex-col">
-                    <div className="flex flex-row gap-2 items-center">
-                        <p className="text-gray-500 pl-4 text-nowrap">
-                            {gen.name} ({index + 1} - {index + gen.count} GEN {gen.roman})
+                    <div className="flex flex-row gap-2 items-center px-4">
+                        <p className="text-gray-500 text-nowrap">
+                            {gen.name} <span className="text-sm">({index + 1} - {index + gen.count} GEN {gen.roman})</span>
                         </p>
                         <div className="w-full border border-gray-200/50 dark:border-gray-600/50"></div>
                     </div>
@@ -171,7 +174,45 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
         return segments;
     };
 
-    if (!hasMounted) return null;
+    const PokeballSpinner = () => {
+        return (
+            <div className="flex justify-center items-center py-10">
+                <svg
+                    className="w-8 h-8 animate-spin"
+                    viewBox="0 0 100 100"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    {/* Borde exterior gris */}
+                    <circle
+                        cx="50"
+                        cy="50"
+                        r="48"
+                        fill="#f0f0f0"
+                        stroke="#d1d5db"
+                        strokeWidth="4"
+                        className="dark:stroke-gray-600"
+                    />
+                    {/* Mitad superior roja */}
+                    <path d="M50 2 A48 48 0 0 1 98 50 H2 A48 48 0 0 1 50 2 Z" fill="#ef4444" />
+                    {/* Mitad inferior blanca */}
+                    <path d="M2 50 H98 A48 48 0 0 1 50 98 A48 48 0 0 1 2 50 Z" fill="white" />
+                    {/* Franja negra al centro */}
+                    <rect x="0" y="46" width="100" height="8" fill="black" />
+                    {/* Círculo central blanco con borde negro */}
+                    <circle cx="50" cy="50" r="12" fill="white" stroke="black" strokeWidth="6" />
+                </svg>
+            </div>
+        );
+    };
+
+
+    if (!hasMounted || loading) {
+        return (
+            <div className="flex justify-center items-center h-[300px]">
+                <PokeballSpinner />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-wrap justify-center gap-[1rem] py-[1rem]">
