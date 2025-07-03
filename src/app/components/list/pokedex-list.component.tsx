@@ -23,16 +23,17 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
     const [cookies] = useCookies(["capturedList"]);
     const { capturePokemon } = usePokemon();
     const generations = [
-        { name: "Kanto", count: 151 },
-        { name: "Johto", count: 100 },
-        { name: "Hoenn", count: 135 },
-        { name: "Sinnoh", count: 107 },
-        { name: "Unova", count: 156 },
-        { name: "Kalos", count: 72 },
-        { name: "Alola", count: 88 },
-        { name: "Galar", count: 96 },
-        { name: "Paldea", count: 120 },
+        { name: "Kanto", count: 151, roman: "I" },
+        { name: "Johto", count: 100, roman: "II" },
+        { name: "Hoenn", count: 135, roman: "III" },
+        { name: "Sinnoh", count: 107, roman: "IV" },
+        { name: "Unova", count: 156, roman: "V" },
+        { name: "Kalos", count: 72, roman: "VI" },
+        { name: "Alola", count: 88, roman: "VII" },
+        { name: "Galar", count: 96, roman: "VIII" },
+        { name: "Paldea", count: 120, roman: "IX" },
     ];
+
 
     const seenIds = React.useMemo(() => {
         const raw = cookies.capturedList;
@@ -104,6 +105,7 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
 
 
     const handleSelect = async (id: number) => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
         onSelect(id);
         capturePokemon(id);
 
@@ -151,7 +153,7 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
                 <div key={gen.name} className="flex flex-col">
                     <div className="flex flex-row gap-2 items-center">
                         <p className="text-gray-500 pl-4 text-nowrap">
-                            {gen.name} ({index + 1} - {index + gen.count})
+                            {gen.name} ({index + 1} - {index + gen.count} GEN {gen.roman})
                         </p>
                         <div className="w-full border border-gray-200/50 dark:border-gray-600/50"></div>
                     </div>

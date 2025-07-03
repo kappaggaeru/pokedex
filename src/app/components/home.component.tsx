@@ -11,7 +11,6 @@ import { useIsMobile } from "../hooks/useIsMobile";
 
 const HomeComponent: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
-    // const [seenIds, setSeenIds] = useState<Set<number>>(new Set());
     const [showScrollTop, setShowScrollTop] = useState(false);
     const { showModal } = useModal();
     const isMobile = useIsMobile();
@@ -39,7 +38,6 @@ const HomeComponent: React.FC = () => {
 
     const handleSelect = (id: number) => {
         setSelectedId(id);
-        // markAsSeen(id);
     }
 
     const handleClear = () => {
@@ -48,18 +46,12 @@ const HomeComponent: React.FC = () => {
 
     const handleSetIdFromParent = (id: number) => {
         setSelectedId(id);
-        // markAsSeen(id);
 
     }
-
-    // const markAsSeen = (id: number) => {
-    //     setSeenIds(prev => new Set(prev).add(id));
-    // };
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
-
 
     return (
         <div>

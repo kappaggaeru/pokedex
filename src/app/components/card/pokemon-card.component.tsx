@@ -203,7 +203,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
                 {pokemonData &&
                     <GenericCardContainerComponent title="information">
-                        <InformationComponent height={pokemonData?.height} weight={pokemonData?.weight} />
+                        <InformationComponent id={id} height={pokemonData?.height} weight={pokemonData?.weight} />
                     </GenericCardContainerComponent>
                 }
 

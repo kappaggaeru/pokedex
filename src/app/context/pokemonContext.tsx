@@ -34,7 +34,6 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         setCookie("capturedList", newList.join(","), { path: "/", maxAge: cookieExpiration }); // actualiza cookie
     };
 
-
     const clearCapturedList = () => {
         removeCookie("capturedList", { path: "/" });
     }
