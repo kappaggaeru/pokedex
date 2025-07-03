@@ -6,6 +6,7 @@ import { getPokedexData, getSprite } from "../../services/pokemon.service";
 import { usePokemon } from "@/app/context/pokemonContext";
 import { useCookies } from "react-cookie";
 import { useHasMounted } from "@/app/hooks/useHasMounted";
+import { GenerationPokedexEntry } from "@/app/models/dto/generation-entry.model";
 
 type Props = {
     onSelect: (id: number) => void;
@@ -49,7 +50,7 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
         const fetchPokedex = async () => {
             try {
                 const data = await getPokedexData();
-                const entries = data.pokemon_entries.map((entry: any) => ({
+                const entries = data.pokemon_entries.map((entry: GenerationPokedexEntry) => ({
                     id: entry.entry_number,
                     name: entry.pokemon_species.name
                 }));
