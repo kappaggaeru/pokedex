@@ -31,7 +31,11 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                 <div className="overflow-auto h-full">
                     <div className="flex flex-col gap-4 mx-4 pb-4 pt-4">
                         <div className="flex flex-row justify-between items-center">
-                            <h1 className="capitalize text-2xl text-gray-600 dark:text-gray-300 cursor-default">Pokedex</h1>
+                            <div>
+                                <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9dex" target="_blank" rel="noopener noreferrer">
+                                    <img src="../../assets/images/pokedex_logo.png" alt="pokedex logo" className="w-fit h-10" />
+                                </a>
+                            </div>
                             <CloseModalButton />
                         </div>
                         <MenuModalContainerComponent

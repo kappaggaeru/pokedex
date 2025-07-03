@@ -4,6 +4,10 @@ export const InformationComponent: React.FC<InformationProps> = ({ height, weigh
     return (
         <div className="flex flex-row justify-evenly">
             <div className="flex flex-col text-center">
+                <h5 className="text-gray-500 dark:text-gray-400">Region</h5>
+                <span className="bold">Kanto</span>
+            </div>
+            <div className="flex flex-col text-center">
                 <h5 className="text-gray-500 dark:text-gray-400">Height</h5>
                 <span className="bold">{height / 10} m</span>
             </div>
