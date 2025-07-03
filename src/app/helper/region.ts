@@ -14,7 +14,7 @@ export const getPokemonRegion = (id: number): GenerationProps => {
     ];
 
     const region = boundaries.find(b => id <= b.until);
-    if (!region) return { name: "Unknown", roman: "?" };
+    if (!region) return { name: "N/A", roman: "?" };
 
     return { name: region.name, roman: region.roman };
 };

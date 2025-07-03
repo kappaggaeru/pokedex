@@ -21,8 +21,7 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                 </div>
                 <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
             </div>
-            <div
-                className={`
+            <div className={`
                 relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-300
                 before:absolute before:inset-0 before:rounded-xl before:blur-md before:z-[-1]
                 ${tier == "legendary" ? 'border-yellow-400 dark:border-yellow-600 bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 dark:from-yellow-700 dark:via-yellow-800 dark:to-yellow-600 before:animate-glow-yellow'
