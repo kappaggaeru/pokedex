@@ -13,7 +13,7 @@ export const formatText = (
     charToReplace: string | RegExp,
     capitalizeWords: boolean = true
 ): string => {
-    let regex = typeof charToReplace === "string"
+    const regex = typeof charToReplace === "string"
         ? new RegExp(charToReplace.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g") // escapa y convierte en global RegExp
         : charToReplace;
 

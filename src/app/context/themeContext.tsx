@@ -35,7 +35,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
                 resolvedTheme === "light"
                     ? "#f9fafb"   // Tailwind: bg-gray-50
                     : resolvedTheme === "dark"
-                        ? "#000000"   // Tailwind: bg-black
+                        ? "#1e293b"   // Tailwind: bg-black
                         : "#242126"; // Por si tenés algún modo extra tipo retro
 
             themeColor.setAttribute("content", hexColor);
