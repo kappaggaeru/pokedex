@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getPokemonById, getArtworkById, getSprite } from "../../services/pokemon.service";
-import { PokemonCardProps } from "../../models/props/pokedex-card.props";
 import { Pokemon } from "../../models/dto/pokemon.model";
 import { Species } from "../../models/dto/species.model";
 import { Form } from "../../models/dto/form.model";
