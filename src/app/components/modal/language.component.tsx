@@ -23,7 +23,7 @@ const fullEntries = entries.map((entry, index) => (
 export const LanguageComponent: React.FC = () => (
     <div className="flex flex-col gap-4">
         <p className="text-gray-500 dark:text-gray-400">
-            This change affects only the Pokémon data and has no impact on the website's language.
+            This change affects only the Pokémon data and has no impact on the website&aposs language.
         </p>
         {fullEntries}
     </div>

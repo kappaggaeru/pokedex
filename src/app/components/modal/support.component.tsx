@@ -4,8 +4,8 @@ export const SupportComponent: React.FC = () => (
         <div className="text-gray-500 dark:text-gray-400">
             <p className="font-bold">Support this developer — buy him a coffee!</p>
             <p>This website was built by a single developer. Your support helps fund new features and, of course, coffee!</p>
-            <p>If you're in Argentina, you can use <i>Cafecito</i> to pay in ARS.</p>
-            <p>If you're in another country, use <i>PayPal</i> to pay in USD.</p>
+            <p>If you&aposre in Argentina, you can use <i>Cafecito</i> to pay in ARS.</p>
+            <p>If you&aposre in another country, use <i>PayPal</i> to pay in USD.</p>
             <p>Thank you for your support!</p>
         </div>
         <div className="mt-4 flex flex-col gap-4">
