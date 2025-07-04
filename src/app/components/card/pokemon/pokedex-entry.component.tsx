@@ -79,7 +79,7 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
     return (
         <div>
             <h3 className="text-xl font-bold mb-4">
-                Pokedex entry
+                Pokedex Entry
                 {currentEntry.version && (
                     <span className="text-sm font-medium italic ml-2 text-gray-500 dark:text-gray-400">
                         ({currentEntry.version})

@@ -100,8 +100,6 @@ export const AbilitiesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
 
     if (abilities.length === 0) return null;
 
-    console.log(abilities);
-
     return (
         <div className="flex flex-col gap-4">
             {abilities.map((ability, index) => (

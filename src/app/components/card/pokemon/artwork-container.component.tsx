@@ -4,22 +4,41 @@ import { usePokemon } from "@/app/context/pokemonContext";
 import { formatText } from "@/app/utils/stringUtils";
 import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
-import SciFiLeds from "./sci-fi-leds.component";
+// import SciFiLeds from "./sci-fi-leds.component";
 
 export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, clearCard }) => {
     const { tier } = usePokemon();
+
 
     return (
         <div>
             <div className="flex flex-row m-[1rem] mx-6 justify-between">
                 <div className="flex flex-row">
-                    {/* <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem] ring-2 border border-gray-200/50 dark:border-gray-600/50"></div>
+                    <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem] ring-2 border border-gray-200/50 dark:border-gray-600/50"></div>
+                    {/* <span className="relative flex size-10 mr-6">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+                        <span className="relative inline-flex size-10 rounded-full bg-sky-500"></span>
+                    </span> */}
                     <div className=" flex flex-row align-baseline">
-                        <div className="w-3 h-3 bg-red-500 rounded-full mr-[.5rem]"></div>
-                        <div className="w-3 h-3 bg-yellow-500 rounded-full mr-[.5rem]"></div>
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div> */}
-                    <SciFiLeds />
+                        {/* <div className="w-3 h-3 bg-red-500 rounded-full mr-[.5rem]"></div> */}
+                        {/* <div className="w-3 h-3 bg-yellow-500 rounded-full mr-[.5rem]"></div> */}
+                        {/* <div className="w-3 h-3 bg-green-500 rounded-full"></div> */}
+                        <div className="flex flex-row gap-2">
+                            <span className="relative flex size-3">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
+                                <span className="relative inline-flex size-3 rounded-full bg-red-500"></span>
+                            </span>
+                            <span className="relative flex size-3">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow-400 opacity-75"></span>
+                                <span className="relative inline-flex size-3 rounded-full bg-yellow-500"></span>
+                            </span>
+                            <span className="relative flex size-3">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex size-3 rounded-full bg-green-500"></span>
+                            </span>
+                        </div>
+                    </div>
+                    {/* <SciFiLeds /> */}
                 </div>
                 <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
             </div>
@@ -27,9 +46,9 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                 relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-300
                 before:absolute before:inset-0 before:rounded-xl before:blur-md before:z-[-1]
                 ${tier == "legendary" ? 'border-yellow-400 dark:border-yellow-600 bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 dark:from-yellow-700 dark:via-yellow-800 dark:to-yellow-600 before:animate-glow-yellow'
-                        : tier == "mythical" ? 'border-gray-400 dark:border-gray-500 bg-gradient-to-r from-gray-200 via-white to-gray-300 dark:from-slate-600 dark:via-slate-700 dark:to-slate-500 before:animate-glow-silver'
-                            : 'border-gray-200/50 dark:border-gray-600/50 bg-white dark:bg-slate-800'
-                    }`}
+                    : tier == "mythical" ? 'border-gray-400 dark:border-gray-500 bg-gradient-to-r from-gray-200 via-white to-gray-300 dark:from-slate-600 dark:via-slate-700 dark:to-slate-500 before:animate-glow-silver'
+                        : 'border-gray-200/50 dark:border-gray-600/50 bg-white dark:bg-slate-800'
+                }`}
             >
 
                 {(tier == "legendary" || tier == "mythical") && (
@@ -44,9 +63,17 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                     </div>
                 )}
 
-                <div className="flex flex-row justify-center mb-[1rem]">
-                    <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div>
-                    <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div>
+                <div className="flex flex-row justify-center mb-[1rem] gap-4">
+                    <span className="relative flex size-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
+                        <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
+                    </span>
+                    <span className="relative flex size-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
+                        <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
+                    </span>
+                    {/* <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div>
+                    <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div> */}
                 </div>
 
                 <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />

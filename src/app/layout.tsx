@@ -17,6 +17,7 @@ export default function RootLayout({
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
+                <meta name="theme-color" content="#fff"></meta>
             </head>
             <body className="min-h-screen bg-gray-50 dark:bg-black">
                 {children}

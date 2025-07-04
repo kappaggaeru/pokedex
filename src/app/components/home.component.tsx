@@ -66,7 +66,7 @@ const HomeComponent: React.FC = () => {
                     <ModalComponent isOpen={showModal}>
                     </ModalComponent>
                 </div>
-                <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className="fixed bottom-5 right-5 z-20" />
+                <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className="fixed bottom-5 right-5 z-20 animate-bounce" />
             </div>
         </div>
     );

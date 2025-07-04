@@ -57,10 +57,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
             const systemTheme = getSystemTheme();
             const html = document.documentElement;
 
-            // Verificamos si el tema aplicado es distinto al nuevo del sistema
             if (!html.classList.contains(systemTheme)) {
                 html.classList.remove("light", "dark", "retro");
                 html.classList.add(systemTheme);
+                applyTheme(systemTheme);
             }
         };
 
