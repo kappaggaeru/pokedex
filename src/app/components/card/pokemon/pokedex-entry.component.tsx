@@ -4,6 +4,7 @@ import FadeText from "../../text/fade-text.component";
 import { Flavor } from "@/app/models/dto/flavor.model";
 import { useLanguage } from "@/app/context/languageContext";
 import { formatFlavorText } from "@/app/utils/stringUtils";
+import { usePokemon } from "@/app/context/pokemonContext";
 
 type Props = {
     entries: Flavor[];
@@ -12,6 +13,7 @@ type Props = {
 const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
     const { language } = useLanguage();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const { tier } = usePokemon();
 
     const groupedEntries = useMemo(() => {
         const en: PokedexEntry[] = [];
@@ -74,7 +76,7 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
         );
     };
 
-    if (!currentEntry) return null; // O puedes renderizar un fallback
+    if (!currentEntry) return null;
 
     return (
         <div>
@@ -90,17 +92,23 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
             <div className="mt-4 flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300">
                 <button
                     onClick={handlePrev}
-                    className="border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
-                    hover:scale-110 transition-all duration-300
-                    focus:border-indigo-400 focus:dark:border-indigo-500"
+                    className={`
+                        border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
+                        hover:scale-110 transition-all duration-300
+                        focus:border-indigo-400 focus:dark:border-indigo-500
+                        ${tier !== "normal" ? "bg-white/70 dark:bg-slate-700/70" : ""}
+                        `}
                 >
                     Previous
                 </button>
                 <button
                     onClick={handleNext}
-                    className="border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
-                    hover:scale-110 transition-all duration-300
-                    focus:border-indigo-400 focus:dark:border-indigo-500"
+                    className={`
+                        border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
+                        hover:scale-110 transition-all duration-300
+                        focus:border-indigo-400 focus:dark:border-indigo-500
+                        ${tier !== "normal" ? "bg-white/70 dark:bg-slate-700/70" : ""}
+                        `}
                 >
                     Next
                 </button>

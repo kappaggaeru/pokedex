@@ -7,11 +7,13 @@ import { Generic } from "@/app/models/dto/generic.model";
 import { Effect } from "@/app/models/dto/effect.model";
 import { Flavor } from "@/app/models/dto/flavor.model";
 import { useLanguage } from "@/app/context/languageContext";
+import { usePokemon } from "@/app/context/pokemonContext";
 
 export const MovesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
     const { language } = useLanguage();
     const [allMoves, setAllMoves] = useState<MoveProps[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const { tier } = usePokemon();
 
     useEffect(() => {
         const fetchMoves = async () => {
@@ -115,17 +117,23 @@ export const MovesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
             <div className="flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300">
                 <button
                     onClick={handlePrev}
-                    className="border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
-                    hover:scale-110 transition-all duration-300
-                    focus:border-indigo-400 focus:dark:border-indigo-500"
+                    className={`
+                        border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
+                        hover:scale-110 transition-all duration-300
+                        focus:border-indigo-400 focus:dark:border-indigo-500
+                        ${tier !== "normal" ? "bg-white/70 dark:bg-slate-700/70" : ""}
+                        `}
                 >
                     Previous
                 </button>
                 <button
                     onClick={handleNext}
-                    className="border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
-                    hover:scale-110 transition-all duration-300
-                    focus:border-indigo-400 focus:dark:border-indigo-500"
+                    className={`
+                        border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
+                        hover:scale-110 transition-all duration-300
+                        focus:border-indigo-400 focus:dark:border-indigo-500
+                        ${tier !== "normal" ? "bg-white/70 dark:bg-slate-700/70" : ""}
+                        `}
                 >
                     Next
                 </button>

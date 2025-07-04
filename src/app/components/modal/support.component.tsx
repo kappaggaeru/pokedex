@@ -1,7 +1,7 @@
 
 export const SupportComponent: React.FC = () => (
     <div className="flex flex-col">
-        <div className="text-gray-500 dark:text-gray-400">
+        <div className="text-gray-500 dark:text-gray-400 flex flex-col gap-4">
             <p className="font-bold">Support this developer — buy him a coffee!</p>
             <p>This website was built by a single developer. Your support helps fund new features and, of course, coffee!</p>
             <p>If you&#39;re in Argentina, you can use <i>Cafecito</i> to pay in ARS.</p>
