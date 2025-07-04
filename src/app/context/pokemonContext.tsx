@@ -3,11 +3,18 @@ import { useCookies } from "react-cookie";
 
 type PokemonTier = "normal" | "legendary" | "mythical";
 
+export type PokemonList = {
+    id: number;
+    name: string;
+}
+
 interface PokemonContextType {
     tier: PokemonTier;
     setTier: (tier: PokemonTier) => void;
     capturePokemon: (id: number) => void;
     clearCapturedList: () => void;
+    pokemonList: PokemonList[];
+    setPokemonList: (list: PokemonList[]) => void;
 }
 
 const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
@@ -15,6 +22,7 @@ const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
 export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [tier, setTier] = useState<PokemonTier>("normal");
     const [capturedIds, setCapturedIds] = useState<number[]>([]);
+    const [pokemonList, setPokemonList] = useState<{ id: number, name: string }[]>([]);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
     const cookieExpiration = 60 * 60 * 24 * 30;
 
@@ -39,7 +47,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <PokemonContext value={{ tier, setTier, capturePokemon, clearCapturedList }}>
+        <PokemonContext value={{ tier, setTier, capturePokemon, clearCapturedList, pokemonList, setPokemonList }}>
             {children}
         </PokemonContext>
     );

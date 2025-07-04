@@ -19,7 +19,7 @@ type ViewedState = {
 
 const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
     const hasMounted = useHasMounted();
-    const [pokemonList, setPokemonList] = useState<{ id: number, name: string }[]>([]);
+    const {pokemonList, setPokemonList} = usePokemon();
     const [viewedMap, setViewedMap] = useState<Record<number, ViewedState>>({});
     const [cookies] = useCookies(["capturedList"]);
     const { capturePokemon } = usePokemon();

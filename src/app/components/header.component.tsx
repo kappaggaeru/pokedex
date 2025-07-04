@@ -16,10 +16,10 @@ const HeaderComponent: React.FC = () => {
                 <div className="hidden md:block">
                     <ModalTriggerButton modal="settings" title="Settings" icon={Settings} />
                 </div>
-                <div className="hidden md:block">
+                <div className="hidden lg:block">
                     <ModalTriggerButton modal="theme" title="Theme" icon={SunMoon} />
                 </div>
-                <div className="hidden md:block">
+                <div className="hidden xl:block">
                     <ModalTriggerButton modal="support" title="Support" icon={Coffee} />
                 </div>
                 <div className="md:hidden">
