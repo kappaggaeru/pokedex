@@ -4,25 +4,17 @@ import { usePokemon } from "@/app/context/pokemonContext";
 import { formatText } from "@/app/utils/stringUtils";
 import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
-// import SciFiLeds from "./sci-fi-leds.component";
 
-export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, clearCard }) => {
+export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork }) => {
+    const { clearPokemonCard } = usePokemon();
     const { tier } = usePokemon();
-
 
     return (
         <div>
             <div className="flex flex-row m-[1rem] mx-6 justify-between">
                 <div className="flex flex-row">
                     <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem] ring-2 border border-gray-200/50 dark:border-gray-600/50"></div>
-                    {/* <span className="relative flex size-10 mr-6">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                        <span className="relative inline-flex size-10 rounded-full bg-sky-500"></span>
-                    </span> */}
                     <div className=" flex flex-row align-baseline">
-                        {/* <div className="w-3 h-3 bg-red-500 rounded-full mr-[.5rem]"></div> */}
-                        {/* <div className="w-3 h-3 bg-yellow-500 rounded-full mr-[.5rem]"></div> */}
-                        {/* <div className="w-3 h-3 bg-green-500 rounded-full"></div> */}
                         <div className="flex flex-row gap-2">
                             <span className="relative flex size-3">
                                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
@@ -38,9 +30,8 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                             </span>
                         </div>
                     </div>
-                    {/* <SciFiLeds /> */}
                 </div>
-                <DefaultButton onClick={clearCard} isVisible={true} icon={X} className="z-10" />
+                <DefaultButton onClick={clearPokemonCard} isVisible={true} icon={X} className="z-10" />
             </div>
             <div className={`
                 relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-300
@@ -72,8 +63,6 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
                         <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
                     </span>
-                    {/* <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div>
-                    <div className="w-2 h-2 bg-red-600 mx-[0.5rem] rounded-full"></div> */}
                 </div>
 
                 <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />

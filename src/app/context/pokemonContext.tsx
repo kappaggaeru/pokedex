@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import { getPokemonById, getSprite } from "../services/pokemon.service";
+import { Pokemon } from "../models/dto/pokemon.model";
 
 type PokemonTier = "normal" | "legendary" | "mythical";
 
@@ -8,22 +10,41 @@ export type PokemonList = {
     name: string;
 }
 
+type ViewedState = {
+    loading: boolean;
+    sprite?: string;
+};
+
 interface PokemonContextType {
     tier: PokemonTier;
+    selectedId: number | null;
+    pokemonList: PokemonList[];
+    viewedMap: Record<number, ViewedState>;
+    selectedPokemon: Pokemon | null;
+    isLoadingPokemon: boolean;
     setTier: (tier: PokemonTier) => void;
     capturePokemon: (id: number) => void;
     clearCapturedList: () => void;
-    pokemonList: PokemonList[];
     setPokemonList: (list: PokemonList[]) => void;
+    selectPokemon: (id: number) => void;
+    clearPokemonCard: () => void;
+    setViewedMap: React.Dispatch<React.SetStateAction<Record<number, ViewedState>>>;
+    setIsLoadingPokemon: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
 
 export const PokemonProvider = ({ children }: { children: ReactNode }) => {
-    const [tier, setTier] = useState<PokemonTier>("normal");
-    const [capturedIds, setCapturedIds] = useState<number[]>([]);
-    const [pokemonList, setPokemonList] = useState<{ id: number, name: string }[]>([]);
+    const [tier, setTier] = useState<PokemonTier>("normal"); // tipo de pokemon seleccionado: normal, legendatio o mitico
+    const [capturedIds, setCapturedIds] = useState<number[]>([]); // arreglo de ids usado para actualizar las cookies
+    const [pokemonList, setPokemonList] = useState<{ id: number, name: string }[]>([]); // listado completo de todos los pokemon
+    const [capturedList, setCapturedList] = useState<number[]>([]);
+    const [viewedMap, setViewedMap] = useState<Record<number, { loading: boolean; sprite?: string }>>({}); // mapa control de sprites
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
+    const [isLoadingPokemon, setIsLoadingPokemon] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
+
     const cookieExpiration = 60 * 60 * 24 * 30;
 
     useEffect(() => {
@@ -33,6 +54,48 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             : [];
         setCapturedIds(parsed);
     }, []);
+
+    const selectPokemon = async (id: number) => {
+        if (!id || typeof id !== "number") return;
+        if (selectedId === id) return;
+
+        scrollToTop();
+        setSelectedId(id);
+        setIsLoadingPokemon(true);
+        capturePokemon(id);
+
+        try {
+            const [pokemon, spriteBlob] = await Promise.all([
+                getPokemonById(id),
+                getSprite(id),
+            ]);
+
+            const objectURL = URL.createObjectURL(spriteBlob);
+            setViewedMap((prev) => ({
+                ...prev,
+                [id]: { loading: false, sprite: objectURL },
+            }));
+            setSelectedPokemon(pokemon);
+
+            if (!capturedList.includes(pokemon.id)) {
+                setCapturedList(prev => [...prev, pokemon.id]);
+            }
+        } catch (error) {
+            console.error("Error selecting Pokémon", error);
+            setViewedMap((prev) => ({
+                ...prev,
+                [id]: { loading: false },
+            }));
+        } finally {
+            setIsLoadingPokemon(false);
+        }
+    };
+
+    const clearPokemonCard = () => {
+        setSelectedId(null);
+        setSelectedPokemon(null);
+        setIsLoadingPokemon(false);
+    }
 
     const capturePokemon = (id: number) => {
         if (capturedIds.includes(id)) return;
@@ -46,10 +109,29 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         removeCookie("capturedList", { path: "/" });
     }
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     return (
-        <PokemonContext value={{ tier, setTier, capturePokemon, clearCapturedList, pokemonList, setPokemonList }}>
+        <PokemonContext.Provider value={{
+            selectedId,
+            pokemonList,
+            tier,
+            viewedMap,
+            selectedPokemon,
+            isLoadingPokemon,
+            setTier,
+            capturePokemon,
+            clearCapturedList,
+            setPokemonList,
+            selectPokemon,
+            clearPokemonCard,
+            setViewedMap,
+            setIsLoadingPokemon
+        }}>
             {children}
-        </PokemonContext>
+        </PokemonContext.Provider>
     );
 };
 

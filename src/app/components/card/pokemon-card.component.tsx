@@ -20,8 +20,8 @@ import { EvolutionNode } from "@/app/models/evolution-node.model";
 import { TypesContainerComponent } from "./pokemon/types.component";
 import { AbilitiesList } from "./pokemon/ability-list.component";
 
-const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setIdFromParent }) => {
-    const { setTier } = usePokemon();
+const PokemonCardComponent: React.FC = () => {
+    const { setTier, selectedId, isLoadingPokemon } = usePokemon();
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecies, setPokemonSpecies] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
@@ -32,14 +32,13 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!id) return;
-
+        if (!selectedId) return;
         setLoading(true);
         let objectUrlTemp: string | null = null;
 
         const fetchAllData = async () => {
             try {
-                const pokemon = await getPokemonById(id);
+                const pokemon = await getPokemonById(selectedId);
                 const [species, form] = await Promise.all([
                     fetch(pokemon.species.url).then(res => res.json()),
                     fetch(pokemon.forms[0].url).then(res => res.json())
@@ -77,7 +76,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 URL.revokeObjectURL(objectUrlTemp);
             }
         };
-    }, [id]);
+    }, [selectedId]);
 
     useEffect(() => {
         if (pokemonSpecies?.is_legendary) {
@@ -156,7 +155,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
         return result;
     };
 
-    if (id === null) {
+    if (selectedId === null) {
         return (
             <div className="h-[40rem] w-full flex items-center justify-center text-gray-500">
                 <div className="p-4 text-center">
@@ -165,9 +164,9 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                 </div>
             </div>
         );
-    } else if (loading) {
+    } else if (isLoadingPokemon || loading) {
         return (
-            <div className="h-[40rem] w-full flex items-center justify-center">
+            <div className="h-[40rem] max-w-sm mx-auto w-full flex items-center justify-center">
                 <div className="animate-pulse w-full p-4 space-y-4">
                     <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mx-auto" />
                     <div className="h-40 bg-gray-300 dark:bg-gray-600 rounded" />
@@ -178,10 +177,11 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
             </div>
         );
     } else {
-
         return (
             <div className="max-w-md mx-auto">
-                <ArtworkContainerComponent id={id} name={pokemonData?.name ?? ''} pokemonArtwork={pokemonArtwork} clearCard={clearCard} />
+                {pokemonData &&
+                    <ArtworkContainerComponent id={selectedId} name={pokemonData?.name ?? ''} pokemonArtwork={pokemonArtwork} />
+                }
 
                 {pokemonSpecies &&
                     <GenericCardContainerComponent>
@@ -191,25 +191,27 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
                     <GenericCardContainerComponent title="evolution chain">
-                        <EvolutionChainComponent chain={evolutionChainList} onSelect={setIdFromParent} />
+                        <EvolutionChainComponent chain={evolutionChainList} />
                     </GenericCardContainerComponent>
                 )}
 
                 {varietiesList && varietiesList.length > 1 && (
                     <GenericCardContainerComponent title="varieties">
-                        <EvolutionChainComponent chain={varietiesList} onSelect={setIdFromParent} />
+                        <EvolutionChainComponent chain={varietiesList} />
                     </GenericCardContainerComponent>
                 )}
 
                 {pokemonData &&
                     <GenericCardContainerComponent title="information">
-                        <InformationComponent id={id} height={pokemonData?.height} weight={pokemonData?.weight} />
+                        <InformationComponent id={selectedId} height={pokemonData?.height} weight={pokemonData?.weight} />
                     </GenericCardContainerComponent>
                 }
 
-                <GenericCardContainerComponent title="types">
-                    <TypesContainerComponent types={pokemonForm?.types ?? []} />
-                </GenericCardContainerComponent>
+                {pokemonForm &&
+                    <GenericCardContainerComponent title="types">
+                        <TypesContainerComponent types={pokemonForm?.types ?? []} />
+                    </GenericCardContainerComponent>
+                }
 
                 {pokemonData?.stats &&
                     < GenericCardContainerComponent title="stats">
@@ -230,7 +232,7 @@ const PokemonCardComponent: React.FC<PokemonCardProps> = ({ id, clearCard, setId
                         </GenericCardContainerComponent>
                     </div>
                 )}
-            </div >
+            </div>
         );
     }
 };

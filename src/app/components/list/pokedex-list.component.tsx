@@ -8,21 +8,12 @@ import { useCookies } from "react-cookie";
 import { useHasMounted } from "@/app/hooks/useHasMounted";
 import { GenerationPokedexEntry } from "@/app/models/dto/generation-entry.model";
 
-type Props = {
-    onSelect: (id: number) => void;
-};
 
-type ViewedState = {
-    loading: boolean;
-    sprite?: string;
-};
 
-const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
+const PokedexListComponent: React.FC = () => {
     const hasMounted = useHasMounted();
-    const {pokemonList, setPokemonList} = usePokemon();
-    const [viewedMap, setViewedMap] = useState<Record<number, ViewedState>>({});
+    const {pokemonList, viewedMap, setPokemonList, selectPokemon, setViewedMap} = usePokemon();
     const [cookies] = useCookies(["capturedList"]);
-    const { capturePokemon } = usePokemon();
     const [loading, setLoading] = useState(true);
     const generations = [
         { name: "Kanto", count: 151, roman: "I" },
@@ -47,6 +38,7 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
         return new Set<number>(ids);
     }, [cookies.capturedList]);
 
+    // crea la lista de la pokedex
     useEffect(() => {
         const fetchPokedex = async () => {
             try {
@@ -67,6 +59,7 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
     }, [hasMounted]);
 
 
+    // carga las sprites de los pokemon capturados
     useEffect(() => {
         if (hasMounted) {
             const preloadCapturedSprites = async () => {
@@ -107,35 +100,6 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
         }
     }, [hasMounted, cookies.capturedList]);
 
-
-    const handleSelect = async (id: number) => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        onSelect(id);
-        capturePokemon(id);
-
-        if (viewedMap[id]?.sprite) return;
-
-        setViewedMap((prev) => ({
-            ...prev,
-            [id]: { loading: true },
-        }));
-
-        try {
-            const blob = await getSprite(id);
-            const objectURL = URL.createObjectURL(blob);
-            setViewedMap((prev) => ({
-                ...prev,
-                [id]: { loading: false, sprite: objectURL },
-            }));
-        } catch (error) {
-            console.error("Error fetching sprite", error);
-            setViewedMap((prev) => ({
-                ...prev,
-                [id]: { loading: false },
-            }));
-        }
-    };
-
     const getSegmentedList = () => {
         let index = 0;
         const segments = generations.map((gen) => {
@@ -148,7 +112,7 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
                         sprite={viewedData?.sprite ?? ''}
                         loading={viewedData?.loading ?? false}
                         viewed={seenIds.has(id)}
-                        onSelect={handleSelect}
+                        onSelect={() => selectPokemon(id)}
                     />
                 );
             });
@@ -182,7 +146,6 @@ const PokedexListComponent: React.FC<Props> = ({ onSelect }) => {
                     viewBox="0 0 100 100"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-                    {/* Borde exterior gris */}
                     <circle
                         cx="50"
                         cy="50"

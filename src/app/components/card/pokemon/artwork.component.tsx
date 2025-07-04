@@ -25,14 +25,12 @@ const PokemonArtworkComponent = ({ artworkUrl, id }: { artworkUrl: string | null
                 }}
             />
             <div className="flex justify-center">
-                {artworkUrl ? (
+                {artworkUrl && (
                     <img
                         src={artworkUrl}
                         alt={`Pokemon ${id}`}
                         className="relative object-cover h-[10rem] z-10"
                     />
-                ) : (
-                    <p className="relative z-10">Loading artwork...</p>
                 )}
             </div>
         </div>

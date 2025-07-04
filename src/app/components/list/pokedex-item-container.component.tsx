@@ -1,8 +1,10 @@
 import React from 'react';
 import { PokedexItemProps } from '../../models/props/pokedex-item.props';
 import Image from 'next/image';
+import { usePokemon } from '@/app/context/pokemonContext';
 
-const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, loading, onSelect }) => {
+const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, loading }) => {
+    const { selectPokemon } = usePokemon();
 
     const spinner = (
         <div className="w-6 h-6 m-auto border-2 border-gray-500 dark:border-2 dark:border-gray-200 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
@@ -14,7 +16,7 @@ const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, 
                 w-[4rem] h-[4rem] font-bold text-center content-center text-black dark:text-gray-300 rounded-lg 
                 hover:cursor-pointer hover:scale-110 duration-300
                 ${viewed ? 'bg-gray-200 dark:bg-gray-500' : 'bg-orange-100 dark:bg-slate-700'}`}
-            onClick={() => onSelect(id)}
+            onClick={() => selectPokemon(id)}
         >
             {loading ? (
                 spinner

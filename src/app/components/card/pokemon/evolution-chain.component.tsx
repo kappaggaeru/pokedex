@@ -1,17 +1,25 @@
+import { usePokemon } from "@/app/context/pokemonContext";
 import { EvolutionStage } from "../../../models/evolution-stage.model";
 import PokedexLinkContainer from "./pokedex-link-container.component";
 
 type Props = {
     chain: EvolutionStage[];
-    onSelect: (id: number) => void;
 }
 
-const EvolutionChainComponent: React.FC<Props> = ({ chain, onSelect }) => {
+const EvolutionChainComponent: React.FC<Props> = ({ chain }) => {
+    const { selectPokemon } = usePokemon();
     if (chain.length === 0) return null;
 
     const evolutionChain = chain.flatMap((stage) => {
         const element = (
-            <PokedexLinkContainer key={`stage-${stage.id}`} id={stage.id} name={stage.name} sprite={stage.sprite} loading={true} onSelect={() => onSelect(stage.id)} />
+            <PokedexLinkContainer
+                key={`stage-${stage.id}`}
+                id={stage.id}
+                name={stage.name}
+                sprite={stage.sprite}
+                loading={true}
+                onSelect={() => selectPokemon(stage.id)}
+            />
         );
 
         return [element];
