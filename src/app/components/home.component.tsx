@@ -9,6 +9,7 @@ import { ModalComponent } from "./modal/modal.component";
 import { useModal } from "../context/modalContext";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { usePokemon } from "../context/pokemonContext";
+import { scrollToTop } from "../utils/scroll";
 
 const HomeComponent: React.FC = () => {
     const { selectedId, selectedPokemon } = usePokemon();
@@ -36,10 +37,6 @@ const HomeComponent: React.FC = () => {
             document.body.style.overflow = "";
         };
     }, [isMobile, showModal]);
-
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
 
     return (
         <div>

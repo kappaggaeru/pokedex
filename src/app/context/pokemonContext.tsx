@@ -2,6 +2,7 @@ import { createContext, useContext, useState, ReactNode, useEffect } from "react
 import { useCookies } from "react-cookie";
 import { getPokemonById, getSprite } from "../services/pokemon.service";
 import { Pokemon } from "../models/dto/pokemon.model";
+import { scrollToTop } from "../utils/scroll";
 
 type PokemonTier = "normal" | "legendary" | "mythical";
 
@@ -107,10 +108,6 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
 
     const clearCapturedList = () => {
         removeCookie("capturedList", { path: "/" });
-    }
-
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     return (

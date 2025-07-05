@@ -22,9 +22,8 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
             bg-white/50 dark:bg-slate-800/50 backdrop-blur-md
             md:border-l border-gray-200/50 dark:border-gray-600/50
             md:rounded-tl-xl md:rounded-bl-xl
-            shadow-[rgba(0,0,15,0.5)_10px_10px_10px_10px]
             w-full md:w-[50%] lg:w-[40%] xl:w-[30%] 2xl:w-[25%]
-            ${!isOpen ? "translate-x-full" : "translate-x-0"}
+            ${!isOpen ? "translate-x-full shadow-none" : "translate-x-0 shadow-[rgba(0,0,15,0.5)_10px_10px_10px_10px]"}
             `}
         >
             <div className="w-full h-full">
@@ -33,7 +32,7 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                         <div className="flex flex-row justify-between items-center">
                             <div>
                                 <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9dex" target="_blank" rel="noopener noreferrer">
-                                    <img src="../../assets/images/pokedex_logo.png" alt="pokedex logo" className="w-fit h-10" />
+                                    <img src="../../assets/images/pokedex_logo.png" alt="pokedex logo" className="h-[4rem] max-w-[10rem] aspect-[16/9] object-contain" />
                                 </a>
                             </div>
                             <CloseModalButton />

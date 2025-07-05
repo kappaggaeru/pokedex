@@ -84,7 +84,7 @@ export default function SearchBarComponent() {
                             backdrop-blur-md bg-white/80 dark:bg-slate-800/80
                             shadow-lg border border-gray-200/50 dark:border-gray-600/50 
                             absolute left-0 mt-4 z-40 p-4 pr-0
-                            h-fit max-h-[15rem] w-full rounded-xl overflow-auto 
+                            min-h-[3rem] max-h-[15rem] overflow-y-auto w-full rounded-xl
                         ">
                         <div className='w-full h-full overflow-auto flex flex-col gap-2 pr-4'>
                             {results.length > 0 ? results : <p className='text-gray-500 dark:text-gray-400'>No results</p>}
