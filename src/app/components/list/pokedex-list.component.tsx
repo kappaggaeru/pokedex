@@ -12,8 +12,11 @@ import { GenerationPokedexEntry } from "@/app/models/dto/generation-entry.model"
 
 const PokedexListComponent: React.FC = () => {
     const hasMounted = useHasMounted();
-    const {pokemonList, viewedMap, setPokemonList, selectPokemon, setViewedMap} = usePokemon();
+    const { pokemonList, viewedMap, setPokemonList, selectPokemon, setViewedMap } = usePokemon();
     const [cookies] = useCookies(["capturedList"]);
+    const rawCapturedList = typeof cookies.capturedList === "string"
+        ? cookies.capturedList
+        : "";
     const [loading, setLoading] = useState(true);
     const generations = [
         { name: "Kanto", count: 151, roman: "I" },
@@ -56,49 +59,47 @@ const PokedexListComponent: React.FC = () => {
         };
 
         if (hasMounted) fetchPokedex();
-    }, [hasMounted]);
+    }, [hasMounted, setPokemonList]);
 
 
     // carga las sprites de los pokemon capturados
     useEffect(() => {
-        if (hasMounted) {
-            const preloadCapturedSprites = async () => {
-                const raw = cookies.capturedList;
-                const capturedList = typeof raw === "string" ? raw : "";
-                const ids = capturedList
-                    .split(",")
-                    .filter((v) => v !== "")
-                    .map(Number);
+        if (!hasMounted) return;
 
-                for (const id of ids) {
-                    if (!viewedMap[id]) {
-                        // Marcamos como cargando
+        const preloadCapturedSprites = async () => {
+            const ids = rawCapturedList
+                .split(",")
+                .filter((v) => v !== "")
+                .map(Number);
+
+            for (const id of ids) {
+                if (!viewedMap[id]) {
+                    // Marcamos como cargando
+                    setViewedMap((prev) => ({
+                        ...prev,
+                        [id]: { loading: true },
+                    }));
+
+                    try {
+                        const blob = await getSprite(id);
+                        const objectURL = URL.createObjectURL(blob);
                         setViewedMap((prev) => ({
                             ...prev,
-                            [id]: { loading: true },
+                            [id]: { loading: false, sprite: objectURL },
                         }));
-
-                        try {
-                            const blob = await getSprite(id);
-                            const objectURL = URL.createObjectURL(blob);
-                            setViewedMap((prev) => ({
-                                ...prev,
-                                [id]: { loading: false, sprite: objectURL },
-                            }));
-                        } catch (e) {
-                            console.error(`Error loading sprite for id: ${id}`, e);
-                            setViewedMap((prev) => ({
-                                ...prev,
-                                [id]: { loading: false },
-                            }));
-                        }
+                    } catch (e) {
+                        console.error(`Error loading sprite for id: ${id}`, e);
+                        setViewedMap((prev) => ({
+                            ...prev,
+                            [id]: { loading: false },
+                        }));
                     }
                 }
-            };
+            }
+        };
 
-            preloadCapturedSprites();
-        }
-    }, [hasMounted, cookies.capturedList]);
+        preloadCapturedSprites();
+    }, [hasMounted, rawCapturedList]);
 
     const getSegmentedList = () => {
         let index = 0;

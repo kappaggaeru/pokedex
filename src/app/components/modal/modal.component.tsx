@@ -6,6 +6,7 @@ import { ThemeComponent } from "./theme.component";
 import { useState } from "react";
 import { MenuModalContainerComponent } from "./menu-modal-container.component";
 import { LanguageComponent } from "./language.component";
+import Image from "next/image";
 
 export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
     const [achievementsVisible, setAchievementsVisible] = useState(false);
@@ -32,7 +33,13 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                         <div className="flex flex-row justify-between items-center">
                             <div>
                                 <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9dex" target="_blank" rel="noopener noreferrer">
-                                    <img src="../../assets/images/pokedex_logo.png" alt="pokedex logo" className="h-[4rem] max-w-[10rem] aspect-[16/9] object-contain" />
+                                    <Image
+                                        src="/assets/images/pokedex_logo.png"
+                                        alt="pokedex logo"
+                                        className="h-[4rem] max-w-[10rem] aspect-[16/9] object-contain"
+                                        width={100}
+                                        height={50}
+                                    />
                                 </a>
                             </div>
                             <CloseModalButton />

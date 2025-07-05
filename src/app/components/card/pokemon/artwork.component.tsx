@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const PokemonArtworkComponent = ({ artworkUrl, id }: { artworkUrl: string | null, id: number }) => {
     return (
         <div className="relative overflow-hidden rounded-lg w-full bg-[#207b55] dark:bg-[#012d1b] ring-1 ring-gray-500/50">
@@ -24,17 +26,19 @@ const PokemonArtworkComponent = ({ artworkUrl, id }: { artworkUrl: string | null
                     animation: "move-grid 2s linear infinite",
                 }}
             />
-            <div className="flex justify-center">
+            <div className="relative w-full aspect-[3/4] h-[10rem] z-10">
                 {artworkUrl && (
-                    <img
+                    <Image
                         src={artworkUrl}
                         alt={`Pokemon ${id}`}
-                        className="relative object-cover h-[10rem] z-10"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        priority
                     />
                 )}
             </div>
         </div>
-
     );
 };
 

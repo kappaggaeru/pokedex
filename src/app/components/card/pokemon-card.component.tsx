@@ -85,7 +85,7 @@ const PokemonCardComponent: React.FC = () => {
         } else {
             setTier("normal");
         }
-    }, [pokemonSpecies]);
+    }, [pokemonSpecies, setTier]);
 
     useEffect(() => {
         if (pokemonEvolution) {

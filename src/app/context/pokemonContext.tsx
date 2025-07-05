@@ -54,7 +54,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             ? raw.split(",").filter(Boolean).map(Number)
             : [];
         setCapturedIds(parsed);
-    }, []);
+    }, [cookies.capturedList]);
 
     const selectPokemon = async (id: number) => {
         if (!id || typeof id !== "number") return;

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 export type ThemeOption = "light" | "dark" | "retro" | "system";
 type AppliedTheme = "light" | "dark" | "retro"; // lo que realmente se aplica
@@ -20,7 +20,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         return prefersDark ? "dark" : "light";
     };
 
-    const applyTheme = (theme: ThemeOption) => {
+    const applyTheme = useCallback((theme: ThemeOption) => {
         const html = document.documentElement;
         const resolvedTheme = theme === "system" ? getSystemTheme() : theme;
 
@@ -40,13 +40,13 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
             themeColor.setAttribute("content", hexColor);
         }
-    };
+    }, []);
 
     // Al iniciar la app
     useEffect(() => {
         const storedTheme = (localStorage.getItem("theme") as ThemeOption) || "system";
         applyTheme(storedTheme);
-    }, []);
+    }, [applyTheme]);
 
     // Escuchar cambios en el sistema si el tema actual es "system"
     useEffect(() => {
@@ -66,7 +66,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
         mediaQuery.addEventListener("change", handler);
         return () => mediaQuery.removeEventListener("change", handler);
-    }, [currentTheme]);
+    }, [currentTheme, applyTheme]);
 
     const setActiveTheme = (theme: ThemeOption) => {
         localStorage.setItem("theme", theme);
