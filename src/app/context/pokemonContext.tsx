@@ -46,6 +46,8 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [isLoadingPokemon, setIsLoadingPokemon] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
 
+    const MIN_ID = 1;
+    const MAX_ID = 1025;
     const cookieExpiration = 60 * 60 * 24 * 30;
 
     useEffect(() => {
@@ -99,6 +101,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const capturePokemon = (id: number) => {
+        if (id < MIN_ID || id > MAX_ID) return;
         if (capturedIds.includes(id)) return;
 
         const newList = [...capturedIds, id];

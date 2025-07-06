@@ -5,33 +5,17 @@ import { formatText } from "@/app/utils/stringUtils";
 import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
 import { CryComponent } from "./cry.component";
+import { IdControllerComponent } from "./id-contoller.component";
 
 export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, cries }) => {
-    const { clearPokemonCard } = usePokemon();
+    const { clearPokemonCard, selectPokemon } = usePokemon();
     const { tier } = usePokemon();
 
     return (
         <div>
-            <div className="flex flex-row m-[1rem] mx-6 justify-between">
-                <div className="flex flex-row gap-4">
-                    <CryComponent cries={cries} />
-                    <div className=" flex flex-row align-baseline">
-                        <div className="flex flex-row gap-3">
-                            <span className="relative flex size-3">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
-                                <span className="relative inline-flex size-3 rounded-full bg-red-500"></span>
-                            </span>
-                            <span className="relative flex size-3">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow-400 opacity-75"></span>
-                                <span className="relative inline-flex size-3 rounded-full bg-yellow-500"></span>
-                            </span>
-                            <span className="relative flex size-3">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                                <span className="relative inline-flex size-3 rounded-full bg-green-500"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+            <div className="flex flex-row m-[1rem] mx-6 justify-between gap-4 items-center">
+                <CryComponent cries={cries} />
+                <IdControllerComponent id={id} selectPokemon={selectPokemon} />
                 <DefaultButton onClick={clearPokemonCard} isVisible={true} icon={X} className="z-10" />
             </div>
             <div className={`
@@ -68,8 +52,8 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
 
                 <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
 
-                <div className="flex flex-row items-center w-full justify-between">
-                    <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">
+                <div className="w-full">
+                    <div className="flex flex-row justify-end w-full items-center space-x-2 my-[0.3rem]">
                         <span className="text-md text-gray-400">#{id}</span>
                         <h4 className="text-xl uppercase text-black dark:text-gray-300">
                             {formatText(name, "-")}

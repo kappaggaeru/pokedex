@@ -6,4 +6,5 @@ export interface DefaultButtonProps {
     isVisible: boolean;
     icon: LucideIcon;
     className?: string;
+    disabled?: boolean;
 }
