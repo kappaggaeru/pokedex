@@ -4,18 +4,19 @@ import { usePokemon } from "@/app/context/pokemonContext";
 import { formatText } from "@/app/utils/stringUtils";
 import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
+import { CryComponent } from "./cry.component";
 
-export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork }) => {
+export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, cries }) => {
     const { clearPokemonCard } = usePokemon();
     const { tier } = usePokemon();
 
     return (
         <div>
             <div className="flex flex-row m-[1rem] mx-6 justify-between">
-                <div className="flex flex-row">
-                    <div className="w-14 h-14 bg-blue-400 rounded-full mr-[1rem] ring-2 border border-gray-200/50 dark:border-gray-600/50"></div>
+                <div className="flex flex-row gap-4">
+                    <CryComponent cries={cries} />
                     <div className=" flex flex-row align-baseline">
-                        <div className="flex flex-row gap-2">
+                        <div className="flex flex-row gap-3">
                             <span className="relative flex size-3">
                                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
                                 <span className="relative inline-flex size-3 rounded-full bg-red-500"></span>
