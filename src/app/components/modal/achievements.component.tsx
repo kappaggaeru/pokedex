@@ -48,6 +48,16 @@ const entries: achievementModel[] = [
         goal: 1
     },
     {
+        title: "I choose you!",
+        description: "You discovered a Pokémon's roar.",
+        goal: 1
+    },
+    {
+        title: "Make it Shine!",
+        description: "You discovered a shiny Pokémon.",
+        goal: 1
+    },
+    {
         title: "Evolution Complete",
         description: "You evolved a Pokémon for the first time.",
         goal: 1
@@ -59,7 +69,7 @@ const entries: achievementModel[] = [
     },
     {
         title: "Ketchup",
-        description: "You caught all of Ash’s Pokémon.",
+        description: "You caught all of Ash's Pokémon.",
         goal: 50
     },
     {

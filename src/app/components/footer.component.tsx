@@ -22,7 +22,7 @@ export default function FooterComponent() {
                     `}
                     </p>
                 </div>
-                <div className="flex flex-row gap-4 pb-8">
+                <div className="flex flex-row gap-4 pb-20 md:pb-0">
                     <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">
                         <a href="https://github.com/kappaggaeru/pokedex/issues" target="_blank" rel="noopener noreferrer">
                             Report an issue
