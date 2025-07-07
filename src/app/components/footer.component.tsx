@@ -16,15 +16,28 @@ export default function FooterComponent() {
                         </a>
                     </p>
                 </div>
-                <div className="text-center text-sm text-gray-500 pb-8">
+                <div className="text-center text-gray-500">
                     <p>{`
                         This site is not affiliated with "The Pokémon Company" and does not own or claim any rights to any Nintendo trademark or the Pokémon trademark.
                     `}
                     </p>
-                    <p className="p-4">All shown data belongs to <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">PokeAPI</a></p>
-                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">Report an issue</p>
-                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">Source code</p>
-                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">PokéApi</p>
+                </div>
+                <div className="flex flex-row gap-4">
+                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">
+                        <a href="https://github.com/kappaggaeru/pokedex/issues" target="_blank" rel="noopener noreferrer">
+                            Report an issue
+                        </a>
+                    </p>
+                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">
+                        <a href="https://github.com/kappaggaeru/pokedex" target="_blank" rel="noopener noreferrer">
+                            Source code
+                        </a>
+                    </p>
+                    <p className="text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300">
+                        <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">
+                            PokéApi
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
