@@ -4,7 +4,7 @@ import FadeText from "../../text/fade-text.component";
 import { Flavor } from "@/app/models/dto/flavor.model";
 import { useLanguage } from "@/app/context/languageContext";
 import { formatFlavorText } from "@/app/utils/stringUtils";
-import { usePokemon } from "@/app/context/pokemonContext";
+import { ActionButton } from "@/app/buttons/action-button";
 
 type Props = {
     entries: Flavor[];
@@ -13,7 +13,6 @@ type Props = {
 const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
     const { language } = useLanguage();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const { tier } = usePokemon();
 
     const groupedEntries = useMemo(() => {
         const en: PokedexEntry[] = [];
@@ -90,28 +89,8 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
             </h3>
             <FadeText key={currentEntry.entry} text={currentEntry.entry} />
             <div className="mt-4 flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300">
-                <button
-                    onClick={handlePrev}
-                    className={`
-                        border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
-                        hover:scale-110 transition-all duration-300
-                        focus:border-indigo-400 focus:dark:border-indigo-500
-                        ${tier !== "normal" ? "bg-white/70 dark:bg-slate-700/70" : ""}
-                        `}
-                >
-                    Previous
-                </button>
-                <button
-                    onClick={handleNext}
-                    className={`
-                        border border-gray-200/50 dark:border-gray-600/50 py-2 px-4 w-full rounded-xl 
-                        hover:scale-110 transition-all duration-300
-                        focus:border-indigo-400 focus:dark:border-indigo-500
-                        ${tier !== "normal" ? "bg-white/70 dark:bg-slate-700/70" : ""}
-                        `}
-                >
-                    Next
-                </button>
+                <ActionButton text={"previuos"} onClick={handlePrev} />
+                <ActionButton text={"next"} onClick={handleNext} />
             </div>
         </div>
     );

@@ -6,6 +6,8 @@ import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
 import { CryComponent } from "./cry.component";
 import { IdControllerComponent } from "./id-contoller.component";
+import { GenericCardContainerComponent } from "./generic-card-container.component";
+import { ShineComponent } from "./shine-component";
 
 export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, cries }) => {
     const { clearPokemonCard, selectPokemon } = usePokemon();
@@ -13,11 +15,9 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
 
     return (
         <div>
-            <div className="flex flex-row m-[1rem] mx-6 justify-between gap-4 items-center">
-                <CryComponent cries={cries} />
-                <IdControllerComponent id={id} selectPokemon={selectPokemon} />
-                <DefaultButton onClick={clearPokemonCard} isVisible={true} icon={X} className="z-10" />
-            </div>
+            {/* <div className="flex flex-row m-[1rem] mx-6 justify-end">
+                
+            </div> */}
             <div className={`
                 relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-300
                 before:absolute before:inset-0 before:rounded-xl before:blur-md before:z-[-1]
@@ -54,13 +54,21 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
 
                 <div className="w-full">
                     <div className="flex flex-row justify-end w-full items-center space-x-2 my-[0.3rem]">
-                        <span className="text-md text-gray-400">#{id}</span>
+                        {/* <span className="text-md text-gray-400">#{id}</span> */}
                         <h4 className="text-xl uppercase text-black dark:text-gray-300">
                             {formatText(name, "-")}
                         </h4>
                     </div>
                 </div>
             </div>
+            <GenericCardContainerComponent title="">
+                <div className="flex flex-row justify-evenly">
+                    <CryComponent cries={cries} />
+                    <IdControllerComponent id={id} selectPokemon={selectPokemon} />
+                    <ShineComponent />
+                    <DefaultButton onClick={clearPokemonCard} isVisible={true} icon={X} className="z-10 shadow-none" />
+                </div>
+            </GenericCardContainerComponent>
         </div>
     )
 }

@@ -5,10 +5,16 @@ import { usePokemon } from "@/app/context/pokemonContext";
 
 export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, effectChance, description, power, type }) => {
     const { tier } = usePokemon();
+    const baseColor =
+        tier === "legendary"
+            ? "bg-legendary dark:text-gray-300"
+            : tier === "mythical"
+                ? "bg-mythical dark:text-gray-300"
+                : "bg-slate-50 dark:bg-slate-700/70 text-gray-400";
     return (
         <div className={`
-            rounded-lg border border-gray-200/50 dark:border-gray-600/50 p-4
-            ${tier !== "normal" ? "bg-white/70 dark:bg-slate-600/70" : ""}
+            rounded-lg border border-slate-100 dark:border-gray-600/50 p-4
+            ${baseColor}
         `}>
             <div className="flex flex-row-reverse gap-4 items-center ">
                 <div className="flex flex-col w-full gap-2">

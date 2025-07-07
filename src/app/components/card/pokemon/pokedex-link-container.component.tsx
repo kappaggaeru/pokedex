@@ -6,7 +6,10 @@ const PokedexLinkContainer: React.FC<PokedexItemProps> = ({ id, name, sprite, on
         <div key={`stage-${id}`} className="text-center">
             <div
                 onClick={() => onSelect(id)}
-                className="cursor-pointer border bg-white/70 dark:bg-slate-700/70 border-gray-200/50 dark:border-gray-600/50 flex flex-row items-center justify-center rounded-xl"
+                className="cursor-pointer border 
+                bg-slate-50 dark:bg-slate-700/70 
+                border-gray-200/50 dark:border-gray-600/50
+                flex flex-row items-center justify-center rounded-xl"
             >
                 <Image 
                     src={sprite ?? ''}
