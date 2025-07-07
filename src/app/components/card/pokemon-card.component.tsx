@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getPokemonById, getArtworkById, getSprite } from "../../services/pokemon.service";
+import { getPokemonById, getArtworkById, getSprite, getShinyArtworkById } from "../../services/pokemon.service";
 import { Pokemon } from "../../models/dto/pokemon.model";
 import { Species } from "../../models/dto/species.model";
 import { Form } from "../../models/dto/form.model";
@@ -24,7 +24,7 @@ const PokemonCardComponent: React.FC = () => {
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecies, setPokemonSpecies] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
-    const [pokemonArtwork, setPokemonArtwork] = useState<string | null>(null);
+    const [pokemonArtwork, setPokemonArtwork] = useState<string[]>([]);
     const [pokemonEvolution, setPokemonEvolution] = useState<EvolutionChain | null>(null);
     const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
     const [varietiesList, setVarietiesList] = useState<EvolutionStage[]>([]);
@@ -34,6 +34,7 @@ const PokemonCardComponent: React.FC = () => {
         if (!selectedId) return;
         setLoading(true);
         let objectUrlTemp: string | null = null;
+        let artworks = [];
 
         const fetchAllData = async () => {
             try {
@@ -46,10 +47,17 @@ const PokemonCardComponent: React.FC = () => {
                 const blob = await getArtworkById(pokemon.id);
                 objectUrlTemp = URL.createObjectURL(blob);
 
+                artworks.push(objectUrlTemp);
+
+                const blobShiny = await getShinyArtworkById(pokemon.id);
+                objectUrlTemp = URL.createObjectURL(blobShiny);
+
+                artworks.push(objectUrlTemp);
+
                 setPokemonData(pokemon);
                 setPokemonSpecies(species);
                 setPokemonForm(form);
-                setPokemonArtwork(objectUrlTemp);
+                setPokemonArtwork(artworks);
 
                 console.log(pokemon);
                 console.log(species);

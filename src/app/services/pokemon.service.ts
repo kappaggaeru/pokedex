@@ -99,6 +99,14 @@ export const getArtworkById = async (id: number) => {
     return response.blob();
 }
 
+export const getShinyArtworkById = async (id: number) => {
+    const response = await fetch(`${ARTWORK_BASE_URL}/shiny/${id}.png`);
+    if (!response.ok) {
+        throw new Error('Error fetching shiny artwork');
+    }
+    return response.blob();
+}
+
 export const getSprite = async (id: number) => {
     const response = await fetch(`${SPRITE_BASE_URL}/${id}.png`);
     if (!response.ok) {

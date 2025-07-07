@@ -6,18 +6,20 @@ import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
 import { CryComponent } from "./cry.component";
 import { ShineComponent } from "./shine-component";
+import { useState } from "react";
 
 export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, cries }) => {
+    const [showOriginalArtwork, setShowOriginalArtwork] = useState(true);
     const { clearPokemonCard } = usePokemon();
     const { tier } = usePokemon();
 
     return (
         <div>
-            <div className="flex flex-row justify-between items-baseline mx-6">
+            <div className="flex flex-row justify-between items-baseline mx-6 pt-4">
                 <div>
                     <div className="flex flex-row gap-4">
                         <CryComponent cries={cries} />
-                        <ShineComponent />
+                        <ShineComponent onClick={() => setShowOriginalArtwork(!showOriginalArtwork)}/>
                     </div>
                 </div>
                 <DefaultButton onClick={clearPokemonCard} isVisible={true} icon={X} className="z-10" />
@@ -54,7 +56,7 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                     </span>
                 </div>
 
-                <PokemonArtworkComponent id={id} artworkUrl={pokemonArtwork} />
+                <PokemonArtworkComponent id={id} artworkUrl={ showOriginalArtwork ? pokemonArtwork[0] : pokemonArtwork[1]} />
 
                 <div className="flex flex-row items-center w-full justify-between">
                     <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">
