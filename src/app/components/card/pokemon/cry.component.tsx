@@ -73,7 +73,6 @@ export const CryComponent: React.FC<Props> = ({ cries }) => {
             onClick={hasAnyCry ? playCry : () => {}}
             isVisible={true}
             icon={getIcon()}
-            className={"shadow-none"}
         />
     );
 };

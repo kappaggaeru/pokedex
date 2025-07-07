@@ -7,7 +7,6 @@ export const ShineComponent: React.FC = () => {
             icon={Sparkle}
             onClick={() => {}}
             isVisible={true}
-            className={"shadow-none"}
         />
     );
 }
