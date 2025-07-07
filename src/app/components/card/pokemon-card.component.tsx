@@ -34,7 +34,7 @@ const PokemonCardComponent: React.FC = () => {
         if (!selectedId) return;
         setLoading(true);
         let objectUrlTemp: string | null = null;
-        let artworks = [];
+        const artworks: string[] = [];
 
         const fetchAllData = async () => {
             try {
