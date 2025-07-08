@@ -7,11 +7,13 @@ import { X } from "lucide-react";
 import { CryComponent } from "./cry.component";
 import { ShineComponent } from "./shine-component";
 import { useState } from "react";
+import { useAccesibility } from "@/app/context/accesibilityContext";
 
 export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, cries }) => {
     const [showOriginalArtwork, setShowOriginalArtwork] = useState(true);
     const { clearPokemonCard } = usePokemon();
     const { tier } = usePokemon();
+    const { enabledAnimations } = useAccesibility();
 
     return (
         <div>
@@ -47,11 +49,11 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
 
                 <div className="flex flex-row justify-center mb-[1rem] gap-4">
                     <span className="relative flex size-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
+                        <span className={`absolute inline-flex h-full w-full ${ enabledAnimations ? "animate-ping" : ""} rounded-full bg-red-500 opacity-75`}></span>
                         <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
                     </span>
                     <span className="relative flex size-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
+                        <span className={`absolute inline-flex h-full w-full ${ enabledAnimations ? "animate-ping" : ""} rounded-full bg-red-500 opacity-75`}></span>
                         <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
                     </span>
                 </div>

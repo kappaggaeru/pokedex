@@ -10,12 +10,14 @@ import { useModal } from "../context/modalContext";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { usePokemon } from "../context/pokemonContext";
 import { scrollToTop } from "../utils/scroll";
+import { useAccesibility } from "../context/accesibilityContext";
 
 const HomeComponent: React.FC = () => {
     const { selectedId, selectedPokemon } = usePokemon();
     const [showScrollTop, setShowScrollTop] = useState(false);
     const { showModal } = useModal();
     const isMobile = useIsMobile();
+    const { enabledAnimations } = useAccesibility();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -53,7 +55,7 @@ const HomeComponent: React.FC = () => {
                     <ModalComponent isOpen={showModal}>
                     </ModalComponent>
                 </div>
-                <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className="fixed bottom-5 right-5 z-20 animate-bounce" />
+                <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className={`fixed bottom-5 right-5 z-20 ${enabledAnimations ? "animate-bounce" : ""}`} />
             </div>
         </div>
     );
