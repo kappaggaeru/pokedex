@@ -4,6 +4,7 @@ import { ModalProvider } from "./modalContext";
 import { ThemeProvider } from "./themeContext";
 import { CookiesProvider } from "react-cookie";
 import { LanguageProvider } from "./languageContext";
+import { AccesibilityProvider } from "./accesibilityContext";
 
 const PokemonContext = createContext(undefined);
 const MenuContext = createContext(undefined);
@@ -22,7 +23,9 @@ const AppProviders = ({ children }: { children: ReactNode }) => {
                 <ModalProvider>
                     <ThemeProvider>
                         <LanguageProvider>
-                            {children}
+                            <AccesibilityProvider>
+                                {children}
+                            </AccesibilityProvider>
                         </LanguageProvider>
                     </ThemeProvider>
                 </ModalProvider>

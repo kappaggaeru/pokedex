@@ -7,10 +7,12 @@ import { useState } from "react";
 import { MenuModalContainerComponent } from "./menu-modal-container.component";
 import { LanguageComponent } from "./language.component";
 import Image from "next/image";
+import { AccesibilityComponent } from "./accesibility.component";
 
 export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
     const [achievementsVisible, setAchievementsVisible] = useState(false);
     const [languageVisible, setLanguageVisible] = useState(false);
+    const [accesibilityVisible, setAccesibilityVisible] = useState(false);
     const [cookiesVisible, setCookiesVisible] = useState(false);
     const [supportVisible, setSupportVisible] = useState(false);
     const [themeVisible, setThemeVisible] = useState(false);
@@ -57,6 +59,13 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                             toggleContainer={() => setLanguageVisible(!languageVisible)}
                         >
                             <LanguageComponent />
+                        </MenuModalContainerComponent>
+                        <MenuModalContainerComponent
+                            title="accesibility"
+                            isOpen={accesibilityVisible}
+                            toggleContainer={() => setAccesibilityVisible(!accesibilityVisible)}
+                        >
+                            <AccesibilityComponent />
                         </MenuModalContainerComponent>
                         <MenuModalContainerComponent
                             title="cookies"
