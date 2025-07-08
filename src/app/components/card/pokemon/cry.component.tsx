@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import DefaultButton from "@/app/buttons/default.button";
 import { Volume1, Volume2, VolumeX } from "lucide-react";
+import { useAccesibility } from "@/app/context/accesibilityContext";
 
 interface Props {
     cries: {
@@ -13,6 +14,7 @@ export const CryComponent: React.FC<Props> = ({ cries }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [playLatestNext, setPlayLatestNext] = useState(true);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const { enabledSoundEffects } = useAccesibility();
 
     // Detectar si hay pistas disponibles
     const hasLatest = !!cries.latest;
@@ -60,6 +62,7 @@ export const CryComponent: React.FC<Props> = ({ cries }) => {
         audio.onended = () => {
             setIsPlaying(false);
         };
+
     };
 
     // Icono dinámico según estado
@@ -70,8 +73,9 @@ export const CryComponent: React.FC<Props> = ({ cries }) => {
 
     return (
         <DefaultButton
-            onClick={hasAnyCry ? playCry : () => {}}
+            onClick={hasAnyCry ? playCry : () => { }}
             isVisible={true}
+            disabled={!enabledSoundEffects}
             icon={getIcon()}
         />
     );

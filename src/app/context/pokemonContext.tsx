@@ -23,6 +23,7 @@ interface PokemonContextType {
     viewedMap: Record<number, ViewedState>;
     selectedPokemon: Pokemon | null;
     isLoadingPokemon: boolean;
+    shouldBlinkArtwork: boolean;
     setTier: (tier: PokemonTier) => void;
     capturePokemon: (id: number) => void;
     clearCapturedList: () => void;
@@ -31,6 +32,7 @@ interface PokemonContextType {
     clearPokemonCard: () => void;
     setViewedMap: React.Dispatch<React.SetStateAction<Record<number, ViewedState>>>;
     setIsLoadingPokemon: React.Dispatch<React.SetStateAction<boolean>>;
+    setShouldBlinkArtwork: (value: boolean) => void;
 }
 
 const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
@@ -44,6 +46,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
     const [isLoadingPokemon, setIsLoadingPokemon] = useState(false);
+    const [shouldBlinkArtwork, setShouldBlinkArtwork] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
 
     const MIN_ID = 1;
@@ -121,6 +124,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             viewedMap,
             selectedPokemon,
             isLoadingPokemon,
+            shouldBlinkArtwork,
             setTier,
             capturePokemon,
             clearCapturedList,
@@ -128,7 +132,8 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             selectPokemon,
             clearPokemonCard,
             setViewedMap,
-            setIsLoadingPokemon
+            setIsLoadingPokemon,
+            setShouldBlinkArtwork
         }}>
             {children}
         </PokemonContext.Provider>
