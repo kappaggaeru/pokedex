@@ -1,25 +1,25 @@
 import DefaultButton from "@/app/buttons/default.button";
+import { usePokemon } from "@/app/context/pokemonContext";
 import { Sparkle, Sparkles } from "lucide-react";
-import { useState } from "react";
 
 type Props = {
     onClick: () => void;
 }
 
 export const ShineComponent: React.FC<Props> = ({ onClick }) => {
-    const [isSparking, setIsSparking] = useState(false);
+    const { shouldBlinkArtwork, setShouldBlinkArtwork } = usePokemon();
 
     function toggleSpark() {
-        setIsSparking(!isSparking);
+        setShouldBlinkArtwork(!shouldBlinkArtwork);
         onClick();
     }
 
     return (
         <DefaultButton
-            icon={!isSparking ? Sparkle : Sparkles}
+            icon={!shouldBlinkArtwork ? Sparkle : Sparkles}
             onClick={toggleSpark}
             isVisible={true}
-            className={`${!isSparking ? "" : "text-yellow-300 dark:text-yellow-500"}`}
+            className={`${!shouldBlinkArtwork ? "" : "text-yellow-300 dark:text-yellow-500"}`}
         />
     );
 }

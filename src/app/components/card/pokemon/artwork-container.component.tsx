@@ -58,7 +58,7 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                     </span>
                 </div>
 
-                <PokemonArtworkComponent id={id} artworkUrl={ showOriginalArtwork ? pokemonArtwork[0] : pokemonArtwork[1]} />
+                <PokemonArtworkComponent id={id} artwork={pokemonArtwork} />
 
                 <div className="flex flex-row items-center w-full justify-between">
                     <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">

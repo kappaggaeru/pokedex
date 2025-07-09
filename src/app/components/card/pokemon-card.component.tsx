@@ -187,7 +187,12 @@ const PokemonCardComponent: React.FC = () => {
         return (
             <div className="max-w-md mx-auto">
                 {pokemonData &&
-                    <ArtworkContainerComponent id={selectedId} name={pokemonData?.name ?? ''} pokemonArtwork={pokemonArtwork} cries={pokemonData.cries} />
+                    <ArtworkContainerComponent
+                        id={selectedId}
+                        name={pokemonData?.name ?? ''}
+                        pokemonArtwork={pokemonArtwork}
+                        cries={pokemonData.cries}
+                    />
                 }
 
                 {pokemonSpecies &&
