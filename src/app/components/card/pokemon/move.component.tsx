@@ -19,7 +19,7 @@ export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, eff
             <div className="flex flex-row-reverse gap-4 items-center ">
                 <div className="flex flex-col w-full gap-2">
                     <div className="flex flex-row justify-between">
-                        <p className="text-lg bolder text-gray-600">{formatText(name, "-")}</p>
+                        <p className="text-lg bolder text-gray-600 dark:text-gray-300">{formatText(name, "-")}</p>
                         <div>
                             <ChipComponent title={type} />
                         </div>
