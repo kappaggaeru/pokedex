@@ -3,6 +3,7 @@ import { useCookies } from "react-cookie";
 import { getPokemonById, getSprite } from "../services/pokemon.service";
 import { Pokemon } from "../models/dto/pokemon.model";
 import { scrollToTop } from "../utils/scroll";
+import { useAchievements } from "./achievementsContext";
 
 type PokemonTier = "normal" | "legendary" | "mythical";
 
@@ -24,6 +25,7 @@ interface PokemonContextType {
     selectedPokemon: Pokemon | null;
     isLoadingPokemon: boolean;
     shouldBlinkArtwork: boolean;
+    capturedList: number[];
     setTier: (tier: PokemonTier) => void;
     capturePokemon: (id: number) => void;
     clearCapturedList: () => void;
@@ -48,6 +50,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [isLoadingPokemon, setIsLoadingPokemon] = useState(false);
     const [shouldBlinkArtwork, setShouldBlinkArtwork] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
+    const { updateAchievements } = useAchievements();
 
     const MIN_ID = 1;
     const MAX_ID = 1025;
@@ -110,6 +113,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         const newList = [...capturedIds, id];
         setCapturedIds(newList); // actualiza en memoria
         setCookie("capturedList", newList.join(","), { path: "/", maxAge: cookieExpiration }); // actualiza cookie
+        updateAchievements(capturedList.length);
     };
 
     const clearCapturedList = () => {
@@ -125,6 +129,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             selectedPokemon,
             isLoadingPokemon,
             shouldBlinkArtwork,
+            capturedList,
             setTier,
             capturePokemon,
             clearCapturedList,

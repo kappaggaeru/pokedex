@@ -11,6 +11,7 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import { usePokemon } from "../context/pokemonContext";
 import { scrollToTop } from "../utils/scroll";
 import { useAccesibility } from "../context/accesibilityContext";
+import { NotificationsComponent } from "./notifications.component";
 
 const HomeComponent: React.FC = () => {
     const { selectedId, selectedPokemon } = usePokemon();
@@ -54,6 +55,7 @@ const HomeComponent: React.FC = () => {
                     </div>
                     <ModalComponent isOpen={showModal}>
                     </ModalComponent>
+                    <NotificationsComponent></NotificationsComponent>
                 </div>
                 <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className={`fixed bottom-5 right-5 z-20 ${enabledAnimations ? "animate-bounce" : ""}`} />
             </div>
