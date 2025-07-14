@@ -71,7 +71,6 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         scrollToTop();
         setSelectedId(id);
         setIsLoadingPokemon(true);
-        capturePokemon(id);
 
         try {
             const [pokemon, spriteBlob] = await Promise.all([
@@ -80,14 +79,27 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             ]);
 
             const objectURL = URL.createObjectURL(spriteBlob);
+
+            // Actualizar viewedMap inmediatamente
             setViewedMap((prev) => ({
                 ...prev,
                 [id]: { loading: false, sprite: objectURL },
             }));
+
             setSelectedPokemon(pokemon);
 
+            // Actualizar la lista de capturados solo si no está ya incluido
             if (!capturedList.includes(pokemon.id)) {
-                setCapturedList(prev => [...prev, pokemon.id]);
+                const newCapturedList = [...capturedList, pokemon.id];
+                setCapturedList(newCapturedList);
+
+                // Actualizar cookies de forma segura
+                const cookieValue = newCapturedList.join(',');
+                setCookie('capturedList', cookieValue, {
+                    maxAge: 60 * 60 * 24 * 365, // 1 año
+                    path: '/',
+                    sameSite: 'strict'
+                });
             }
         } catch (error) {
             console.error("Error selecting Pokémon", error);
@@ -99,6 +111,31 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             setIsLoadingPokemon(false);
         }
     };
+
+    // También necesitarás una función para inicializar el estado desde cookies
+    const initializeCapturedListFromCookies = () => {
+        const cookieValue = cookies.capturedList;
+        if (typeof cookieValue === "string" && cookieValue) {
+            const ids = cookieValue
+                .split(",")
+                .filter((v) => v !== "")
+                .map(Number)
+                .filter((id) => !isNaN(id));
+            setCapturedList(ids);
+        }
+    };
+
+    // Llama esta función en tu useEffect de inicialización del contexto
+    useEffect(() => {
+        initializeCapturedListFromCookies();
+    }, [cookies.capturedList]);
+
+    // Nuevo useEffect para forzar re-render cuando cambie capturedList
+    useEffect(() => {
+        // Este useEffect se ejecuta cuando cambia capturedList
+        // Ayuda a que los componentes hijos se actualicen correctamente
+        console.log('CapturedList updated:', capturedList);
+    }, [capturedList]);
 
     const clearPokemonCard = () => {
         setSelectedId(null);

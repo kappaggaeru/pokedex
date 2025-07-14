@@ -8,16 +8,20 @@ import { useCookies } from "react-cookie";
 import { useHasMounted } from "@/app/hooks/useHasMounted";
 import { GenerationPokedexEntry } from "@/app/models/dto/generation-entry.model";
 
-
-
 const PokedexListComponent: React.FC = () => {
     const hasMounted = useHasMounted();
-    const { pokemonList, viewedMap, setPokemonList, selectPokemon, setViewedMap } = usePokemon();
+    const {
+        pokemonList,
+        viewedMap,
+        capturedList,
+        setPokemonList,
+        selectPokemon,
+        setViewedMap
+    } = usePokemon();
+
     const [cookies] = useCookies(["capturedList"]);
-    const rawCapturedList = typeof cookies.capturedList === "string"
-        ? cookies.capturedList
-        : "";
     const [loading, setLoading] = useState(true);
+
     const generations = [
         { name: "Kanto", count: 151, roman: "I" },
         { name: "Johto", count: 100, roman: "II" },
@@ -30,18 +34,25 @@ const PokedexListComponent: React.FC = () => {
         { name: "Paldea", count: 120, roman: "IX" },
     ];
 
-
+    // Convertir cookies Y capturedList del contexto a Set para búsquedas más eficientes
     const seenIds = React.useMemo(() => {
-        const raw = cookies.capturedList;
-        const capturedList = typeof raw === "string" ? raw : "";
-        const ids = capturedList
-            .split(",")
-            .filter((v) => v !== "")
-            .map(Number);
-        return new Set<number>(ids);
-    }, [cookies.capturedList]);
+        // Combinar cookies y capturedList para evitar desfase
+        const cookieIds = typeof cookies.capturedList === "string" && cookies.capturedList
+            ? cookies.capturedList.split(",").filter((v) => v !== "").map(Number)
+            : [];
 
-    // crea la lista de la pokedex
+        // Unir ambas fuentes y eliminar duplicados
+        const allIds = [...new Set([...cookieIds, ...capturedList])];
+        return new Set<number>(allIds);
+    }, [cookies.capturedList, capturedList]);
+
+    // Función simplificada que delega al contexto
+    const handlePokemonSelect = (id: number): void => {
+        console.log('handlePokemonSelect', id);
+        selectPokemon(id);
+    };
+
+    // Cargar la lista de la pokédex
     useEffect(() => {
         const fetchPokedex = async () => {
             try {
@@ -61,18 +72,20 @@ const PokedexListComponent: React.FC = () => {
         if (hasMounted) fetchPokedex();
     }, [hasMounted, setPokemonList]);
 
-
-    // carga las sprites de los pokemon capturados
+    // Precargar sprites de pokémon capturados desde cookies Y del contexto
     useEffect(() => {
         if (!hasMounted) return;
 
         const preloadCapturedSprites = async () => {
-            const ids = rawCapturedList
-                .split(",")
-                .filter((v) => v !== "")
-                .map(Number);
+            // Obtener IDs de cookies
+            const cookieIds = typeof cookies.capturedList === "string" && cookies.capturedList
+                ? cookies.capturedList.split(",").filter((v) => v !== "").map(Number)
+                : [];
 
-            for (const id of ids) {
+            // Combinar cookies y capturedList del contexto
+            const allIds = [...new Set([...cookieIds, ...capturedList])];
+
+            for (const id of allIds) {
                 if (!viewedMap[id]) {
                     // Marcamos como cargando
                     setViewedMap((prev) => ({
@@ -98,9 +111,17 @@ const PokedexListComponent: React.FC = () => {
             }
         };
 
-        preloadCapturedSprites();
-    }, [hasMounted, rawCapturedList]);
+        const cookieIds = typeof cookies.capturedList === "string" && cookies.capturedList
+            ? cookies.capturedList.split(",").filter((v) => v !== "").map(Number)
+            : [];
 
+        // Ejecutar si hay cookies O si hay pokémon capturados en el contexto
+        if (cookieIds.length > 0 || capturedList.length > 0) {
+            preloadCapturedSprites();
+        }
+    }, [hasMounted, cookies.capturedList, capturedList, viewedMap, setViewedMap]);
+
+    // Crear la lista segmentada por regiones
     const getSegmentedList = () => {
         let index = 0;
         const segments = generations.map((gen) => {
@@ -113,7 +134,7 @@ const PokedexListComponent: React.FC = () => {
                         sprite={viewedData?.sprite ?? ''}
                         loading={viewedData?.loading ?? false}
                         viewed={seenIds.has(id)}
-                        onSelect={() => selectPokemon(id)}
+                        onSelect={() => handlePokemonSelect(id)}
                     />
                 );
             });
@@ -168,7 +189,6 @@ const PokedexListComponent: React.FC = () => {
             </div>
         );
     };
-
 
     if (!hasMounted || loading) {
         return (

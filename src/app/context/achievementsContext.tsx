@@ -68,6 +68,12 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             completed: false
         },
         {
+            title: "Gotta Catch 'Em All!",
+            description: "You caught all available Pokémon.",
+            goal: 1025,
+            completed: false
+        },
+        {
             title: "Caught a Legendary Pokémon",
             description: "You caught your first Legendary Pokémon.",
             goal: 1,
@@ -98,12 +104,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             description: "You evolved a Pokémon for the first time.",
             goal: 1,
             hasCookie: "", //cookie con evolucion
-            completed: false
-        },
-        {
-            title: "Gotta Catch 'Em All!",
-            description: "You caught all available Pokémon.",
-            goal: 1025,
             completed: false
         },
         {
