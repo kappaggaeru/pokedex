@@ -86,6 +86,7 @@ export const NotificationsComponent = () => {
                         desc={state.notification.description}
                         goal={state.notification.goal}
                         onClick={() => { }}
+                        isCompleted={false}
                     />
                 </NotificationCardComponent>
             </div>

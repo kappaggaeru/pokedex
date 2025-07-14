@@ -215,9 +215,9 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     const [capturedCount, setCapturedCount] = useState(0);
 
     // Obtener achievements de tipo captura por cantidad
-    const getCaptureCountAchievements = () => {
-        return achievements.filter(achievement => achievement.type === "capture_count");
-    };
+    // const getCaptureCountAchievements = () => {
+    //     return achievements.filter(achievement => achievement.type === "capture_count");
+    // };
 
     const clearAchievements = () => {
         // Limpiar todas las cookies relacionadas con logros
