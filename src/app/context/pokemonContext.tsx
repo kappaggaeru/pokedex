@@ -52,6 +52,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
     const { updateAchievements } = useAchievements();
 
+
     const MIN_ID = 1;
     const MAX_ID = 1025;
     const cookieExpiration = 60 * 60 * 24 * 30;
@@ -64,6 +65,8 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         setCapturedIds(parsed);
     }, [cookies.capturedList]);
 
+
+    // Actualiza la función selectPokemon:
     const selectPokemon = async (id: number) => {
         if (!id || typeof id !== "number") return;
         if (selectedId === id) return;
@@ -89,8 +92,9 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             setSelectedPokemon(pokemon);
 
             // Actualizar la lista de capturados solo si no está ya incluido
+            let newCapturedList = capturedList;
             if (!capturedList.includes(pokemon.id)) {
-                const newCapturedList = [...capturedList, pokemon.id];
+                newCapturedList = [...capturedList, pokemon.id];
                 setCapturedList(newCapturedList);
 
                 // Actualizar cookies de forma segura
@@ -100,6 +104,9 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
                     path: '/',
                     sameSite: 'strict'
                 });
+
+                // Actualizar achievements con la nueva lista y el tier del pokémon
+                updateAchievements(newCapturedList);
             }
         } catch (error) {
             console.error("Error selecting Pokémon", error);
@@ -111,6 +118,13 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             setIsLoadingPokemon(false);
         }
     };
+
+    // También agrega un useEffect para sincronizar achievements cuando se inicializa desde cookies
+    useEffect(() => {
+        if (capturedList.length > 0) {
+            updateAchievements(capturedList);
+        }
+    }, [capturedList.length]); // Solo cuando cambia la longitud, no en cada cambio
 
     // También necesitarás una función para inicializar el estado desde cookies
     const initializeCapturedListFromCookies = () => {
@@ -150,7 +164,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         const newList = [...capturedIds, id];
         setCapturedIds(newList); // actualiza en memoria
         setCookie("capturedList", newList.join(","), { path: "/", maxAge: cookieExpiration }); // actualiza cookie
-        updateAchievements(capturedList.length);
+        updateAchievements(capturedList);
     };
 
     const clearCapturedList = () => {

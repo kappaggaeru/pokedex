@@ -2,11 +2,7 @@ import { useAchievements } from "@/app/context/achievementsContext";
 import { AchievementCardComponent } from "../card/achievement-card.component"
 
 const AchievementsComponent: React.FC = () => {
-    const { achievements, showNotification } = useAchievements();
-
-    function toggleNotification(id: number) {
-        showNotification(id);
-    }
+    const { achievements } = useAchievements();
 
     const fullEntries =
         achievements.map((entry, index) => (
@@ -15,7 +11,7 @@ const AchievementsComponent: React.FC = () => {
                 title={entry.title}
                 desc={entry.description}
                 goal={entry.goal}
-                onClick={() => toggleNotification(index)}
+                onClick={() => {}}
             />
         ));
 

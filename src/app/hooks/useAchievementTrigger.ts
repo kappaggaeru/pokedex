@@ -1,0 +1,35 @@
+import { useEffect } from 'react';
+import { usePokemon } from '../context/pokemonContext';
+import { useAchievements } from '../context/achievementsContext';
+
+/**
+ * Hook personalizado que maneja la comunicación entre PokemonContext y AchievementsContext
+ * para disparar achievements relacionados con el tier de Pokémon
+ */
+export const useAchievementTrigger = () => {
+    const { tier, capturedList, selectedPokemon } = usePokemon();
+    const { updateAchievements, checkTierAchievement } = useAchievements();
+
+    // Actualizar achievements cuando cambie la lista de capturados
+    useEffect(() => {
+        if (capturedList.length > 0) {
+            updateAchievements(capturedList);
+        }
+    }, [capturedList, updateAchievements]);
+
+    // Verificar achievements de tier cuando se capture un Pokémon
+    useEffect(() => {
+        if (selectedPokemon && capturedList.includes(selectedPokemon.id)) {
+            // Verificar si el Pokémon recién capturado es legendary o mythical
+            if (tier === 'legendary' || tier === 'mythical') {
+                checkTierAchievement(tier);
+            }
+        }
+    }, [selectedPokemon, capturedList, tier, checkTierAchievement]);
+
+    return {
+        // Puedes retornar funciones adicionales si necesitas más control
+        triggerTierAchievement: (pokemonTier: string) => checkTierAchievement(pokemonTier),
+        triggerUpdateAchievements: (list: number[]) => updateAchievements(list)
+    };
+};

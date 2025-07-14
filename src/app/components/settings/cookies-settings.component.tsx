@@ -1,4 +1,5 @@
 "use client";
+import { useAchievements } from "@/app/context/achievementsContext";
 import { usePokemon } from "@/app/context/pokemonContext";
 import { useHasMounted } from "@/app/hooks/useHasMounted";
 import { useEffect, useState } from "react";
@@ -8,6 +9,8 @@ export const CookiesSettingsComponent: React.FC = () => {
     const hasMounted = useHasMounted();
     const [cookies] = useCookies(["capturedList"]);
     const [captured, setCaptured] = useState("");
+    const { clearCapturedList } = usePokemon();
+    const { clearAchievements } = useAchievements();
 
     useEffect(() => {
         if (hasMounted) {
@@ -16,12 +19,13 @@ export const CookiesSettingsComponent: React.FC = () => {
         }
     }, [cookies.capturedList, hasMounted]);
 
-    const { clearCapturedList } = usePokemon();
+    
 
     const handleClearList = () => {
         const confirmed = window.confirm("Are you sure you want to delete all the cookies?");
         if (confirmed) {
             clearCapturedList();
+            clearAchievements();
         }
     }
 

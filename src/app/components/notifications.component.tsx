@@ -5,55 +5,52 @@ import { AchievementCardComponent } from "./card/achievement-card.component";
 import { NotificationCardComponent } from "./card/notification-card.component";
 
 interface NotificationState {
-    id: string;
+    id: number; // Usar el ID real del achievement
     notification: AchievementProps;
     isVisible: boolean;
     isClosing: boolean;
+    timestamp: number; // Para evitar duplicados
 }
 
 export const NotificationsComponent = () => {
     const { notifications, removeNotification } = useAchievements();
     const [notificationStates, setNotificationStates] = useState<NotificationState[]>([]);
 
-    // Generar ID único para cada notificación
-    const generateNotificationId = useCallback((notification: AchievementProps, index: number) => {
-        return `notification-${index}-${notification.title}-${Date.now()}`;
-    }, []);
-
     // Efecto para agregar nuevas notificaciones
     useEffect(() => {
-        const currentIds = new Set(notificationStates.map(state => state.id));
-        
-        const newNotificationStates: NotificationState[] = notifications.map((notification, index) => {
-            const id = generateNotificationId(notification, index);
-            
-            // Si ya existe una notificación con el mismo contenido, mantenerla
-            const existingState = notificationStates.find(state => 
-                state.notification.title === notification.title && 
-                state.notification.description === notification.description
-            );
-            
-            if (existingState && currentIds.has(existingState.id)) {
-                return existingState;
-            }
-            
-            // Nueva notificación
-            return {
-                id,
-                notification,
-                isVisible: true,
-                isClosing: false
-            };
-        });
+        console.log('Notifications updated:', notifications);
 
-        setNotificationStates(newNotificationStates);
-    }, [notifications, generateNotificationId]);
+        notifications.forEach(notification => {
+            const existingNotification = notificationStates.find(
+                state => state.id === notification.id && !state.isClosing
+            );
+
+            // Solo agregar si no existe ya
+            if (!existingNotification) {
+                const newNotificationState: NotificationState = {
+                    id: notification.id,
+                    notification,
+                    isVisible: true,
+                    isClosing: false,
+                    timestamp: Date.now()
+                };
+
+                setNotificationStates(prevStates => {
+                    // Filtrar cualquier notificación duplicada del mismo achievement
+                    const filteredStates = prevStates.filter(state => state.id !== notification.id);
+                    return [...filteredStates, newNotificationState];
+                });
+            }
+        });
+    }, [notifications]);
 
     // Función para iniciar el cierre de una notificación
-    const handleClose = useCallback((notificationId: string, originalIndex: number) => {
-        setNotificationStates(prevStates => 
-            prevStates.map(state => 
-                state.id === notificationId 
+    const handleClose = useCallback((notificationId: number) => {
+        console.log('Closing notification:', notificationId);
+
+        setNotificationStates(prevStates =>
+            prevStates.map(state =>
+                state.id === notificationId
                     ? { ...state, isClosing: true, isVisible: false }
                     : state
             )
@@ -61,37 +58,38 @@ export const NotificationsComponent = () => {
 
         // Después de un delay para la animación, eliminar del contexto
         setTimeout(() => {
-            removeNotification(originalIndex);
+            removeNotification(notificationId);
             // Limpiar el estado local también
-            setNotificationStates(prevStates => 
+            setNotificationStates(prevStates =>
                 prevStates.filter(state => state.id !== notificationId)
             );
-        }, 300); // Ajusta este tiempo según la duración de tu animación de cierre
+        }, 300);
     }, [removeNotification]);
 
     // Renderizar solo las notificaciones visibles
-    const renderedNotifications = notificationStates.map((state, index) => (
-        <div 
-            key={state.id}
-            style={{ 
-                display: state.isVisible ? 'block' : 'none',
-                opacity: state.isClosing ? 0 : 1,
-                transition: 'opacity 0.3s ease-out'
-            }}
-        >
-            <NotificationCardComponent
-                duration={5000}
-                onClose={() => handleClose(state.id, index)}
+    const renderedNotifications = notificationStates
+        .filter(state => state.isVisible && !state.isClosing)
+        .map((state) => (
+            <div
+                key={`notification-${state.id}-${state.timestamp}`}
+                style={{
+                    opacity: state.isClosing ? 0 : 1,
+                    transition: 'opacity 0.3s ease-out'
+                }}
             >
-                <AchievementCardComponent
-                    title={state.notification.title}
-                    desc={state.notification.description}
-                    goal={state.notification.goal}
-                    onClick={() => {}}
-                />
-            </NotificationCardComponent>
-        </div>
-    ));
+                <NotificationCardComponent
+                    duration={5000}
+                    onClose={() => handleClose(state.id)}
+                >
+                    <AchievementCardComponent
+                        title={state.notification.title}
+                        desc={state.notification.description}
+                        goal={state.notification.goal}
+                        onClick={() => { }}
+                    />
+                </NotificationCardComponent>
+            </div>
+        ));
 
     return (
         <div className="
@@ -104,4 +102,4 @@ export const NotificationsComponent = () => {
             </div>
         </div>
     );
-}
+};

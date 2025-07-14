@@ -17,7 +17,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
             ? "bg-legendary dark:text-gray-300"
             : tier === "mythical"
                 ? "bg-mythical dark:text-gray-300"
-                : "bg-white/80 dark:bg-slate-800/80 text-gray-500";
+                : "bg-white/80 dark:bg-slate-800/80 text-gray-500 dark:text-gray-400";
 
     return (
         <button
