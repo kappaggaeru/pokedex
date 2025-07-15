@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import DefaultButton from "@/app/buttons/default.button";
-import { Volume1, Volume2, VolumeX } from "lucide-react";
+import { Volume1, Volume2, VolumeOffIcon, VolumeX } from "lucide-react";
 import { useAccesibility } from "@/app/context/accesibilityContext";
+import { useAchievements } from "@/app/context/achievementsContext";
 
 interface Props {
     cries: {
@@ -10,11 +11,12 @@ interface Props {
     };
 }
 
-export const CryComponent: React.FC<Props> = ({ cries }) => {
+export const RoarComponent: React.FC<Props> = ({ cries }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [playLatestNext, setPlayLatestNext] = useState(true);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const { enabledSoundEffects } = useAccesibility();
+    const { setSpecialAchievement } = useAchievements();
 
     // Detectar si hay pistas disponibles
     const hasLatest = !!cries.latest;
@@ -63,10 +65,12 @@ export const CryComponent: React.FC<Props> = ({ cries }) => {
             setIsPlaying(false);
         };
 
+        setSpecialAchievement(9);
     };
 
     // Icono dinámico según estado
     const getIcon = () => {
+        if (!enabledSoundEffects) return VolumeOffIcon;
         if (!hasAnyCry) return VolumeX;
         return isPlaying ? Volume2 : Volume1;
     };

@@ -1,10 +1,8 @@
 import Image from "next/image";
 import { useAccesibility } from "@/app/context/accesibilityContext";
-import { usePokemon } from "@/app/context/pokemonContext";
 
-const PokemonArtworkComponent = ({ artwork, id }: { artwork: string[], id: number }) => {
+const PokemonArtworkComponent = ({ artwork, id, showOriginal }: { artwork: string[], id: number, showOriginal: boolean }) => {
     const { enabledAnimations } = useAccesibility();
-    const { shouldBlinkArtwork } = usePokemon();
 
     const animatedBackground = enabledAnimations
         ? {
@@ -55,7 +53,7 @@ const PokemonArtworkComponent = ({ artwork, id }: { artwork: string[], id: numbe
             />
             <div className="relative w-full aspect-[3/4] h-[10rem] z-10">
                 <Image
-                    src={!shouldBlinkArtwork ? artwork[0] : artwork[1]}
+                    src={showOriginal ? artwork[0] : artwork[1]}
                     alt={`Pokemon ${id}`}
                     fill
                     className="object-contain"

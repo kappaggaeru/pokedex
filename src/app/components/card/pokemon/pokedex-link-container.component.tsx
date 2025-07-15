@@ -11,7 +11,7 @@ const PokedexLinkContainer: React.FC<PokedexItemProps> = ({ id, name, sprite, on
                 border-gray-200/50 dark:border-gray-600/50
                 flex flex-row items-center justify-center rounded-xl"
             >
-                <Image 
+                <Image
                     src={sprite ?? ''}
                     alt={`sprite_${name}`}
                     className="w-20 h-20 object-contain flex items-center"

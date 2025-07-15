@@ -4,7 +4,7 @@ import { usePokemon } from "@/app/context/pokemonContext";
 import { formatText } from "@/app/utils/stringUtils";
 import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
-import { CryComponent } from "./cry.component";
+import { RoarComponent } from "./roar.component";
 import { ShineComponent } from "./shine-component";
 import { useState } from "react";
 import { useAccesibility } from "@/app/context/accesibilityContext";
@@ -20,8 +20,8 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
             <div className="flex flex-row justify-between items-baseline mx-6 pt-4">
                 <div>
                     <div className="flex flex-row gap-4">
-                        <CryComponent cries={cries} />
-                        <ShineComponent onClick={() => setShowOriginalArtwork(!showOriginalArtwork)}/>
+                        <RoarComponent cries={cries} />
+                        <ShineComponent onClick={() => setShowOriginalArtwork(!showOriginalArtwork)} />
                     </div>
                 </div>
                 <DefaultButton onClick={clearPokemonCard} isVisible={true} icon={X} className="z-10" />
@@ -49,16 +49,16 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
 
                 <div className="flex flex-row justify-center mb-[1rem] gap-4">
                     <span className="relative flex size-2">
-                        <span className={`absolute inline-flex h-full w-full ${ enabledAnimations ? "animate-ping" : ""} rounded-full bg-red-500 opacity-75`}></span>
+                        <span className={`absolute inline-flex h-full w-full ${enabledAnimations ? "animate-ping" : ""} rounded-full bg-red-500 opacity-75`}></span>
                         <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
                     </span>
                     <span className="relative flex size-2">
-                        <span className={`absolute inline-flex h-full w-full ${ enabledAnimations ? "animate-ping" : ""} rounded-full bg-red-500 opacity-75`}></span>
+                        <span className={`absolute inline-flex h-full w-full ${enabledAnimations ? "animate-ping" : ""} rounded-full bg-red-500 opacity-75`}></span>
                         <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
                     </span>
                 </div>
 
-                <PokemonArtworkComponent id={id} artwork={pokemonArtwork} />
+                <PokemonArtworkComponent id={id} artwork={pokemonArtwork} showOriginal={showOriginalArtwork} />
 
                 <div className="flex flex-row items-center w-full justify-between">
                     <div className="flex justify-end w-full items-center space-x-2 my-[0.3rem]">

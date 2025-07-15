@@ -1,25 +1,28 @@
 import DefaultButton from "@/app/buttons/default.button";
-import { usePokemon } from "@/app/context/pokemonContext";
+import { useAchievements } from "@/app/context/achievementsContext";
 import { Sparkle, Sparkles } from "lucide-react";
+import { useState } from "react";
 
 type Props = {
     onClick: () => void;
 }
 
 export const ShineComponent: React.FC<Props> = ({ onClick }) => {
-    const { shouldBlinkArtwork, setShouldBlinkArtwork } = usePokemon();
+    const [isShining, setIsShining] = useState(false);
+    const { setSpecialAchievement } = useAchievements();
 
     function toggleSpark() {
-        setShouldBlinkArtwork(!shouldBlinkArtwork);
+        setIsShining(!isShining);
+        setSpecialAchievement(10);
         onClick();
     }
 
     return (
         <DefaultButton
-            icon={!shouldBlinkArtwork ? Sparkle : Sparkles}
+            icon={!isShining ? Sparkle : Sparkles}
             onClick={toggleSpark}
             isVisible={true}
-            className={`${!shouldBlinkArtwork ? "" : "text-yellow-300 dark:text-yellow-500"}`}
+            className={`${!isShining ? "" : "text-yellow-300 dark:text-yellow-500"}`}
         />
     );
 }

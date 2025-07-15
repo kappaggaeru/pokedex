@@ -203,13 +203,13 @@ const PokemonCardComponent: React.FC = () => {
 
                 {evolutionChainList && evolutionChainList.length > 1 && (
                     <GenericCardContainerComponent title="evolution chain">
-                        <EvolutionChainComponent chain={evolutionChainList} />
+                        <EvolutionChainComponent chain={evolutionChainList} type={"evolution"} />
                     </GenericCardContainerComponent>
                 )}
 
                 {varietiesList && varietiesList.length > 1 && (
                     <GenericCardContainerComponent title="varieties">
-                        <EvolutionChainComponent chain={varietiesList} />
+                        <EvolutionChainComponent chain={varietiesList} type={"varietie"} />
                     </GenericCardContainerComponent>
                 )}
 
