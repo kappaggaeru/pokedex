@@ -93,7 +93,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
 
             // Actualizar la lista de capturados solo si no está ya incluido
             let newCapturedList = capturedList;
-            if (!capturedList.includes(pokemon.id)) {
+            if (!capturedList.includes(pokemon.id) && pokemon.id <= 1025) {
                 newCapturedList = [...capturedList, pokemon.id];
                 setCapturedList(newCapturedList);
 

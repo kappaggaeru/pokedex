@@ -3,12 +3,13 @@ import { ReactNode } from "react";
 
 type MenuModalProps = {
     title: string;
+    subtitle?: string;
     isOpen: boolean;
     children: ReactNode;
     toggleContainer: () => void;
 }
 
-export const MenuModalContainerComponent = ({ children, title, isOpen, toggleContainer }: MenuModalProps) => {
+export const MenuModalContainerComponent = ({ children, title, subtitle, isOpen, toggleContainer }: MenuModalProps) => {
     return (
         <div className="
             border bg-white/80 dark:bg-slate-800/80
@@ -16,7 +17,12 @@ export const MenuModalContainerComponent = ({ children, title, isOpen, toggleCon
             rounded-xl flex flex-col shadow-lg cursor-pointer"
         >
             <div className="flex flex-row justify-between items-center text-gray-500 p-4" onClick={toggleContainer}>
-                <h3 className="text-xl capitalize text-gray-600 dark:text-gray-300">{title}</h3>
+                <h3 className="text-xl capitalize text-gray-600 dark:text-gray-300">
+                    {title}
+                    <span className="text-sm text-gray-400 dark:text-gray-500 pl-2">
+                        {subtitle}
+                    </span>
+                </h3>
                 <div className={`
                     transition-all duration-300
                     ${isOpen ? "rotate-180" : "rotate-0"}

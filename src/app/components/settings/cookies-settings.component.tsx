@@ -10,7 +10,7 @@ export const CookiesSettingsComponent: React.FC = () => {
     const [cookies] = useCookies(["capturedList"]);
     const [captured, setCaptured] = useState("");
     const { clearCapturedList } = usePokemon();
-    const { clearAchievements, achievements, capturedCount } = useAchievements();
+    const { clearAchievements, achievements, capturedCount, shownAchievements } = useAchievements();
 
     useEffect(() => {
         if (hasMounted) {
@@ -35,6 +35,11 @@ export const CookiesSettingsComponent: React.FC = () => {
             <li key={index}>{element.title} ({element.id})</li>
         ));
 
+    const shownNotifications = Array.from(shownAchievements)
+        .map((element, index) => (
+            <li key={index}>{element}</li>
+        ));
+
     if (!hasMounted) return null;
 
     return (
@@ -43,7 +48,7 @@ export const CookiesSettingsComponent: React.FC = () => {
                 <h3>This site uses cookies to ensure you get the best experience on our website.</h3>
             </div>
             <div className="text-gray-500 dark:text-gray-400 flex flex-col gap-4">
-                <p>Captured list:</p>
+                <p>Captured pokemon: {capturedCount}</p>
                 <textarea
                     name="capturedList"
                     id="capturedList"
@@ -51,10 +56,13 @@ export const CookiesSettingsComponent: React.FC = () => {
                     onChange={() => { }}
                     className="border border-gray-200/50 dark:border-gray-600/50 w-full h-40 bg-white dark:bg-slate-800 rounded-md p-4"
                 />
-                <p>Total: {capturedCount}</p>
                 <div>
-                    <p>Earned achievements:</p>
+                    <p>Earned achievements: {completedAchievements.length}</p>
                     <ul>{completedAchievements}</ul>
+                </div>
+                <div>
+                    <p>Notifications shown: {shownNotifications.length}</p>
+                    <ul>{shownNotifications}</ul>
                 </div>
                 <div
                     onClick={handleClearList}

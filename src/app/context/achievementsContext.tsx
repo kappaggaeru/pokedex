@@ -11,6 +11,7 @@ interface AchievementContextType {
     achievements: AchievementProps[];
     notifications: AchievementProps[];
     capturedCount: number;
+    shownAchievements: Set<number>;
     setAchievement: (index: number) => void;
     setSpecialAchievement: (index: number) => void;
     updateAchievements: (capturedList: number[]) => void;
@@ -64,6 +65,8 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
 
     // Ref para trackear qué achievements ya fueron notificados en esta sesión
     const notifiedAchievements = useRef(new Set<number>());
+
+    const shownAchievements = new Set<number>();
 
     const [achievements, setAchievements] = useState<AchievementProps[]>([
         {
@@ -260,6 +263,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
 
         // Limpiar el tracking de notificaciones
         notifiedAchievements.current.clear();
+        shownAchievements.clear();
     };
 
     // Función helper para verificar cookies de forma segura
@@ -283,6 +287,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
                     // Si ya está completado, agregarlo al tracking para evitar notificaciones
                     if (isCompleted) {
                         notifiedAchievements.current.add(achievement.id);
+                        shownAchievements.add(achievement.id);
                     }
 
                     return {
@@ -296,6 +301,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
                 // Si ya está completado, agregarlo al tracking para evitar notificaciones
                 if (isCompleted) {
                     notifiedAchievements.current.add(achievement.id);
+                    shownAchievements.add(achievement.id);
                 }
 
                 return {
@@ -452,6 +458,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         if (achievement) {
             // Marcar como notificado
             notifiedAchievements.current.add(id);
+            shownAchievements.add(id);
 
             setNotifications(prev => {
                 // Evitar duplicados
@@ -479,6 +486,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             setAchievement,
             setSpecialAchievement,
             updateAchievements,
+            shownAchievements,
             checkTierAchievement,
             showNotification,
             getAchievement,

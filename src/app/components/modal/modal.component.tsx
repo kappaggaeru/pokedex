@@ -2,12 +2,13 @@ import CloseModalButton from "../../buttons/close-modal.button"
 import { CookiesComponent } from "./cookies.component";
 import { SupportComponent } from "./support.component";
 import { ThemeComponent } from "./theme.component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuModalContainerComponent } from "./menu-modal-container.component";
 import { LanguageComponent } from "./language.component";
 import Image from "next/image";
 import { AccesibilityComponent } from "./accesibility.component";
 import AchievementsComponent from "./achievements.component";
+import { useAchievements } from "@/app/context/achievementsContext";
 
 export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
     const [achievementsVisible, setAchievementsVisible] = useState(false);
@@ -16,6 +17,10 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
     const [cookiesVisible, setCookiesVisible] = useState(false);
     const [supportVisible, setSupportVisible] = useState(false);
     const [themeVisible, setThemeVisible] = useState(false);
+    const { achievements } = useAchievements();
+
+    const completedAchievements = achievements.filter(element => element.completed).length;
+    const achievementsSubtitle = `(${completedAchievements} / ${achievements.length})`;
 
     return (
         <div className={`
@@ -48,6 +53,7 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                         </div>
                         <MenuModalContainerComponent
                             title="achievements"
+                            subtitle={achievementsSubtitle}
                             isOpen={achievementsVisible}
                             toggleContainer={() => setAchievementsVisible(!achievementsVisible)}
                         >
