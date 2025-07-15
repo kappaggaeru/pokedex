@@ -2,7 +2,7 @@ import CloseModalButton from "../../buttons/close-modal.button"
 import { CookiesComponent } from "./cookies.component";
 import { SupportComponent } from "./support.component";
 import { ThemeComponent } from "./theme.component";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MenuModalContainerComponent } from "./menu-modal-container.component";
 import { LanguageComponent } from "./language.component";
 import Image from "next/image";
@@ -24,7 +24,7 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
 
     return (
         <div className={`
-            fixed top-0 bottom-0 right-0 h-screen pb-4
+            fixed top-0 bottom-0 right-0 h-screen
             transition-all duration-300 z-50
             text-black dark:text-gray-300
             bg-white/50 dark:bg-slate-800/50 backdrop-blur-md

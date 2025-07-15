@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
 
 export const CookiesSettingsComponent: React.FC = () => {
     const hasMounted = useHasMounted();
-    const [cookies] = useCookies(["capturedList"]);
+    const [cookies, removeCookie] = useCookies(["capturedList"]);
     const [captured, setCaptured] = useState("");
     const { clearCapturedList } = usePokemon();
     const { clearAchievements, achievements, capturedCount, shownAchievements } = useAchievements();
@@ -19,13 +19,16 @@ export const CookiesSettingsComponent: React.FC = () => {
         }
     }, [cookies.capturedList, hasMounted]);
 
-
-
     const handleClearList = () => {
         const confirmed = window.confirm("Are you sure you want to delete all the cookies?");
         if (confirmed) {
-            clearCapturedList();
             clearAchievements();
+            removeCookie('capturedList', { path: '/' });
+            clearCapturedList();
+            window.location.reload();
+            // Object.keys(cookies).forEach((cookie) => {
+            //     removeCookie(cookie, { path: '/' });
+            // });
         }
     }
 
@@ -37,7 +40,7 @@ export const CookiesSettingsComponent: React.FC = () => {
 
     const shownNotifications = Array.from(shownAchievements)
         .map((element, index) => (
-            <li key={index}>{element}</li>
+            <span key={index}>{element}, </span>
         ));
 
     if (!hasMounted) return null;
@@ -62,7 +65,7 @@ export const CookiesSettingsComponent: React.FC = () => {
                 </div>
                 <div>
                     <p>Notifications shown: {shownNotifications.length}</p>
-                    <ul>{shownNotifications}</ul>
+                    <p>{shownNotifications}</p>
                 </div>
                 <div
                     onClick={handleClearList}

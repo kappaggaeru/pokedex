@@ -66,7 +66,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     // Ref para trackear qué achievements ya fueron notificados en esta sesión
     const notifiedAchievements = useRef(new Set<number>());
 
-    const shownAchievements = new Set<number>();
+    const [shownAchievements, setShownAchievements] = useState<Set<number>>(new Set());
 
     const [achievements, setAchievements] = useState<AchievementProps[]>([
         {
@@ -258,12 +258,13 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         // Limpiar notificaciones
         setNotifications([]);
 
+
         // Resetear contador
         setCapturedCount(0);
 
         // Limpiar el tracking de notificaciones
         notifiedAchievements.current.clear();
-        shownAchievements.clear();
+        setShownAchievements(new Set());
     };
 
     // Función helper para verificar cookies de forma segura
