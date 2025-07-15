@@ -10,7 +10,7 @@ export const CookiesSettingsComponent: React.FC = () => {
     const [cookies] = useCookies(["capturedList"]);
     const [captured, setCaptured] = useState("");
     const { clearCapturedList } = usePokemon();
-    const { clearAchievements } = useAchievements();
+    const { clearAchievements, achievements, capturedCount } = useAchievements();
 
     useEffect(() => {
         if (hasMounted) {
@@ -19,7 +19,7 @@ export const CookiesSettingsComponent: React.FC = () => {
         }
     }, [cookies.capturedList, hasMounted]);
 
-    
+
 
     const handleClearList = () => {
         const confirmed = window.confirm("Are you sure you want to delete all the cookies?");
@@ -28,6 +28,12 @@ export const CookiesSettingsComponent: React.FC = () => {
             clearAchievements();
         }
     }
+
+    const completedAchievements = achievements
+        .filter(element => element.completed)
+        .map((element, index) => (
+            <li key={index}>{element.title} ({element.id})</li>
+        ));
 
     if (!hasMounted) return null;
 
@@ -45,6 +51,11 @@ export const CookiesSettingsComponent: React.FC = () => {
                     onChange={() => { }}
                     className="border border-gray-200/50 dark:border-gray-600/50 w-full h-40 bg-white dark:bg-slate-800 rounded-md p-4"
                 />
+                <p>Total: {capturedCount}</p>
+                <div>
+                    <p>Earned achievements:</p>
+                    <ul>{completedAchievements}</ul>
+                </div>
                 <div
                     onClick={handleClearList}
                     className="w-full
