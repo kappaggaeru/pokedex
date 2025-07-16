@@ -6,11 +6,12 @@ const AchievementsComponent: React.FC = () => {
 
     const fullEntries = achievements.map((entry) => (
         <AchievementCardComponent
-            key={entry.id} // Mejor usar el id como key en lugar del index
+            key={entry.id}
             title={entry.title}
-            desc={entry.description} // Noté que en tu tipo es "description", no "desc"
+            desc={entry.description}
             goal={entry.goal}
-            isCompleted={entry.completed} // Aquí usas la propiedad "completed"
+            isCompleted={entry.completed}
+            completedAt={entry.completedAt}
             onClick={() => { }}
         />
     ));

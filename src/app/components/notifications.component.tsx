@@ -82,11 +82,12 @@ export const NotificationsComponent = () => {
                     onClose={() => handleClose(state.id)}
                 >
                     <AchievementCardComponent
-                        title={state.notification.title}
-                        desc={state.notification.description}
+                        title={"Unlocked achievement"}
+                        desc={state.notification.title}
                         goal={state.notification.goal}
                         onClick={() => { }}
                         isCompleted={false}
+                        completedAt={undefined}
                     />
                 </NotificationCardComponent>
             </div>

@@ -14,7 +14,7 @@ interface AchievementContextType {
     shownAchievements: Set<number>;
     setAchievement: (index: number) => void;
     setSpecialAchievement: (index: number) => void;
-    updateAchievements: (capturedList: number[]) => void;
+    updateCountAchievements: (capturedList: number[]) => void;
     checkTierAchievement: (pokemonTier: string) => void;
     showNotification: (id: number) => void;
     getAchievement: (id: number) => AchievementProps | null;
@@ -241,6 +241,10 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     const [notifications, setNotifications] = useState<AchievementProps[]>([]);
     const [capturedCount, setCapturedCount] = useState(0);
 
+    const ASH_ACHIEVEMENT_ID = 12;
+    const LEGENDARY_ACHIEVEMENT_ID = 7;
+    const MYTHICAL_ACHIEVEMENT_ID = 8;
+
     const clearAchievements = () => {
         // Limpiar todas las cookies relacionadas con logros
         cookieNames.forEach(cookieName => {
@@ -258,13 +262,13 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         // Limpiar notificaciones
         setNotifications([]);
 
-
         // Resetear contador
         setCapturedCount(0);
 
         // Limpiar el tracking de notificaciones
         notifiedAchievements.current.clear();
         setShownAchievements(new Set());
+        removeCookie('completedAchievements', { path: "/" });
     };
 
     // Función helper para verificar cookies de forma segura
@@ -320,15 +324,17 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             return;
         }
 
+        // marca como completo
         completeAchievement(id);
+        updateCompletedAchievement(id);
+    };
 
-        // Actualizar cookies
+    const updateCompletedAchievement = (id: number) => {
         const completedAchievements: CompletedAchievement[] = cookies.completedAchievements || [];
         const newCompleted = {
             id,
             completedAt: new Date().toISOString()
         };
-
         if (!completedAchievements.some(completed => completed.id === id)) {
             setCookie('completedAchievements', [...completedAchievements, newCompleted], {
                 maxAge: 60 * 60 * 24 * 365, // 1 año
@@ -336,8 +342,56 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
                 sameSite: 'strict'
             });
         }
-    };
+    }
 
+    /**
+     * verifica los achievements que dependen de comportamiento particular
+     */
+    const setSpecialAchievement = (id: number) => {
+        const achievement = getAchievement(id);
+        if (achievement) {
+            if (!achievement.completed &&
+                !notifiedAchievements.current.has(achievement.id)
+            ) {
+                completeAndNotify(id);
+            }
+        }
+    }
+
+    /**
+     * setea la cookie para el achievement determinado
+     */
+    const setCookieAchievement = (id: number) => {
+        const achievement = getAchievement(id);
+        if (achievement) {
+            const achievementCookie = achievement.hasCookie;
+            setCookie(achievementCookie as CookieNames, 'true', {
+                maxAge: 60 * 60 * 24 * 365,
+                path: '/',
+                sameSite: 'strict'
+            });
+        }
+    }
+
+    /**
+     * verifica los achivements que depende del contador de capturas
+     */
+    const updateCountAchievements = (capturedList: number[]) => {
+        const newCapturedCount = capturedList.length;
+        const previousCount = capturedCount;
+
+        // actualizo capturedCount
+        setCapturedCount(newCapturedCount);
+
+        if (newCapturedCount > previousCount) {
+            checkCaptureCountAchievements(newCapturedCount);
+            checkCaptureCountAshAchievement(capturedList);
+        }
+    }
+
+    /**
+     * valida si los achievemts de captura fueron completados
+     */
     const checkCaptureCountAchievements = (count: number) => {
         achievements.forEach(achievement => {
             if (
@@ -351,102 +405,63 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         });
     };
 
-
     /**
-     * controla los achievements especiales que se
-     * disparan desde un comportamiento en especifico
+     * valida si la lista de pokemon de ash fue completada
      */
-    const setSpecialAchievement = (id: number) => {
-        if (id >= 0 && id <= achievements.length) {
-            const achievement = getAchievement(id);
-            if (achievement !== null) {
-                if (!achievements[id].completed) {
-                    completeAndNotify(id);
-                }
+    const checkCaptureCountAshAchievement = (capturedList: number[]) => {
+        const ashAchievement = getAchievement(ASH_ACHIEVEMENT_ID);
+        if (ashAchievement &&
+            !ashAchievement.completed &&
+            !notifiedAchievements.current.has(ashAchievement.id) &&
+            ashAchievement.captureList) {
+            const ashCaptured = capturedList.filter(id =>
+                ashAchievement.captureList!.includes(id)
+            );
+            if (ashCaptured.length >= ashAchievement.goal) {
+                completeAndNotify(ashAchievement.id);
             }
         }
     }
 
     /**
-     * setea la cookie para el achievement determinado
+     *  valida los achievements de tier
      */
-    const setCookieAchievement = (id: number) => {
-        const achievement = getAchievement(id);
-        if (achievement !== null) {
-            const achievementCookie = achievement.hasCookie;
-            setCookie(achievementCookie as CookieNames, 'true', {
-                maxAge: 60 * 60 * 24 * 365,
-                path: '/',
-                sameSite: 'strict'
-            });
-        }
-    }
-
-    /**
-     * marca el achievment como completado
-     */
-    const completeAchievement = (id: number) => {
-        setAchievements(prev =>
-            prev.map(achievement =>
-                achievement.id === id
-                    ? { ...achievement, completed: true }
-                    : achievement
-            )
-        );
-    }
-
-    /**
-     * engloba el comportamiento de completar un achievement
-     */
-    const completeAndNotify = (id: number, setCookieIfNeeded = true) => {
-        if (setCookieIfNeeded) setCookieAchievement(id);
-        setAchievement(id);
-        showNotification(id);
-    };
-
-
-    const updateAchievements = (capturedList: number[]) => {
-        const newCapturedCount = capturedList.length;
-        const previousCount = capturedCount;
-
-        setCapturedCount(newCapturedCount);
-
-        // Solo procesar si hay un nuevo pokémon capturado
-        if (newCapturedCount > previousCount) {
-            // Verificar achievements de conteo usando el estado actualcheckCaptureCountAchievements(newCapturedCount);
-
-            checkCaptureCountAchievements(newCapturedCount);
-
-            // Verificar achievement de Ash's Pokémon
-            const ashAchievement = achievements.find(a => a.id === 12);
-            if (ashAchievement &&
-                !ashAchievement.completed &&
-                !notifiedAchievements.current.has(ashAchievement.id) &&
-                ashAchievement.captureList) {
-                const ashCaptured = capturedList.filter(id =>
-                    ashAchievement.captureList!.includes(id)
-                );
-                if (ashCaptured.length >= ashAchievement.goal) {
-                    console.log(`Ash achievement completed`);
-                    completeAndNotify(ashAchievement.id);
-                }
-            }
-        }
-    };
-
-    // Función específica para manejar achievements de tier
     const checkTierAchievement = (pokemonTier: string) => {
         if (pokemonTier === "legendary" &&
             !getCookieValue("firstLegendary") &&
-            !notifiedAchievements.current.has(7)) {
+            !notifiedAchievements.current.has(LEGENDARY_ACHIEVEMENT_ID)) {
             completeAndNotify(7);
         }
 
         if (pokemonTier === "mythical" &&
             !getCookieValue("firstMythical") &&
-            !notifiedAchievements.current.has(8)) {
+            !notifiedAchievements.current.has(MYTHICAL_ACHIEVEMENT_ID)) {
             completeAndNotify(8);
         }
+    };
+
+    /**
+     * marca el achievement como completado
+     */
+    const completeAchievement = (id: number) => {
+        const completedAt = new Date();
+        setAchievements(prev =>
+            prev.map(achievement =>
+                achievement.id === id
+                    ? { ...achievement, completed: true, completedAt: completedAt }
+                    : achievement
+            )
+        );
+        console.log(achievements);
+    }
+
+    /**
+     * engloba el comportamiento de completar un achievement
+     */
+    const completeAndNotify = (id: number) => {
+        setCookieAchievement(id);
+        setAchievement(id);
+        showNotification(id);
     };
 
     const showNotification = (id: number) => {
@@ -484,10 +499,10 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             achievements,
             notifications,
             capturedCount,
+            shownAchievements,
             setAchievement,
             setSpecialAchievement,
-            updateAchievements,
-            shownAchievements,
+            updateCountAchievements,
             checkTierAchievement,
             showNotification,
             getAchievement,

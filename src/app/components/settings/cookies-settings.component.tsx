@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
 
 export const CookiesSettingsComponent: React.FC = () => {
     const hasMounted = useHasMounted();
-    const [cookies, removeCookie] = useCookies(["capturedList"]);
+    const [cookies] = useCookies(["capturedList"]);
     const [captured, setCaptured] = useState("");
     const { clearCapturedList } = usePokemon();
     const { clearAchievements, achievements, capturedCount, shownAchievements } = useAchievements();
@@ -23,13 +23,15 @@ export const CookiesSettingsComponent: React.FC = () => {
         const confirmed = window.confirm("Are you sure you want to delete all the cookies?");
         if (confirmed) {
             clearAchievements();
-            removeCookie('capturedList', { path: '/' });
             clearCapturedList();
-            window.location.reload();
-            // Object.keys(cookies).forEach((cookie) => {
-            //     removeCookie(cookie, { path: '/' });
-            // });
+            setTimeout(() => {
+                window.location.reload();
+            }, 100); // da tiempo a que se borren completamente
         }
+    }
+
+    const logCookies = () => {
+        console.log({ cookies });
     }
 
     const completedAchievements = achievements
@@ -75,6 +77,15 @@ export const CookiesSettingsComponent: React.FC = () => {
                         text-gray-100 hover:text-gray-100 dark:text-gray-100 dark:hover:text-gray-100"
                 >
                     <h5>Delete all cookies</h5>
+                </div>
+                <div
+                    onClick={logCookies}
+                    className="w-full
+                        border border-gray-200/50 dark:border-gray-600/50 p-2 px-6 rounded-md cursor-pointer text-center
+                        bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-700 dark:hover:bg-cyan-600
+                        text-gray-100 hover:text-gray-100 dark:text-gray-100 dark:hover:text-gray-100"
+                >
+                    <h5>Log cookies</h5>
                 </div>
             </div>
         </div>

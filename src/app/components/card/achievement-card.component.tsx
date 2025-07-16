@@ -3,14 +3,20 @@ export const AchievementCardComponent = ({
     desc,
     goal,
     isCompleted,
+    completedAt,
     onClick
 }: {
     title: string;
     desc: string;
     goal: number;
     isCompleted: boolean;
+    completedAt: Date | undefined;
     onClick: () => void;
 }) => {
+    const completedTimeAndDate = completedAt
+        ? `${completedAt.getDate()}/${completedAt.getMonth() + 1} ${completedAt.getHours().toString().padStart(2, "0")}:${completedAt.getMinutes().toString().padStart(2, "0")}`
+        : "";
+
     return (
         <div
             onClick={onClick}
@@ -19,9 +25,9 @@ export const AchievementCardComponent = ({
                 bg-slate-50 dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50
             `}
         >
-            {isCompleted && (
+            {isCompleted && completedAt && (
                 <div className="absolute bottom-0 right-0 bg-indigo-100 dark:bg-indigo-900 px-2 rounded-tl-xl rounded-br-xl">
-                    <span className="uppercase text-xs text-gray-500 dark:text-gray-400">earned</span>
+                    <span className="uppercase text-xs text-gray-500 dark:text-gray-400">{completedTimeAndDate}</span>
                 </div>
             )}
             <div className={`

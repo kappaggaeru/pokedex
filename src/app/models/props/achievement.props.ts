@@ -7,4 +7,5 @@ export type AchievementProps = {
     captureList?: number[];
     hasCookie?: string;
     completed: boolean;
+    completedAt?: Date;
 };
