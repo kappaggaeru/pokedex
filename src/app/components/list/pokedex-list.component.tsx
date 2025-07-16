@@ -147,7 +147,7 @@ const PokedexListComponent: React.FC = () => {
                         </p>
                         <div className="w-full border border-gray-200/50 dark:border-gray-600/50"></div>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-[1rem] py-[1rem]">
+                    <div className="flex flex-wrap justify-center gap-4 py-4">
                         {items}
                     </div>
                 </div>
@@ -199,7 +199,7 @@ const PokedexListComponent: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-wrap justify-center gap-[1rem] py-[1rem]">
+        <div className="flex flex-wrap justify-center gap-4 py-4">
             {getSegmentedList()}
         </div>
     );

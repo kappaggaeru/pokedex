@@ -27,7 +27,7 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                 <DefaultButton onClick={clearPokemonCard} isVisible={true} icon={X} className="z-10" />
             </div>
             <div className={`
-                relative h-fit flex flex-col justify-center items-center px-[1rem] pt-[1rem] my-[1rem] mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-300
+                relative h-fit flex flex-col justify-center items-center px-4 pt-4 my-4 mb-0 mx-6 rounded-xl border shadow-xl transition-all duration-300
                 before:absolute before:inset-0 before:rounded-xl before:blur-md before:z-[-1]
                 ${tier == "legendary" ? 'border-yellow-400 dark:border-yellow-600 bg-gradient-to-r from-yellow-200 via-yellow-100 to-yellow-300 dark:from-yellow-700 dark:via-yellow-800 dark:to-yellow-600 before:animate-glow-yellow'
                     : tier == "mythical" ? 'border-gray-400 dark:border-gray-500 bg-gradient-to-r from-gray-200 via-white to-gray-300 dark:from-slate-600 dark:via-slate-700 dark:to-slate-500 before:animate-glow-silver'
@@ -47,7 +47,7 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
                     </div>
                 )}
 
-                <div className="flex flex-row justify-center mb-[1rem] gap-4">
+                <div className="flex flex-row justify-center mb-4 gap-4">
                     <span className="relative flex size-2">
                         <span className={`absolute inline-flex h-full w-full ${enabledAnimations ? "animate-ping" : ""} rounded-full bg-red-500 opacity-75`}></span>
                         <span className="relative inline-flex size-2 rounded-full bg-red-500"></span>
