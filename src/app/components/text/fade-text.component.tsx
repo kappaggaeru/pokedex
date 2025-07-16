@@ -17,15 +17,12 @@ const FadeText: React.FC<Props> = ({ text }) => {
     }, [text]);
 
     return (
-        <p
-            className={`
-        transition-opacity duration-500 ease-in-out
-        ${show ? "opacity-100" : "opacity-0"}
-        whitespace-pre-wrap
-      `}
-        >
+        <span className={`
+            transition-opacity duration-500 ease-in-out
+            ${show ? "opacity-100" : "opacity-0"}
+        `}>
             {text}
-        </p>
+        </span>
     );
 };
 

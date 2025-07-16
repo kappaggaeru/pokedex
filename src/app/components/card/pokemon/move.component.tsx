@@ -2,6 +2,7 @@ import { MoveProps } from "@/app/models/props/move.props";
 import { ChipComponent } from "./chip.component";
 import { formatText } from "@/app/utils/stringUtils";
 import { usePokemon } from "@/app/context/pokemonContext";
+import FadeText from "../../text/fade-text.component";
 
 export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, effectChance, description, power, type }) => {
     const { tier } = usePokemon();
@@ -19,22 +20,34 @@ export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, eff
             <div className="flex flex-row-reverse gap-4 items-center ">
                 <div className="flex flex-col w-full gap-2">
                     <div className="flex flex-row justify-between">
-                        <p className="text-lg bolder text-gray-600 dark:text-gray-300">{formatText(name, "-")}</p>
+                        <p className="text-lg bolder text-gray-600 dark:text-gray-300">
+                            <FadeText key={name} text={formatText(name, "-")} />
+                        </p>
                         <div>
                             <ChipComponent title={type} />
                         </div>
                     </div>
-                    <p className="text-gray-500 dark:text-gray-400">{description}</p>
-                    <span className="text-sm text-gray-400">{effect}</span>
+                    <p className="text-gray-500 dark:text-gray-400">
+                        <FadeText key={description} text={description} />
+                    </p>
+                    <p className="text-sm text-gray-400">
+                        <FadeText key={effect} text={effect} />
+                    </p>
                     <div className="flex flex-row justify-evenly text-gray-500 dark:text-gray-300">
                         <div>
-                            <span title="accuracy">{accuracy} ACC</span>
+                            <p title="accuracy">
+                                <FadeText key={accuracy} text="ACC" />
+                            </p>
                         </div>
                         <div>
-                            <span title="power">{power} PWR</span>
+                            <p title="power">
+                                <FadeText key={power} text="PWR" />
+                            </p>
                         </div>
                         <div>
-                            <span title="effect chance">{effectChance} EFF</span>
+                            <p title="effect chance">
+                                <FadeText key={effectChance} text="EFF" />
+                            </p>
                         </div>
                     </div>
                 </div>
