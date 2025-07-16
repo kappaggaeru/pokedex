@@ -1,5 +1,6 @@
 import { useAchievements } from "@/app/context/achievementsContext";
 import { AchievementCardComponent } from "../card/achievement-card.component"
+import { Lock } from "lucide-react";
 
 const AchievementsComponent: React.FC = () => {
     const { achievements } = useAchievements();
@@ -10,6 +11,10 @@ const AchievementsComponent: React.FC = () => {
             title={entry.title}
             desc={entry.description}
             goal={entry.goal}
+            image={entry.image ?? ""}
+            icon={entry.icon ?? Lock}
+            isSpecial={entry.hasCookie !== undefined}
+            isNotification={false}
             isCompleted={entry.completed}
             completedAt={entry.completedAt}
             onClick={() => { }}

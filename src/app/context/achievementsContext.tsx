@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useState, useEffect, useRef } from "react";
 import { useCookies } from "react-cookie";
 import { AchievementProps } from "../models/props/achievement.props";
+import { ArrowBigUp, ArrowBigUpDash, Gamepad, Gem, Sparkles, Volume2Icon } from "lucide-react";
 
 interface CompletedAchievement {
     id: number;
@@ -154,6 +155,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught a Legendary Pokémon",
             description: "You caught your first Legendary Pokémon.",
             goal: 1,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png",
             type: "first_legendary",
             hasCookie: "firstLegendary",
             completed: false
@@ -163,6 +165,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught a Mythical Pokémon",
             description: "You caught your first Mythical Pokémon.",
             goal: 1,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png",
             type: "first_mythical",
             hasCookie: "firstMythical",
             completed: false
@@ -172,6 +175,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "I choose you!",
             description: "You discovered a Pokémon's roar.",
             goal: 1,
+            icon: Volume2Icon,
             type: "special",
             hasCookie: "firstRoar",
             completed: false
@@ -181,6 +185,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Make it Shine!",
             description: "You discovered a shiny Pokémon.",
             goal: 1,
+            icon: Sparkles,
             type: "special",
             hasCookie: "firstShiny",
             completed: false
@@ -190,6 +195,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Evolution Complete",
             description: "You evolved a Pokémon for the first time.",
             goal: 1,
+            icon: ArrowBigUp,
             type: "special",
             hasCookie: "firstEvolution",
             completed: false
@@ -199,6 +205,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Ketchup",
             description: "You caught all of Ash's Pokémon.",
             goal: 50,
+            image: "https://dcdn-us.mitiendanube.com/stores/003/493/448/products/ash-ketchum-pokemon-mascara-7b5badc9a99edc65f117161467636640-640-0.png",
             type: "capture_specific",
             captureList: [25, 18, 1, 6, 99, 89, 128, 143, 214, 153,
                 156, 158, 164, 232, 277, 254, 341, 324, 362, 398,
@@ -214,6 +221,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Found a Variant",
             description: "You discovered a Pokémon variant.",
             goal: 1,
+            icon: Gem,
             type: "special",
             hasCookie: "firstVariant",
             completed: false
@@ -223,6 +231,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Evolution Chain Master",
             description: "You completed an entire evolution chain.",
             goal: 1,
+            icon: ArrowBigUpDash,
             type: "special",
             hasCookie: "firstChainComplete",
             completed: false
@@ -232,6 +241,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Retro Mode Unlocked",
             description: "You unlocked Retro Mode.",
             goal: 1,
+            icon: Gamepad,
             type: "special",
             hasCookie: "retroMode",
             completed: false
