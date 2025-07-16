@@ -75,22 +75,30 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
         );
     };
 
-    if (!currentEntry) return null;
-
     return (
         <div>
             <h3 className="text-xl font-bold mb-4">
                 Pokedex Entry
-                {currentEntry.version && (
+                {currentEntry && currentEntry.version ? (
                     <span className="text-sm font-medium italic ml-2 text-gray-500 dark:text-gray-400">
                         ({currentEntry.version})
                     </span>
+                ) : (
+                    <span className="text-sm font-medium italic ml-2 text-gray-500 dark:text-gray-400">
+                        (N/A)
+                    </span>
                 )}
             </h3>
-            <FadeText key={currentEntry.entry} text={currentEntry.entry} />
+
+            {selectedEntries.length === 0 ? (
+                <p className="text-gray-500 dark:text-gray-400">N/A</p>
+            ) : (
+                <FadeText key={currentEntry.entry} text={currentEntry.entry} />
+            )}
+
             <div className="mt-4 flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300">
-                <ActionButton text={"previuos"} onClick={handlePrev} />
-                <ActionButton text={"next"} onClick={handleNext} />
+                <ActionButton text="previous" onClick={handlePrev} />
+                <ActionButton text="next" onClick={handleNext} />
             </div>
         </div>
     );

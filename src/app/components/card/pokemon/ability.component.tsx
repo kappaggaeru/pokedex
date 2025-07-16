@@ -15,7 +15,7 @@ export const AbilityComponent: React.FC<AbilityProps> = ({ name, effect, shortEf
             ${baseColor}
         `}>
             <h1 className="text-lg text-gray-600 dark:text-gray-300 bolder capitalize">{name}</h1>
-            <p className="text-gray-500 dark:text-gray-400">{effect}</p>
+            <p className="text-gray-500 dark:text-gray-400">{effect ? effect : "N/A"}</p>
             <span className="text-sm text-gray-400">{shortEffect}</span>
         </div>
     );
