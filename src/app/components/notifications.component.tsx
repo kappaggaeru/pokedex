@@ -83,7 +83,7 @@ export const NotificationsComponent = () => {
                     onClose={() => handleClose(state.id)}
                 >
                     <AchievementCardComponent
-                        title={"Achievement completed"}
+                        title={"New Achievement Unlocked!"}
                         desc={state.notification.title}
                         goal={0}
                         image=""
