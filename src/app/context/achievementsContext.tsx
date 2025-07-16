@@ -296,32 +296,43 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
                 // Para achievements especiales, verificar también sus cookies específicas
                 if (achievement.hasCookie) {
                     const hasCookie = getCookieValue(achievement.hasCookie);
-                    const isInCompleted = completedAchievements.some(completed => completed.id === achievement.id);
-                    const isCompleted = hasCookie || isInCompleted;
+                    const foundCompleted = completedAchievements.find(completed => completed.id === achievement.id);
+                    const isCompleted = hasCookie || !!foundCompleted;
 
-                    // Si ya está completado, agregarlo al tracking para evitar notificaciones
                     if (isCompleted) {
                         notifiedAchievements.current.add(achievement.id);
                         shownAchievements.add(achievement.id);
                     }
 
+                    let completedAt: Date | null | undefined = achievement.completedAt;
+                    if (foundCompleted?.completedAt) {
+                        completedAt = new Date(foundCompleted.completedAt);
+                    }
+
                     return {
                         ...achievement,
-                        completed: isCompleted
+                        completed: isCompleted,
+                        completedAt: completedAt ?? null
                     };
                 }
 
-                const isCompleted = completedAchievements.some(completed => completed.id === achievement.id);
+                const foundCompleted = completedAchievements.find(completed => completed.id === achievement.id);
+                const isCompleted = !!foundCompleted;
 
-                // Si ya está completado, agregarlo al tracking para evitar notificaciones
                 if (isCompleted) {
                     notifiedAchievements.current.add(achievement.id);
                     shownAchievements.add(achievement.id);
                 }
 
+                let completedAt: Date | null | undefined = achievement.completedAt;
+                if (foundCompleted?.completedAt) {
+                    completedAt = new Date(foundCompleted.completedAt);
+                }
+
                 return {
                     ...achievement,
-                    completed: isCompleted
+                    completed: isCompleted,
+                    completedAt: completedAt ?? null
                 };
             })
         );
@@ -462,7 +473,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
                     : achievement
             )
         );
-        console.log(achievements);
     }
 
     /**

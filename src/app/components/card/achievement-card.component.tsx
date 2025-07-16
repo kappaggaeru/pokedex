@@ -58,7 +58,7 @@ export const AchievementCardComponent = ({
                                 <img
                                     src={image}
                                     alt={title}
-                                    className="w-12 h-12 object-contain filter"
+                                    className="w-12 h-12 object-contain filter grayscale"
                                 />
                             ) : icon === Lock ? (
                                 <span>{goal}</span>

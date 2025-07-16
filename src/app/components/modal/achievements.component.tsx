@@ -16,7 +16,7 @@ const AchievementsComponent: React.FC = () => {
             isSpecial={entry.hasCookie !== undefined}
             isNotification={false}
             isCompleted={entry.completed}
-            completedAt={entry.completedAt}
+            completedAt={entry.completedAt ?? undefined}
             onClick={() => { }}
         />
     ));
