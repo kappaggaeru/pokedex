@@ -50,7 +50,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [isLoadingPokemon, setIsLoadingPokemon] = useState(false);
     const [shouldBlinkArtwork, setShouldBlinkArtwork] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
-    const { updateAchievements } = useAchievements();
+    const { updateCountAchievements } = useAchievements();
 
 
     const MIN_ID = 1;
@@ -106,7 +106,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
                 });
 
                 // Actualizar achievements con la nueva lista y el tier del pokémon
-                updateAchievements(newCapturedList);
+                updateCountAchievements(newCapturedList);
             }
         } catch (error) {
             console.error("Error selecting Pokémon", error);
@@ -122,7 +122,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     // También agrega un useEffect para sincronizar achievements cuando se inicializa desde cookies
     useEffect(() => {
         if (capturedList.length > 0) {
-            updateAchievements(capturedList);
+            updateCountAchievements(capturedList);
         }
     }, [capturedList.length]); // Solo cuando cambia la longitud, no en cada cambio
 
@@ -164,7 +164,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         const newList = [...capturedIds, id];
         setCapturedIds(newList); // actualiza en memoria
         setCookie("capturedList", newList.join(","), { path: "/", maxAge: cookieExpiration }); // actualiza cookie
-        updateAchievements(capturedList);
+        updateCountAchievements(capturedList);
     };
 
     const clearCapturedList = () => {

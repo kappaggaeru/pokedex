@@ -8,14 +8,14 @@ import { useAchievements } from '../context/achievementsContext';
  */
 export const useAchievementTrigger = () => {
     const { tier, capturedList, selectedPokemon } = usePokemon();
-    const { updateAchievements, checkTierAchievement } = useAchievements();
+    const { updateCountAchievements, checkTierAchievement } = useAchievements();
 
     // Actualizar achievements cuando cambie la lista de capturados
     useEffect(() => {
         if (capturedList.length > 0) {
-            updateAchievements(capturedList);
+            updateCountAchievements(capturedList);
         }
-    }, [capturedList, updateAchievements]);
+    }, [capturedList, updateCountAchievements]);
 
     // Verificar achievements de tier cuando se capture un Pokémon
     useEffect(() => {
@@ -30,6 +30,6 @@ export const useAchievementTrigger = () => {
     return {
         // Puedes retornar funciones adicionales si necesitas más control
         triggerTierAchievement: (pokemonTier: string) => checkTierAchievement(pokemonTier),
-        triggerUpdateAchievements: (list: number[]) => updateAchievements(list)
+        triggerUpdateAchievements: (list: number[]) => updateCountAchievements(list)
     };
 };

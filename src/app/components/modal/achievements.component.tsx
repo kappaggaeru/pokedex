@@ -1,16 +1,22 @@
 import { useAchievements } from "@/app/context/achievementsContext";
 import { AchievementCardComponent } from "../card/achievement-card.component"
+import { Lock } from "lucide-react";
 
 const AchievementsComponent: React.FC = () => {
     const { achievements } = useAchievements();
 
     const fullEntries = achievements.map((entry) => (
         <AchievementCardComponent
-            key={entry.id} // Mejor usar el id como key en lugar del index
+            key={entry.id}
             title={entry.title}
-            desc={entry.description} // Noté que en tu tipo es "description", no "desc"
+            desc={entry.description}
             goal={entry.goal}
-            isCompleted={entry.completed} // Aquí usas la propiedad "completed"
+            image={entry.image ?? ""}
+            icon={entry.icon ?? Lock}
+            isSpecial={entry.hasCookie !== undefined}
+            isNotification={false}
+            isCompleted={entry.completed}
+            completedAt={entry.completedAt}
             onClick={() => { }}
         />
     ));

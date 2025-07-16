@@ -3,6 +3,7 @@ import { useAchievements } from "../context/achievementsContext";
 import { AchievementProps } from "../models/props/achievement.props";
 import { AchievementCardComponent } from "./card/achievement-card.component";
 import { NotificationCardComponent } from "./card/notification-card.component";
+import { LockOpen } from "lucide-react";
 
 interface NotificationState {
     id: number; // Usar el ID real del achievement
@@ -82,11 +83,16 @@ export const NotificationsComponent = () => {
                     onClose={() => handleClose(state.id)}
                 >
                     <AchievementCardComponent
-                        title={state.notification.title}
-                        desc={state.notification.description}
-                        goal={state.notification.goal}
+                        title={"New Achievement Unlocked!"}
+                        desc={state.notification.title}
+                        goal={0}
+                        image=""
+                        icon={LockOpen}
+                        isSpecial={false}
+                        isNotification={true}
                         onClick={() => { }}
                         isCompleted={false}
+                        completedAt={undefined}
                     />
                 </NotificationCardComponent>
             </div>
