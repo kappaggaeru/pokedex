@@ -11,7 +11,6 @@ export const AchievementCardComponent = ({
     isSpecial,
     isNotification,
     isCompleted,
-    completedAt,
     onClick
 }: {
     title: string;
@@ -26,10 +25,23 @@ export const AchievementCardComponent = ({
     onClick: () => void;
 }) => {
     const { capturedCount } = useAchievements();
-    const completedTimeAndDate = completedAt
-        ? `${completedAt.getDate()}/${completedAt.getMonth() + 1} ${completedAt.getHours().toString().padStart(2, "0")}:${completedAt.getMinutes().toString().padStart(2, "0")}`
-        : "";
-    const progress = `${Math.floor((capturedCount / goal) * 100)} %`;
+    const percentageAchievement = Math.floor((capturedCount / goal) * 100) > 100 ? 100 : Math.floor((capturedCount / goal) * 100);
+
+    const DonutProgress = ({ percentage = 75 }: { percentage: number }) => {
+        return (
+            <div className="relative w-6 h-6 rounded-full"
+                style={{
+                    background: `conic-gradient(#818cf8 ${percentage}%, #e5e7eb ${percentage}% 100%)` // indigo-400
+                }}
+            >
+                <div className={`absolute inset-1 rounded-full
+                    ${isCompleted ? "bg-indigo-100 dark:bg-indigo-900" : "bg-slate-50 dark:bg-slate-800"}
+                `} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                </div>
+            </div>
+        );
+    };
 
     return (
         <div className="flex flex-col">
@@ -37,8 +49,8 @@ export const AchievementCardComponent = ({
                 onClick={onClick}
                 className={`
                 flex flex-row gap-3 rounded-2xl p-2 w-full border relative
-                ${isCompleted ? "bg-indigo-100 dark:bg-indigo-800 border-indigo-300 dark:border-indigo-500" : "bg-slate-50 dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50"}
-                
+                ${isCompleted ? "bg-indigo-100 dark:bg-indigo-900 border-indigo-300 dark:border-indigo-500"
+                        : "bg-slate-50 dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50"}
             `}
             >
                 <div className={`
@@ -80,30 +92,12 @@ export const AchievementCardComponent = ({
                         {desc}
                     </span>
                 </div>
+                {!isSpecial && !isCompleted && (
+                    <div className="absolute bottom-0 right-0 pb-2 pr-2 flex flex-row gap-2">
+                        <DonutProgress percentage={percentageAchievement} />
+                    </div>
+                )}
             </div>
-            {!isNotification && !isSpecial && !isCompleted && (
-                <div className={`
-                mx-4 p-2 h-4 rounded-bl-lg rounded-br-lg border border-gray-200/50 dark:border-gray-600/50 border-t-0
-                flex flex-row justify-between items-center text-xs 
-                ${isCompleted ? "bg-indigo-600 dark:bg-indigo-900 text-white border-none" : "bg-slate-50 dark:bg-slate-800 text-gray-500 dark:text-gray-400"}
-            `}>
-                    <span>{!isCompleted ? "In progress" : "Completed"}</span>
-                    {isCompleted && completedAt && (
-                        <span className="uppercase">{completedTimeAndDate}</span>
-                    )}
-                    {!isCompleted && !isSpecial && progress}
-                </div>
-            )}
-            {!isNotification && isCompleted && (
-                <div className={`
-                mx-4 p-2 h-4 rounded-bl-lg rounded-br-lg border border-gray-200/50 dark:border-gray-600/50 border-t-0
-                flex flex-row justify-between items-center text-xs 
-                ${isCompleted ? "bg-indigo-600 dark:bg-indigo-900 text-white dark:text-gray-200 border-none" : "bg-slate-50 dark:bg-slate-800 text-gray-500 dark:text-gray-400"}
-            `}>
-                    <span>Completed</span>
-                    <span className="uppercase">{completedTimeAndDate}</span>
-                </div>
-            )}
         </div>
     )
 }

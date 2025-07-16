@@ -7,7 +7,8 @@ const PokedexItemContainer: React.FC<PokedexItemProps> = ({ id, sprite, viewed, 
     const { selectPokemon } = usePokemon();
 
     const spinner = (
-        <div className="w-6 h-6 m-auto border-2 border-gray-500 dark:border-2 dark:border-gray-200 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 m-auto rounded-full animate-spin
+        border-2 border-gray-500 dark:border-gray-200 border-t-transparent dark:border-t-transparent" />
     );
 
     return (

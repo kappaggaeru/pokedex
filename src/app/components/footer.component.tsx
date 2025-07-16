@@ -16,7 +16,7 @@ export default function FooterComponent() {
                         </a>
                     </p>
                 </div>
-                <div className="text-center text-gray-500">
+                <div className="text-center text-gray-500 max-w-md">
                     <p>{`
                         This site is not affiliated with "The Pokémon Company" and does not own or claim any rights to any Nintendo trademark or the Pokémon trademark.
                     `}

@@ -13,7 +13,7 @@ export const useInView = <T extends HTMLElement>() => {
                 }
             },
             {
-                threshold: 0.1, // Se considera visible si al menos el 10% entra
+                threshold: 0.15, // Se considera visible si al menos el 15% entra
             }
         );
 
