@@ -2,6 +2,8 @@ import { createContext, ReactNode, useContext, useState, useEffect, useRef } fro
 import { useCookies } from "react-cookie";
 import { AchievementProps } from "../models/props/achievement.props";
 import { ArrowBigUp, ArrowBigUpDash, Gamepad, Gem, Sparkles, Volume2Icon } from "lucide-react";
+import { playSound } from "react-sounds";
+import { useAccesibility } from "./accesibilityContext";
 
 interface CompletedAchievement {
     id: number;
@@ -225,7 +227,9 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     ]);
 
     const [notifications, setNotifications] = useState<AchievementProps[]>([]);
-    const [capturedCount, setCapturedCount] = useState(0);
+    const [capturedCount, setCapturedCount] = useState(0)
+    const completedSound = "/assets/sounds/completed.mp3";
+    const { enabledSoundEffects } = useAccesibility();
 
     const ASH_ACHIEVEMENT_ID = 12;
     const LEGENDARY_ACHIEVEMENT_ID = 7;
@@ -471,6 +475,10 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             // Marcar como notificado
             notifiedAchievements.current.add(id);
             shownAchievements.add(id);
+            if (enabledSoundEffects) {
+                playSound(completedSound);
+            }
+
 
             setNotifications(prev => {
                 // Evitar duplicados

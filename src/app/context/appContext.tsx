@@ -19,21 +19,21 @@ const AchievementTriggerWrapper = ({ children }: { children: ReactNode }) => {
 const AppProviders = ({ children }: { children: ReactNode }) => {
     return (
         <CookiesProvider>
-            <AchievementsProvider>
-                <PokemonProvider>
-                    <AchievementTriggerWrapper>
-                        <ModalProvider>
-                            <ThemeProvider>
-                                <LanguageProvider>
-                                    <AccesibilityProvider>
+            <AccesibilityProvider>
+                <AchievementsProvider>
+                    <PokemonProvider>
+                        <AchievementTriggerWrapper>
+                            <ModalProvider>
+                                <ThemeProvider>
+                                    <LanguageProvider>
                                         {children}
-                                    </AccesibilityProvider>
-                                </LanguageProvider>
-                            </ThemeProvider>
-                        </ModalProvider>
-                    </AchievementTriggerWrapper>
-                </PokemonProvider>
-            </AchievementsProvider>
+                                    </LanguageProvider>
+                                </ThemeProvider>
+                            </ModalProvider>
+                        </AchievementTriggerWrapper>
+                    </PokemonProvider>
+                </AchievementsProvider>
+            </AccesibilityProvider>
         </CookiesProvider>
     );
 };
