@@ -5,6 +5,7 @@ type AppliedTheme = "light" | "dark" | "retro"; // lo que realmente se aplica
 
 interface ThemeContextType {
     currentTheme: ThemeOption; // lo elegido por el usuario (puede ser "system")
+    resolvedTheme: ThemeOption;
     setActiveTheme: (theme: ThemeOption) => void;
 }
 
@@ -12,11 +13,13 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [currentTheme, setCurrentTheme] = useState<ThemeOption>("system");
+    const [resolvedTheme, setResolvedTheme] = useState<ThemeOption>("system");
 
     //TODO guardar el tema elegido en cookies
 
     const getSystemTheme = (): AppliedTheme => {
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setResolvedTheme(prefersDark ? "dark" : "light");
         return prefersDark ? "dark" : "light";
     };
 
@@ -74,7 +77,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <ThemeContext.Provider value={{ currentTheme, setActiveTheme }}>
+        <ThemeContext.Provider value={{ currentTheme, resolvedTheme, setActiveTheme }}>
             {children}
         </ThemeContext.Provider>
     );

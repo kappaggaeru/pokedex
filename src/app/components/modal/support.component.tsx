@@ -9,7 +9,7 @@ export const SupportComponent: React.FC = () => {
         } else {
             // link to other
         }
-        setSpecialAchievement(15);
+        setSpecialAchievement(14);
     }
 
     return (

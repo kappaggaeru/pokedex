@@ -11,8 +11,8 @@ export const DonutProgress = ({
     isCompleted?: boolean;
     percentageAchievement?: number;
 }) => {
-    const {currentTheme} = useTheme();
-    const bgGray = currentTheme === "dark" ? "#374151" : "#e5e7eb";
+    const {currentTheme, resolvedTheme} = useTheme();
+    const bgGray = resolvedTheme === "dark" || currentTheme === 'dark' ? "#374151" : "#e5e7eb";
     const { ref, isInView } = useInView<HTMLDivElement>(0.6);
 
     const [progress, setProgress] = useState(0);
