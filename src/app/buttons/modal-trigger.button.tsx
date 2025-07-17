@@ -2,10 +2,10 @@ import { LucideIcon } from "lucide-react";
 import DefaultButton from "./default.button";
 import { useModal } from "../context/modalContext";
 
-const ModalTriggerButton = ({ title, icon }: { modal: string; title: string, icon: LucideIcon }) => {
+const ModalTriggerButton = ({ title, icon, modal }: { modal: string; title: string, icon: LucideIcon }) => {
     const { toggleModal } = useModal();
     function triggerModal() {
-        toggleModal();
+        toggleModal(modal);
     }
 
     return (

@@ -2,25 +2,50 @@ import CloseModalButton from "../../buttons/close-modal.button"
 import { CookiesComponent } from "./cookies.component";
 import { SupportComponent } from "./support.component";
 import { ThemeComponent } from "./theme.component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuModalContainerComponent } from "./menu-modal-container.component";
 import { LanguageComponent } from "./language.component";
 import Image from "next/image";
 import { AccesibilityComponent } from "./accesibility.component";
 import AchievementsComponent from "./achievements.component";
 import { useAchievements } from "@/app/context/achievementsContext";
+import { useModal } from "@/app/context/modalContext";
 
 export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
     const [achievementsVisible, setAchievementsVisible] = useState(false);
     const [languageVisible, setLanguageVisible] = useState(false);
     const [accesibilityVisible, setAccesibilityVisible] = useState(false);
     const [cookiesVisible, setCookiesVisible] = useState(false);
-    const [supportVisible, setSupportVisible] = useState(false);
     const [themeVisible, setThemeVisible] = useState(false);
+    const [supportVisible, setSupportVisible] = useState(false);
     const { achievements } = useAchievements();
+    const {activeSector} = useModal();
 
     const completedAchievements = achievements.filter(element => element.completed).length;
     const achievementsSubtitle = `(${completedAchievements} / ${achievements.length})`;
+
+    useEffect(() => {
+        if (activeSector !== "") {
+            setAchievementsVisible(false);
+            setLanguageVisible(false);
+            setAccesibilityVisible(false);
+            setCookiesVisible(false);
+            setThemeVisible(false);
+            setSupportVisible(false);
+
+            switch (activeSector) {
+                case "achievements":
+                    setAchievementsVisible(true); break;
+                case "settings":
+                    setLanguageVisible(true);
+                    setAccesibilityVisible(true); break;
+                case "theme":
+                    setThemeVisible(true); break;
+                case "support":
+                    setSupportVisible(true); break;
+            }
+        }
+    }, [activeSector])
 
     return (
         <div className={`
