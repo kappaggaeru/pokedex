@@ -48,6 +48,49 @@ export const AchievementCardComponent = ({
             ? percentageAshAchievement
             : percentageAchievement;
 
+    const renderAchievementIcon = () => {
+        if (isNotification && icon) {
+            return React.createElement(icon, {
+                className: "w-6 h-6 text-gray-500",
+            });
+        }
+
+        if (!isCompleted) {
+            return <Lock className="text-slate-500 dark:text-slate-400" />;
+        }
+
+        if (sprite) {
+            return (
+                <img
+                    src={sprite}
+                    alt={sprite}
+                    className="w-12 h-12 object-contain filter"
+                />
+            );
+        }
+
+        if (image) {
+            return (
+                <img
+                    src={image}
+                    alt={title}
+                    className="w-12 h-12 object-contain filter"
+                />
+            );
+        }
+
+        if (icon === Lock) {
+            return <span>{goal}</span>;
+        }
+
+        if (icon) {
+            return React.createElement(icon, {
+                className: "w-6 h-6 text-slate-500 dark:text-slate-400",
+            });
+        }
+
+        return null;
+    };
 
     useEffect(() => {
         const loadLegendaryOrMythicalSprite = async () => {
@@ -73,52 +116,18 @@ export const AchievementCardComponent = ({
                 flex flex-row gap-3 rounded-2xl p-2 w-full border relative
                 ${isCompleted ? "bg-indigo-100 dark:bg-indigo-900 border-indigo-300 dark:border-indigo-500"
                         : "bg-slate-50 dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50"}
-            `}
-            >
-                <div className={`
-                rounded-xl w-[7rem] h-20 border 
-                ${isCompleted ? "border-indigo-300 dark:border-indigo-500" : "border-gray-200/50 dark:border-gray-600/50"}
-                flex items-center justify-center
-                cursor-default my-auto
             `}>
-                    {
-                        isNotification ?
-                            React.createElement(icon, {
-                                className: "w-6 h-6 text-gray-500",
-                            })
-                            : !isCompleted ? (
-                                <Lock className="text-slate-500 dark:text-slate-400"></Lock>
-                            ) : sprite !== "" ? (
-                                <img
-                                    src={sprite}
-                                    alt={sprite}
-                                    className="w-12 h-12 object-contain filter"
-                                />
-                            ) : image !== "" ? (
-                                <img
-                                    src={image}
-                                    alt={title}
-                                    className="w-12 h-12 object-contain filter"
-                                />
-                            ) : icon === Lock ? (
-                                <span>{goal}</span>
-                            ) : icon !== null ? (
-                                React.createElement(icon, {
-                                    className: "w-6 h-6 text-slate-500 dark:text-slate-400",
-                                })
-                            ) : null}
+                <div className={`
+                    rounded-xl w-[7rem] h-20 border
+                    ${isCompleted ? "border-indigo-300 dark:border-indigo-500" : "border-gray-200/50 dark:border-gray-600/50"}
+                    flex items-center justify-center
+                    cursor-default my-auto
+                `}>
+                    {renderAchievementIcon()}
                 </div>
                 <div className="flex flex-col w-full h-fit overflow-visible">
-                    <p className={`
-                    text-md bold cursor-default
-                    text-gray-800 dark:text-gray-300
-                `}>{title}</p>
-                    <span className={`
-                    text-sm cursor-default
-                    text-gray-700 dark:text-gray-400
-                `}>
-                        {desc}
-                    </span>
+                    <p className="text-md bold cursor-defaulttext-gray-800 dark:text-gray-300">{title}</p>
+                    <span className="text-sm cursor-default text-gray-700 dark:text-gray-400">{desc}</span>
                 </div>
                 {showDonut && (
                     <div className="absolute bottom-0 right-0 pb-2 pr-2 flex flex-row gap-2">
