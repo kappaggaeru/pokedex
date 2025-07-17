@@ -469,20 +469,20 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const showNotification = (id: number) => {
-        // Verificar si ya se notificó en esta sesión
-        if (notifiedAchievements.current.has(id)) {
-            return;
-        }
+        if (notifiedAchievements.current.has(id)) return;
 
         const achievement = getAchievement(id);
-        if (achievement) {
-            // Marcar como notificado
-            notifiedAchievements.current.add(id);
-            shownAchievements.add(id);
+        if (!achievement) return;
+
+        // Marcar como notificado (inmediatamente, para evitar que vuelva a entrar)
+        notifiedAchievements.current.add(id);
+        shownAchievements.add(id);
+
+        // Agregar un delay de 1.5 segundos antes de mostrar
+        setTimeout(() => {
             if (enabledSoundEffects) {
                 playSound(completedSound);
             }
-
 
             setNotifications(prev => {
                 // Evitar duplicados
@@ -491,8 +491,9 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
                 }
                 return prev;
             });
-        }
+        }, 1500); // 1500ms = 1.5 segundos
     };
+
 
     const removeNotification = (id: number) => {
         setNotifications(prev => prev.filter(notif => notif.id !== id));
