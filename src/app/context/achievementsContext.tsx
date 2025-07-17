@@ -226,6 +226,13 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             removeCookie(cookieName, { path: "/" });
         });
 
+        document.cookie.split(";").forEach(cookie => {
+            const eqPos = cookie.indexOf("=");
+            const name = cookie.substring(0, eqPos).trim();
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        });
+
+
         // Resetear el estado de achievements
         setAchievements(prev =>
             prev.map(achievement => ({
