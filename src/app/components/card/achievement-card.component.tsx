@@ -35,6 +35,20 @@ export const AchievementCardComponent = ({
     const percentageAshAchievement = Math.floor((capturedAshCount / goal) * 100) > 100 ? 100 : Math.floor((capturedAshCount / goal) * 100);
     const [sprite, setSprite] = useState("");
 
+    const shouldShowDonut =
+        !isSpecial && !isCompleted && !isNotification;
+
+    const isCaptureCount = type === "capture_count" && capturedCount > 0;
+    const isCaptureSpecific = type === "capture_specific" && capturedAshCount > 0;
+
+    const showDonut = shouldShowDonut && (isCaptureCount || isCaptureSpecific);
+
+    const percentage =
+        type === "capture_specific"
+            ? percentageAshAchievement
+            : percentageAchievement;
+
+
     useEffect(() => {
         const loadLegendaryOrMythicalSprite = async () => {
             try {
@@ -106,12 +120,12 @@ export const AchievementCardComponent = ({
                         {desc}
                     </span>
                 </div>
-                {!isSpecial && !isCompleted && !isNotification && capturedCount > 0 && (
+                {showDonut && (
                     <div className="absolute bottom-0 right-0 pb-2 pr-2 flex flex-row gap-2">
                         <DonutProgress
-                            percentage={type !== "capture_specific" ? percentageAchievement : percentageAshAchievement}
-                            isCompleted={isCompleted}
-                            percentageAchievement={type !== "capture_specific" ? percentageAchievement : percentageAshAchievement}
+                            percentage={percentage}
+                            isCompleted={false}
+                            percentageAchievement={percentage}
                         />
                     </div>
                 )}
