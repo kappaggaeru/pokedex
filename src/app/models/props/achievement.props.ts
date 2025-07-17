@@ -7,8 +7,8 @@ export type AchievementProps = {
     image?: string;
     icon?: LucideIcon;
     goal: number;
+    capturedCount?: number;
     type: "capture_count" | "first_legendary" | "first_mythical" | "capture_specific" | "special";
-    captureList?: number[];
     hasCookie?: string;
     completed: boolean;
     completedAt?: Date | null | undefined;

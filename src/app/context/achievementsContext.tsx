@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState, useEffect, useRef } from "react";
 import { useCookies } from "react-cookie";
 import { AchievementProps } from "../models/props/achievement.props";
-import { ArrowBigUp, ArrowBigUpDash, Gamepad, Gem, Sparkles, Volume2Icon } from "lucide-react";
+import { ArrowBigUp, Gamepad, Gem, Sparkles, Volume2Icon } from "lucide-react";
 import { playSound } from "react-sounds";
 import { useAccesibility } from "./accesibilityContext";
 
@@ -14,10 +14,12 @@ interface AchievementContextType {
     achievements: AchievementProps[];
     notifications: AchievementProps[];
     capturedCount: number;
+    capturedAshCount: number;
     shownAchievements: Set<number>;
     setAchievement: (index: number) => void;
     setSpecialAchievement: (index: number) => void;
     updateCountAchievements: (capturedList: number[]) => void;
+    updateAshCountAchievement: (ashCapturedList: number[]) => void;
     checkTierAchievement: (pokemonTier: string) => void;
     showNotification: (id: number) => void;
     getAchievement: (id: number) => AchievementProps | null;
@@ -34,8 +36,8 @@ type CookieNames =
     | 'firstShiny'
     | 'firstEvolution'
     | 'firstVariant'
-    | 'firstChainComplete'
-    | 'retroMode';
+    | 'retroMode'
+    | 'ashCapturedList';
 
 type CookieValues = {
     completedAchievements?: CompletedAchievement[];
@@ -45,8 +47,8 @@ type CookieValues = {
     firstShiny?: string;
     firstEvolution?: string;
     firstVariant?: string;
-    firstChainComplete?: string;
     retroMode?: string;
+    ashCapturedList?: string;
 };
 
 const AchievementsContext = createContext<AchievementContextType | undefined>(undefined);
@@ -60,16 +62,23 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         'firstShiny',
         'firstEvolution',
         'firstVariant',
-        'firstChainComplete',
-        'retroMode'
+        'retroMode',
+        'ashCapturedList'
     ];
 
     const [cookies, setCookie, removeCookie] = useCookies(cookieNames);
-
     // Ref para trackear qué achievements ya fueron notificados en esta sesión
     const notifiedAchievements = useRef(new Set<number>());
-
     const [shownAchievements, setShownAchievements] = useState<Set<number>>(new Set());
+    const [notifications, setNotifications] = useState<AchievementProps[]>([]);
+    const [capturedCount, setCapturedCount] = useState(0);
+    const [capturedAshCount, setCapturedAshCount] = useState(0);
+    const completedSound = "/assets/sounds/completed.mp3";
+    const { enabledSoundEffects } = useAccesibility();
+
+    const ASH_ACHIEVEMENT_ID = 12;
+    const LEGENDARY_ACHIEVEMENT_ID = 7;
+    const MYTHICAL_ACHIEVEMENT_ID = 8;
 
     const [achievements, setAchievements] = useState<AchievementProps[]>([
         {
@@ -184,18 +193,11 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         },
         {
             id: 12,
-            title: "Ketchup",
+            title: "Ketchum",
             description: "You caught all of Ash's Pokémon.",
-            goal: 50,
+            goal: 59,
             image: "https://dcdn-us.mitiendanube.com/stores/003/493/448/products/ash-ketchum-pokemon-mascara-7b5badc9a99edc65f117161467636640-640-0.png",
             type: "capture_specific",
-            captureList: [25, 18, 1, 6, 99, 89, 128, 143, 214, 153,
-                156, 158, 164, 232, 277, 254, 341, 324, 362, 398,
-                389, 392, 418, 472, 443, 521, 501, 499, 495, 559,
-                542, 536, 525, 553, 663, 701, 715, 149, 94, 448,
-                865, 882, 722, 745, 727, 809, 122, 7, 57, 706,
-                658, 804, 12, 131, 246, 791, 20, 190, 15
-            ],
             completed: false
         },
         {
@@ -210,16 +212,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         },
         {
             id: 14,
-            title: "Evolution Chain Master",
-            description: "You completed an entire evolution chain.",
-            goal: 1,
-            icon: ArrowBigUpDash,
-            type: "special",
-            hasCookie: "firstChainComplete",
-            completed: false
-        },
-        {
-            id: 15,
             title: "Retro Mode Unlocked",
             description: "You unlocked Retro Mode.",
             goal: 1,
@@ -229,15 +221,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             completed: false
         }
     ]);
-
-    const [notifications, setNotifications] = useState<AchievementProps[]>([]);
-    const [capturedCount, setCapturedCount] = useState(0)
-    const completedSound = "/assets/sounds/completed.mp3";
-    const { enabledSoundEffects } = useAccesibility();
-
-    const ASH_ACHIEVEMENT_ID = 12;
-    const LEGENDARY_ACHIEVEMENT_ID = 7;
-    const MYTHICAL_ACHIEVEMENT_ID = 8;
 
     const clearAchievements = () => {
         // Limpiar todas las cookies relacionadas con logros
@@ -258,6 +241,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
 
         // Resetear contador
         setCapturedCount(0);
+        setCapturedAshCount(0);
 
         // Limpiar el tracking de notificaciones
         notifiedAchievements.current.clear();
@@ -390,7 +374,21 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
 
         if (newCapturedCount > previousCount) {
             checkCaptureCountAchievements(newCapturedCount);
-            checkCaptureCountAshAchievement(capturedList);
+        }
+    }
+
+    /**
+     * verifica el achievement que depende del contador de capturas de ash
+     */
+    const updateAshCountAchievement = (ashCapturedList: number[]) => {
+        const newCapturedCount = ashCapturedList.length;
+        const previousCount = capturedCount;
+
+        // actualizo capturedCount
+        setCapturedAshCount(newCapturedCount);
+
+        if (newCapturedCount > previousCount) {
+            checkCaptureCountAshAchievement(newCapturedCount);
         }
     }
 
@@ -413,18 +411,13 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     /**
      * valida si la lista de pokemon de ash fue completada
      */
-    const checkCaptureCountAshAchievement = (capturedList: number[]) => {
+    const checkCaptureCountAshAchievement = (count: number) => {
         const ashAchievement = getAchievement(ASH_ACHIEVEMENT_ID);
         if (ashAchievement &&
             !ashAchievement.completed &&
             !notifiedAchievements.current.has(ashAchievement.id) &&
-            ashAchievement.captureList) {
-            const ashCaptured = capturedList.filter(id =>
-                ashAchievement.captureList!.includes(id)
-            );
-            if (ashCaptured.length >= ashAchievement.goal) {
-                completeAndNotify(ashAchievement.id);
-            }
+            count >= ashAchievement.goal) {
+            completeAndNotify(ashAchievement.id);
         }
     }
 
@@ -494,7 +487,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         }, 1500); // 1500ms = 1.5 segundos
     };
 
-
     const removeNotification = (id: number) => {
         setNotifications(prev => prev.filter(notif => notif.id !== id));
     };
@@ -508,10 +500,12 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             achievements,
             notifications,
             capturedCount,
+            capturedAshCount,
             shownAchievements,
             setAchievement,
             setSpecialAchievement,
             updateCountAchievements,
+            updateAshCountAchievement,
             checkTierAchievement,
             showNotification,
             getAchievement,

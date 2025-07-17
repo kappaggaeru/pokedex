@@ -7,15 +7,24 @@ import { useCookies } from "react-cookie";
 
 export const CookiesSettingsComponent: React.FC = () => {
     const hasMounted = useHasMounted();
-    const [cookies] = useCookies(["capturedList"]);
+    const [cookies] = useCookies(["capturedList", "ashCapturedList"]);
     const [captured, setCaptured] = useState("");
+    const [capturedAsh, setCapturedAsh] = useState("");
     const { clearCapturedList } = usePokemon();
-    const { clearAchievements, achievements, capturedCount, shownAchievements } = useAchievements();
+    const {
+        clearAchievements,
+        achievements,
+        capturedCount,
+        capturedAshCount,
+        shownAchievements
+    } = useAchievements();
 
     useEffect(() => {
         if (hasMounted) {
             const cookieValue = cookies.capturedList || "";
             setCaptured(cookieValue);
+            const cookieAshValue = cookies.ashCapturedList || "";
+            setCapturedAsh(cookieAshValue);
         }
     }, [cookies.capturedList, hasMounted]);
 
@@ -60,6 +69,14 @@ export const CookiesSettingsComponent: React.FC = () => {
                     value={captured}
                     onChange={() => { }}
                     className="border border-gray-200/50 dark:border-gray-600/50 w-full h-40 bg-white dark:bg-slate-800 rounded-md p-4"
+                />
+                <p>Captured Ash pokemon: {capturedAshCount}</p>
+                <textarea
+                    name="capturedAshList"
+                    id="capturedAshList"
+                    value={capturedAsh}
+                    onChange={() => { }}
+                    className="border border-gray-200/50 dark:border-gray-600/50 w-full h-20 bg-white dark:bg-slate-800 rounded-md p-4"
                 />
                 <div>
                     <p>Earned achievements: {completedAchievements.length}</p>

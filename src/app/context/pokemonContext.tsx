@@ -27,7 +27,6 @@ interface PokemonContextType {
     shouldBlinkArtwork: boolean;
     capturedList: number[];
     setTier: (tier: PokemonTier) => void;
-    capturePokemon: (id: number) => void;
     clearCapturedList: () => void;
     setPokemonList: (list: PokemonList[]) => void;
     selectPokemon: (id: number) => void;
@@ -44,18 +43,24 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [capturedIds, setCapturedIds] = useState<number[]>([]); // arreglo de ids usado para actualizar las cookies
     const [pokemonList, setPokemonList] = useState<{ id: number, name: string }[]>([]); // listado completo de todos los pokemon
     const [capturedList, setCapturedList] = useState<number[]>([]);
+    const [ashCapturedList, setAshCapturedList] = useState<number[]>([]);
     const [viewedMap, setViewedMap] = useState<Record<number, { loading: boolean; sprite?: string }>>({}); // mapa control de sprites
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
     const [isLoadingPokemon, setIsLoadingPokemon] = useState(false);
     const [shouldBlinkArtwork, setShouldBlinkArtwork] = useState(false);
-    const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
-    const { updateCountAchievements } = useAchievements();
+    const [cookies, setCookie, removeCookie] = useCookies(["capturedList", "ashCapturedList"]);
+    const { updateCountAchievements, updateAshCountAchievement } = useAchievements();
 
-
-    const MIN_ID = 1;
+    const ashGoalCaptureList: number[] = [25, 18, 1, 6, 99, 89, 128, 143, 214, 153,
+        156, 158, 164, 232, 277, 254, 341, 324, 362, 398,
+        389, 392, 418, 472, 443, 521, 501, 499, 495, 559,
+        542, 536, 525, 553, 663, 701, 715, 149, 94, 448,
+        865, 882, 722, 745, 727, 809, 122, 7, 57, 706,
+        658, 804, 12, 131, 246, 791, 20, 190, 15
+    ];
     const MAX_ID = 1025;
-    const cookieExpiration = 60 * 60 * 24 * 30;
+    const cookieExpiration = 60 * 60 * 24 * 365; // 1 año
 
     useEffect(() => {
         const raw = cookies.capturedList;
@@ -63,10 +68,16 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             ? raw.split(",").filter(Boolean).map(Number)
             : [];
         setCapturedIds(parsed);
-    }, [cookies.capturedList]);
+
+        const rawAsh = cookies.ashCapturedList;
+        const parsedAsh = typeof rawAsh === "string"
+            ? rawAsh.split(",").filter(Boolean).map(Number)
+            : [];
+        setCapturedIds(parsedAsh);
+    }, [cookies.capturedList, cookies.ashCapturedList]);
 
 
-    // Actualiza la función selectPokemon:
+    // funcion para seleccionar y capturar pokemon
     const selectPokemon = async (id: number) => {
         if (!id || typeof id !== "number") return;
         if (selectedId === id) return;
@@ -91,16 +102,31 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
 
             setSelectedPokemon(pokemon);
 
-            // Actualizar la lista de capturados solo si no está ya incluido
+            // Actualizar la lista de capturados solo si no está ya incluido y no es una variante
             let newCapturedList = capturedList;
-            if (!capturedList.includes(pokemon.id) && pokemon.id <= 1025) {
+            let newAhsCapturedList = ashCapturedList;
+            if (!capturedList.includes(pokemon.id) && pokemon.id <= MAX_ID) {
                 newCapturedList = [...capturedList, pokemon.id];
                 setCapturedList(newCapturedList);
 
-                // Actualizar cookies de forma segura
+                // validacion de pokemon de ash
+                if (isAshPokemon(pokemon.id)) {
+                    newAhsCapturedList = [...ashCapturedList, pokemon.id];
+                    setAshCapturedList(newAhsCapturedList);
+
+                    const cookieValue = newAhsCapturedList.join(',');
+                    setCookie('ashCapturedList', cookieValue, {
+                        maxAge: cookieExpiration,
+                        path: '/',
+                        sameSite: 'strict'
+                    });
+
+                    updateAshCountAchievement(newAhsCapturedList);
+                }
+
                 const cookieValue = newCapturedList.join(',');
                 setCookie('capturedList', cookieValue, {
-                    maxAge: 60 * 60 * 24 * 365, // 1 año
+                    maxAge: cookieExpiration,
                     path: '/',
                     sameSite: 'strict'
                 });
@@ -157,18 +183,12 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         setIsLoadingPokemon(false);
     }
 
-    const capturePokemon = (id: number) => {
-        if (id < MIN_ID || id > MAX_ID) return;
-        if (capturedIds.includes(id)) return;
-
-        const newList = [...capturedIds, id];
-        setCapturedIds(newList); // actualiza en memoria
-        setCookie("capturedList", newList.join(","), { path: "/", maxAge: cookieExpiration }); // actualiza cookie
-        updateCountAchievements(capturedList);
-    };
-
     const clearCapturedList = () => {
         removeCookie("capturedList", { path: "/" });
+    }
+
+    const isAshPokemon = (id: number): boolean => {
+        return ashGoalCaptureList.includes(id);
     }
 
     return (
@@ -182,7 +202,6 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             shouldBlinkArtwork,
             capturedList,
             setTier,
-            capturePokemon,
             clearCapturedList,
             setPokemonList,
             selectPokemon,

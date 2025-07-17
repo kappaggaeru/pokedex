@@ -1,7 +1,7 @@
 import React from "react";
-import { useAchievements } from "@/app/context/achievementsContext";
 import { LucideIcon, Lock } from "lucide-react";
 import { DonutProgress } from "./pokemon/donut-progress.component";
+import { useAchievements } from "@/app/context/achievementsContext";
 
 export const AchievementCardComponent = ({
     title,
@@ -9,6 +9,7 @@ export const AchievementCardComponent = ({
     goal,
     image,
     icon,
+    type,
     isSpecial,
     isNotification,
     isCompleted,
@@ -19,15 +20,16 @@ export const AchievementCardComponent = ({
     goal: number;
     image: string;
     icon: LucideIcon;
+    type: string;
     isSpecial: boolean;
     isNotification: boolean;
     isCompleted: boolean;
     completedAt: Date | undefined;
     onClick: () => void;
 }) => {
-    const { capturedCount } = useAchievements();
+    const { capturedCount, capturedAshCount } = useAchievements();
     const percentageAchievement = Math.floor((capturedCount / goal) * 100) > 100 ? 100 : Math.floor((capturedCount / goal) * 100);
-    
+    const percentageAshAchievement = Math.floor((capturedAshCount / goal) * 100) > 100 ? 100 : Math.floor((capturedAshCount / goal) * 100);
 
     return (
         <div className="flex flex-col">
@@ -81,9 +83,9 @@ export const AchievementCardComponent = ({
                 {!isSpecial && !isCompleted && !isNotification && capturedCount > 0 && (
                     <div className="absolute bottom-0 right-0 pb-2 pr-2 flex flex-row gap-2">
                         <DonutProgress
-                            percentage={percentageAchievement}
+                            percentage={type !== "capture_specific" ? percentageAchievement : percentageAshAchievement}
                             isCompleted={isCompleted}
-                            percentageAchievement={percentageAchievement}
+                            percentageAchievement={type !== "capture_specific" ? percentageAchievement : percentageAshAchievement}
                         />
                     </div>
                 )}
