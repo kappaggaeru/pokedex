@@ -1,6 +1,7 @@
 import React from "react";
 import { useAchievements } from "@/app/context/achievementsContext";
 import { LucideIcon, Lock } from "lucide-react";
+import { DonutProgress } from "./pokemon/donut-progress.component";
 
 export const AchievementCardComponent = ({
     title,
@@ -26,22 +27,7 @@ export const AchievementCardComponent = ({
 }) => {
     const { capturedCount } = useAchievements();
     const percentageAchievement = Math.floor((capturedCount / goal) * 100) > 100 ? 100 : Math.floor((capturedCount / goal) * 100);
-
-    const DonutProgress = ({ percentage = 75 }: { percentage: number }) => {
-        return (
-            <div className="relative w-6 h-6 rounded-full"
-                style={{
-                    background: `conic-gradient(#818cf8 ${percentage}%, #e5e7eb ${percentage}% 100%)` // indigo-400
-                }}
-            >
-                <div className={`absolute inset-1 rounded-full
-                    ${isCompleted ? "bg-indigo-100 dark:bg-indigo-900" : "bg-slate-50 dark:bg-slate-800"}
-                `} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                </div>
-            </div>
-        );
-    };
+    
 
     return (
         <div className="flex flex-col">
@@ -70,7 +56,7 @@ export const AchievementCardComponent = ({
                                 <img
                                     src={image}
                                     alt={title}
-                                    className="w-12 h-12 object-contain filter grayscale"
+                                    className="w-12 h-12 object-contain filter"
                                 />
                             ) : icon === Lock ? (
                                 <span>{goal}</span>
@@ -92,9 +78,13 @@ export const AchievementCardComponent = ({
                         {desc}
                     </span>
                 </div>
-                {!isSpecial && !isCompleted && (
+                {!isSpecial && !isCompleted && !isNotification && capturedCount > 0 && (
                     <div className="absolute bottom-0 right-0 pb-2 pr-2 flex flex-row gap-2">
-                        <DonutProgress percentage={percentageAchievement} />
+                        <DonutProgress
+                            percentage={percentageAchievement}
+                            isCompleted={isCompleted}
+                            percentageAchievement={percentageAchievement}
+                        />
                     </div>
                 )}
             </div>

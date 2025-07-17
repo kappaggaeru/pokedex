@@ -77,6 +77,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught First Pokémon",
             description: "You caught your first Pokémon.",
             goal: 1,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png",
             type: "capture_count",
             completed: false,
         },
@@ -85,6 +86,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught 10 Pokémon",
             description: "You caught 10 Pokémon.",
             goal: 10,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png",
             type: "capture_count",
             completed: false
         },
@@ -93,6 +95,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught 25 Pokémon",
             description: "You caught 25 Pokémon.",
             goal: 25,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png",
             type: "capture_count",
             completed: false
         },
@@ -101,6 +104,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught 50 Pokémon",
             description: "You caught 50 Pokémon.",
             goal: 50,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png",
             type: "capture_count",
             completed: false
         },

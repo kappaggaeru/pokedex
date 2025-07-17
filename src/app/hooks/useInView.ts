@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
-export const useInView = <T extends HTMLElement>() => {
+export const useInView = <T extends HTMLElement>(threshold: number = 0.15) => {
     const ref = useRef<T>(null);
     const [isInView, setIsInView] = useState(false);
 
@@ -9,12 +9,10 @@ export const useInView = <T extends HTMLElement>() => {
             ([entry]) => {
                 if (entry.isIntersecting) {
                     setIsInView(true);
-                    observer.disconnect(); // solo activar una vez
+                    observer.disconnect(); // solo una vez
                 }
             },
-            {
-                threshold: 0.15, // Se considera visible si al menos el 15% entra
-            }
+            { threshold }
         );
 
         if (ref.current) {
@@ -22,7 +20,7 @@ export const useInView = <T extends HTMLElement>() => {
         }
 
         return () => observer.disconnect();
-    }, []);
+    }, [threshold]);
 
     return { ref, isInView };
 };
