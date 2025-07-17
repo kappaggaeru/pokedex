@@ -20,6 +20,7 @@ type ViewedState = {
 interface PokemonContextType {
     tier: PokemonTier;
     selectedId: number | null;
+    capturedIds: number[];
     pokemonList: PokemonList[];
     viewedMap: Record<number, ViewedState>;
     selectedPokemon: Pokemon | null;
@@ -194,6 +195,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     return (
         <PokemonContext.Provider value={{
             selectedId,
+            capturedIds,
             pokemonList,
             tier,
             viewedMap,

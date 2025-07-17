@@ -42,7 +42,7 @@ export const AchievementCardComponent = ({
                 const objectURL = URL.createObjectURL(blob);
                 setSprite(objectURL);
             } catch (e) {
-                console.error("Error fetching legendary or mythical sprite");
+                console.error("Error fetching legendary or mythical sprite", e);
             }
         }
 

@@ -86,6 +86,7 @@ export const NotificationsComponent = () => {
                         title={"New Achievement Unlocked!"}
                         desc={state.notification.title}
                         goal={0}
+                        idCapture={0}
                         image=""
                         type=""
                         icon={LockOpen}
