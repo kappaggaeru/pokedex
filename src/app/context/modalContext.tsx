@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 interface ModalContextType {
     showModal: boolean;
-    toggleModal: (sector: string) => void;
+    toggleModal: (sector?: string) => void;
     activeSector: string;
 }
 
