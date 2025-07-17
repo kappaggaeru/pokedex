@@ -87,6 +87,7 @@ export const NotificationsComponent = () => {
                         desc={state.notification.title}
                         goal={0}
                         image=""
+                        type=""
                         icon={LockOpen}
                         isSpecial={false}
                         isNotification={true}

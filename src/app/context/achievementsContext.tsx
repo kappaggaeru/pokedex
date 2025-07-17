@@ -20,7 +20,7 @@ interface AchievementContextType {
     setSpecialAchievement: (index: number) => void;
     updateCountAchievements: (capturedList: number[]) => void;
     updateAshCountAchievement: (ashCapturedList: number[]) => void;
-    checkTierAchievement: (pokemonTier: string) => void;
+    checkTierAchievement: (id: number, pokemonTier: string) => void;
     showNotification: (id: number) => void;
     getAchievement: (id: number) => AchievementProps | null;
     removeNotification: (id: number) => void;
@@ -146,7 +146,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught a Legendary Pokémon",
             description: "You caught your first Legendary Pokémon.",
             goal: 1,
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png",
             type: "first_legendary",
             hasCookie: "firstLegendary",
             completed: false
@@ -156,7 +155,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught a Mythical Pokémon",
             description: "You caught your first Mythical Pokémon.",
             goal: 1,
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png",
             type: "first_mythical",
             hasCookie: "firstMythical",
             completed: false
@@ -424,19 +422,36 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     /**
      *  valida los achievements de tier
      */
-    const checkTierAchievement = (pokemonTier: string) => {
+    const checkTierAchievement = (id: number, pokemonTier: string) => {
         if (pokemonTier === "legendary" &&
             !getCookieValue("firstLegendary") &&
             !notifiedAchievements.current.has(LEGENDARY_ACHIEVEMENT_ID)) {
+            setSpriteLegendaryOrMythical(id, LEGENDARY_ACHIEVEMENT_ID);
             completeAndNotify(7);
         }
 
         if (pokemonTier === "mythical" &&
             !getCookieValue("firstMythical") &&
             !notifiedAchievements.current.has(MYTHICAL_ACHIEVEMENT_ID)) {
+            setSpriteLegendaryOrMythical(id, MYTHICAL_ACHIEVEMENT_ID);
             completeAndNotify(8);
         }
     };
+
+    /**
+     * setea el id del pokemon legendario o mitico capturado
+     * @param idCapture
+     * @param idAchievement
+     */
+    const setSpriteLegendaryOrMythical = (idCapture: number, idAchievement: number) => {
+        setAchievements(prev =>
+            prev.map(achievement =>
+                achievement.id === idAchievement
+                    ? { ...achievement, idCapture: idCapture }
+                    : achievement
+            )
+        );
+    }
 
     /**
      * marca el achievement como completado

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LucideIcon, Lock } from "lucide-react";
 import { DonutProgress } from "./pokemon/donut-progress.component";
 import { useAchievements } from "@/app/context/achievementsContext";
+import { getSprite } from "@/app/services/pokemon.service";
 
 export const AchievementCardComponent = ({
     title,
     desc,
     goal,
+    idCapture,
     image,
     icon,
     type,
@@ -18,6 +20,7 @@ export const AchievementCardComponent = ({
     title: string;
     desc: string;
     goal: number;
+    idCapture: number;
     image: string;
     icon: LucideIcon;
     type: string;
@@ -30,6 +33,23 @@ export const AchievementCardComponent = ({
     const { capturedCount, capturedAshCount } = useAchievements();
     const percentageAchievement = Math.floor((capturedCount / goal) * 100) > 100 ? 100 : Math.floor((capturedCount / goal) * 100);
     const percentageAshAchievement = Math.floor((capturedAshCount / goal) * 100) > 100 ? 100 : Math.floor((capturedAshCount / goal) * 100);
+    const [sprite, setSprite] = useState("");
+
+    useEffect(() => {
+        const loadLegendaryOrMythicalSprite = async () => {
+            try {
+                const blob = await getSprite(idCapture);
+                const objectURL = URL.createObjectURL(blob);
+                setSprite(objectURL);
+            } catch (e) {
+                console.error("Error fetching legendary or mythical sprite");
+            }
+        }
+
+        if (idCapture !== 0) {
+            loadLegendaryOrMythicalSprite();
+        }
+    }, [idCapture, type]);
 
     return (
         <div className="flex flex-col">
@@ -54,6 +74,12 @@ export const AchievementCardComponent = ({
                             })
                             : !isCompleted ? (
                                 <Lock className="text-slate-500 dark:text-slate-400"></Lock>
+                            ) : sprite !== "" ? (
+                                <img
+                                    src={sprite}
+                                    alt={sprite}
+                                    className="w-12 h-12 object-contain filter"
+                                />
                             ) : image !== "" ? (
                                 <img
                                     src={image}

@@ -11,6 +11,7 @@ const AchievementsComponent: React.FC = () => {
             title={entry.title}
             desc={entry.description}
             goal={entry.goal}
+            idCapture={entry.idCapture ?? 0}
             image={entry.image ?? ""}
             icon={entry.icon ?? Lock}
             type={entry.type}

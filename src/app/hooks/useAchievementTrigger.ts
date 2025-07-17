@@ -22,14 +22,14 @@ export const useAchievementTrigger = () => {
         if (selectedPokemon && capturedList.includes(selectedPokemon.id)) {
             // Verificar si el Pokémon recién capturado es legendary o mythical
             if (tier === 'legendary' || tier === 'mythical') {
-                checkTierAchievement(tier);
+                checkTierAchievement(selectedPokemon.id, tier);
             }
         }
     }, [selectedPokemon, capturedList, tier, checkTierAchievement]);
 
     return {
         // Puedes retornar funciones adicionales si necesitas más control
-        triggerTierAchievement: (pokemonTier: string) => checkTierAchievement(pokemonTier),
+        triggerTierAchievement: (id: number, pokemonTier: string) => checkTierAchievement(id, pokemonTier),
         triggerUpdateAchievements: (list: number[]) => updateCountAchievements(list)
     };
 };
