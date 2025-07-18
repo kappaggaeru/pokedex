@@ -10,6 +10,7 @@ export const AchievementCardComponent = ({
     goal,
     idCapture,
     image,
+    imageMultiply,
     icon,
     type,
     isSpecial,
@@ -22,6 +23,7 @@ export const AchievementCardComponent = ({
     goal: number;
     idCapture: number;
     image: string;
+    imageMultiply: number;
     icon: LucideIcon;
     type: string;
     isSpecial: boolean;
@@ -120,11 +122,16 @@ export const AchievementCardComponent = ({
                         : "bg-slate-50 dark:bg-slate-800 border-gray-200/50 dark:border-gray-600/50"}
             `}>
                 <div className={`
-                    rounded-xl w-[7rem] h-20 border
+                    rounded-xl w-[7rem] h-20 border relative
                     ${isCompleted ? "border-indigo-300 dark:border-indigo-500" : "border-gray-200/50 dark:border-gray-600/50"}
                     flex items-center justify-center
                     cursor-default my-auto
                 `}>
+                    {imageMultiply !== 0 &&
+                        <div className="absolute top-0 right-0 pt-2 pr-2">
+                            <span className="text-xs text-gray-400">x{imageMultiply}</span>
+                        </div>
+                    }
                     {renderAchievementIcon()}
                 </div>
                 <div className="flex flex-col w-full h-fit overflow-visible">

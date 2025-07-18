@@ -102,7 +102,8 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught 10 Pokémon",
             description: "You caught 10 Pokémon.",
             goal: 10,
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png",
+            imageMultiply: 10,
             type: "capture_count",
             completed: false
         },
@@ -111,7 +112,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught 25 Pokémon",
             description: "You caught 25 Pokémon.",
             goal: 25,
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png",
             type: "capture_count",
             completed: false
         },
@@ -120,7 +121,8 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught 50 Pokémon",
             description: "You caught 50 Pokémon.",
             goal: 50,
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/great-ball.png",
+            imageMultiply: 2,
             type: "capture_count",
             completed: false
         },
@@ -129,6 +131,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught 100 Pokémon",
             description: "You caught 100 Pokémon.",
             goal: 100,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png",
             type: "capture_count",
             completed: false
         },
@@ -137,6 +140,8 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Caught 500 Pokémon",
             description: "You caught 500 Pokémon.",
             goal: 500,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png",
+            imageMultiply: 5,
             type: "capture_count",
             completed: false
         },
@@ -145,6 +150,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             title: "Gotta Catch 'Em All!",
             description: "You caught all available Pokémon.",
             goal: 1025,
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png",
             type: "capture_count",
             completed: false
         },

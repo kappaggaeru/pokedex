@@ -88,6 +88,7 @@ export const NotificationsComponent = () => {
                         goal={0}
                         idCapture={0}
                         image=""
+                        imageMultiply={0}
                         type=""
                         icon={LockOpen}
                         isSpecial={false}

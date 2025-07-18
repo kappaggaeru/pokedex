@@ -9,6 +9,7 @@ export type AchievementProps = {
     goal: number;
     idCapture?: number;
     capturedCount?: number;
+    imageMultiply?: number;
     type: "capture_count" | "first_legendary" | "first_mythical" | "capture_specific" | "special";
     hasCookie?: string;
     completed: boolean;

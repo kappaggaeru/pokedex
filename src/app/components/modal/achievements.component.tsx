@@ -13,6 +13,7 @@ const AchievementsComponent: React.FC = () => {
             goal={entry.goal}
             idCapture={entry.idCapture ?? 0}
             image={entry.image ?? ""}
+            imageMultiply={entry.imageMultiply ?? 0}
             icon={entry.icon ?? Lock}
             type={entry.type}
             isSpecial={entry.hasCookie !== undefined}
