@@ -38,7 +38,9 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
                     setAchievementsVisible(true); break;
                 case "settings":
                     setLanguageVisible(true);
-                    setAccesibilityVisible(true); break;
+                    setAccesibilityVisible(true);
+                    setCookiesVisible(true);
+                    break;
                 case "theme":
                     setThemeVisible(true); break;
                 case "support":
@@ -62,7 +64,7 @@ export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
             <div className="w-full h-full">
                 <div className="overflow-auto h-full">
                     <div className="flex flex-col gap-4 mx-4 pb-4 pt-4">
-                        <div className="flex flex-row justify-between items-center">
+                        <div className="flex flex-row justify-between items-start">
                             <div>
                                 <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9dex" target="_blank" rel="noopener noreferrer">
                                     <Image

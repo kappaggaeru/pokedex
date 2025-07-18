@@ -127,7 +127,7 @@ export const AchievementCardComponent = ({
                     flex items-center justify-center
                     cursor-default my-auto
                 `}>
-                    {imageMultiply !== 0 &&
+                    {isCompleted && imageMultiply !== 0 &&
                         <div className="absolute top-0 right-0 pt-2 pr-2">
                             <span className="text-xs text-gray-400">x{imageMultiply}</span>
                         </div>
