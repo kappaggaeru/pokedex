@@ -31,7 +31,9 @@ interface AchievementContextType {
 type CookieNames =
     | 'completedAchievements'
     | 'firstLegendary'
+    | 'firstLegendaryCaptureId'
     | 'firstMythical'
+    | 'firstMythicalCaptureId'
     | 'firstRoar'
     | 'firstShiny'
     | 'firstEvolution'
@@ -42,7 +44,9 @@ type CookieNames =
 type CookieValues = {
     completedAchievements?: CompletedAchievement[];
     firstLegendary?: string;
+    firstLegendaryCaptureId?: string;
     firstMythical?: string;
+    firstMythicalCaptureId?: string;
     firstRoar?: string;
     firstShiny?: string;
     firstEvolution?: string;
@@ -57,7 +61,9 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     const cookieNames: CookieNames[] = [
         'completedAchievements',
         'firstLegendary',
+        'firstLegendaryCaptureId',
         'firstMythical',
+        'firstMythicalCaptureId',
         'firstRoar',
         'firstShiny',
         'firstEvolution',
@@ -75,6 +81,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     const [capturedAshCount, setCapturedAshCount] = useState(0);
     const completedSound = "/assets/sounds/completed.mp3";
     const { enabledSoundEffects } = useAccesibility();
+    const cookieExpiration = 60 * 60 * 24 * 365; // 1 año
 
     const ASH_ACHIEVEMENT_ID = 12;
     const LEGENDARY_ACHIEVEMENT_ID = 7;
@@ -255,10 +262,16 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     };
 
     // Función helper para verificar cookies de forma segura
-    const getCookieValue = (cookieName: string): boolean => {
+    const getBooleanCookieValue = (cookieName: string): boolean => {
         const cookieValue = (cookies as CookieValues)[cookieName as keyof CookieValues];
         return Boolean(cookieValue);
     };
+
+    // funcion para recuperar la cookie
+    const getRawCookieValue = (cookieName: CookieNames): string => {
+        const val = cookies[cookieName];
+        return typeof val === 'string' || typeof val === 'number' ? String(val) : '';
+    }
 
     // Inicializar achievements desde cookies
     useEffect(() => {
@@ -266,46 +279,42 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
 
         setAchievements(prev =>
             prev.map(achievement => {
-                // Para achievements especiales, verificar también sus cookies específicas
+                const foundCompleted = completedAchievements.find(completed => completed.id === achievement.id);
+                let isCompleted = !!foundCompleted;
+                let completedAt: Date | null = foundCompleted?.completedAt ? new Date(foundCompleted.completedAt) : null;
+
+                // cookies especificas de achievements con `hasCookie`
                 if (achievement.hasCookie) {
-                    const hasCookie = getCookieValue(achievement.hasCookie);
-                    const foundCompleted = completedAchievements.find(completed => completed.id === achievement.id);
-                    const isCompleted = hasCookie || !!foundCompleted;
-
-                    if (isCompleted) {
-                        notifiedAchievements.current.add(achievement.id);
-                        shownAchievements.add(achievement.id);
+                    const hasCookie = getBooleanCookieValue(achievement.hasCookie);
+                    if (hasCookie) {
+                        isCompleted = true;
                     }
-
-                    let completedAt: Date | null | undefined = achievement.completedAt;
-                    if (foundCompleted?.completedAt) {
-                        completedAt = new Date(foundCompleted.completedAt);
-                    }
-
-                    return {
-                        ...achievement,
-                        completed: isCompleted,
-                        completedAt: completedAt ?? null
-                    };
                 }
 
-                const foundCompleted = completedAchievements.find(completed => completed.id === achievement.id);
-                const isCompleted = !!foundCompleted;
+                // legendario o mitico
+                let captureId = 0;
+                if (achievement.id === LEGENDARY_ACHIEVEMENT_ID || achievement.id === MYTHICAL_ACHIEVEMENT_ID) {
+                    const cookieAchievement = achievement.id === LEGENDARY_ACHIEVEMENT_ID
+                        ? 'firstLegendaryCaptureId'
+                        : 'firstMythicalCaptureId';
+                    const rawId = getRawCookieValue(cookieAchievement);
+                    console.log('rawId', rawId);
+                    captureId = Number.isNaN(+rawId) ? 0 : +rawId;
+                }
 
                 if (isCompleted) {
                     notifiedAchievements.current.add(achievement.id);
                     shownAchievements.add(achievement.id);
                 }
 
-                let completedAt: Date | null | undefined = achievement.completedAt;
-                if (foundCompleted?.completedAt) {
-                    completedAt = new Date(foundCompleted.completedAt);
-                }
+                console.log('captureId', captureId);
+                
 
                 return {
                     ...achievement,
                     completed: isCompleted,
-                    completedAt: completedAt ?? null
+                    idCapture: captureId,
+                    completedAt
                 };
             })
         );
@@ -331,7 +340,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         };
         if (!completedAchievements.some(completed => completed.id === id)) {
             setCookie('completedAchievements', [...completedAchievements, newCompleted], {
-                maxAge: 60 * 60 * 24 * 365, // 1 año
+                maxAge: cookieExpiration,
                 path: '/',
                 sameSite: 'strict'
             });
@@ -360,7 +369,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         if (achievement) {
             const achievementCookie = achievement.hasCookie;
             setCookie(achievementCookie as CookieNames, 'true', {
-                maxAge: 60 * 60 * 24 * 365,
+                maxAge: cookieExpiration,
                 path: '/',
                 sameSite: 'strict'
             });
@@ -431,14 +440,14 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
      */
     const checkTierAchievement = (id: number, pokemonTier: string) => {
         if (pokemonTier === "legendary" &&
-            !getCookieValue("firstLegendary") &&
+            !getBooleanCookieValue("firstLegendary") &&
             !notifiedAchievements.current.has(LEGENDARY_ACHIEVEMENT_ID)) {
             setSpriteLegendaryOrMythical(id, LEGENDARY_ACHIEVEMENT_ID);
             completeAndNotify(7);
         }
 
         if (pokemonTier === "mythical" &&
-            !getCookieValue("firstMythical") &&
+            !getBooleanCookieValue("firstMythical") &&
             !notifiedAchievements.current.has(MYTHICAL_ACHIEVEMENT_ID)) {
             setSpriteLegendaryOrMythical(id, MYTHICAL_ACHIEVEMENT_ID);
             completeAndNotify(8);
@@ -458,6 +467,13 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
                     : achievement
             )
         );
+        const achievementCookie = idAchievement == LEGENDARY_ACHIEVEMENT_ID ?
+            "firstLegendaryCaptureId" : "firstMythicalCaptureId";
+        setCookie(achievementCookie as CookieNames, idCapture, {
+            maxAge: cookieExpiration,
+            path: '/',
+            sameSite: 'strict'
+        });
     }
 
     /**

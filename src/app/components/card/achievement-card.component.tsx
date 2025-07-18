@@ -93,6 +93,8 @@ export const AchievementCardComponent = ({
     };
 
     useEffect(() => {
+        if (!idCapture || isNaN(idCapture) || idCapture <= 0) return;
+
         const loadLegendaryOrMythicalSprite = async () => {
             try {
                 const blob = await getSprite(idCapture);
