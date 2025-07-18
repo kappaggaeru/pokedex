@@ -287,7 +287,7 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             prev.map(achievement => {
                 const foundCompleted = completedAchievements.find(completed => completed.id === achievement.id);
                 let isCompleted = !!foundCompleted;
-                let completedAt: Date | null = foundCompleted?.completedAt ? new Date(foundCompleted.completedAt) : null;
+                const completedAt: Date | null = foundCompleted?.completedAt ? new Date(foundCompleted.completedAt) : null;
 
                 // cookies especificas de achievements con `hasCookie`
                 if (achievement.hasCookie) {
