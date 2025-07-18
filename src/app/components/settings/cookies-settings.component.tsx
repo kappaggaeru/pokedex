@@ -13,10 +13,8 @@ export const CookiesSettingsComponent: React.FC = () => {
     const { clearCapturedList } = usePokemon();
     const {
         clearAchievements,
-        achievements,
         capturedCount,
         capturedAshCount,
-        shownAchievements
     } = useAchievements();
 
     useEffect(() => {
@@ -39,20 +37,6 @@ export const CookiesSettingsComponent: React.FC = () => {
         }
     }
 
-    const logCookies = () => {
-        console.log({ cookies });
-    }
-
-    const completedAchievements = achievements
-        .filter(element => element.completed)
-        .map((element, index) => (
-            <li key={index}>{element.title} ({element.id})</li>
-        ));
-
-    const shownNotifications = Array.from(shownAchievements)
-        .map((element, index) => (
-            <span key={index}>{element}, </span>
-        ));
 
     if (!hasMounted) return null;
 
@@ -78,14 +62,6 @@ export const CookiesSettingsComponent: React.FC = () => {
                     onChange={() => { }}
                     className="border border-gray-200/50 dark:border-gray-600/50 w-full h-20 bg-white dark:bg-slate-800 rounded-md p-4"
                 />
-                <div>
-                    <p>Earned achievements: {completedAchievements.length}</p>
-                    <ul>{completedAchievements}</ul>
-                </div>
-                <div>
-                    <p>Notifications shown: {shownNotifications.length}</p>
-                    <p>{shownNotifications}</p>
-                </div>
                 <div
                     onClick={handleClearList}
                     className="w-full
@@ -94,15 +70,6 @@ export const CookiesSettingsComponent: React.FC = () => {
                         text-gray-100 hover:text-gray-100 dark:text-gray-100 dark:hover:text-gray-100"
                 >
                     <h5>Delete all cookies</h5>
-                </div>
-                <div
-                    onClick={logCookies}
-                    className="w-full
-                        border border-gray-200/50 dark:border-gray-600/50 p-2 px-6 rounded-md cursor-pointer text-center
-                        bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-700 dark:hover:bg-cyan-600
-                        text-gray-100 hover:text-gray-100 dark:text-gray-100 dark:hover:text-gray-100"
-                >
-                    <h5>Log cookies</h5>
                 </div>
             </div>
         </div>
