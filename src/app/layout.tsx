@@ -13,7 +13,6 @@ export const metadata: Metadata = {
     description:
         "Discover, capture and learn everything about Pokémon! Explore stats, moves, evolutions, regions and unlock achievements in this interactive Pokédex.",
     metadataBase: new URL("https://pokedex-one-beta-60.vercel.app"),
-    themeColor: "#eeeeee",
     openGraph: {
         title: "Pokedex by Lautaro Olivera",
         description:
@@ -36,9 +35,12 @@ export const metadata: Metadata = {
         description:
             "Explore Pokémon stats, types, evolutions and unlock achievements as you complete the interactive Pokédex!",
         images: ["https://pokedex-one-beta-60.vercel.app/assets/images/cover.jpg"],
-    }
+    },
 };
 
+export const viewport = {
+    themeColor: "#eeeeee",
+};
 
 export default function RootLayout({
     children,
