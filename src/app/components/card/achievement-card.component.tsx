@@ -3,6 +3,7 @@ import { LucideIcon, Lock } from "lucide-react";
 import { DonutProgress } from "./pokemon/donut-progress.component";
 import { useAchievements } from "@/app/context/achievementsContext";
 import { getSprite } from "@/app/services/pokemon.service";
+import { usePokemon } from "@/app/context/pokemonContext";
 
 export const AchievementCardComponent = ({
     title,
@@ -32,16 +33,17 @@ export const AchievementCardComponent = ({
     completedAt: Date | undefined;
     onClick: () => void;
 }) => {
-    const { capturedCount, capturedAshCount } = useAchievements();
+    const { capturedCount } = useAchievements();
+    const { ashCaptureCount } = usePokemon();
     const percentageAchievement = Math.floor((capturedCount / goal) * 100) > 100 ? 100 : Math.floor((capturedCount / goal) * 100);
-    const percentageAshAchievement = Math.floor((capturedAshCount / goal) * 100) > 100 ? 100 : Math.floor((capturedAshCount / goal) * 100);
+    const percentageAshAchievement = Math.floor((ashCaptureCount / goal) * 100) > 100 ? 100 : Math.floor((ashCaptureCount / goal) * 100);
     const [sprite, setSprite] = useState("");
 
     const shouldShowDonut =
         !isSpecial && !isCompleted && !isNotification;
 
     const isCaptureCount = type === "capture_count" && capturedCount > 0;
-    const isCaptureSpecific = type === "capture_specific" && capturedAshCount > 0;
+    const isCaptureSpecific = type === "capture_specific" && ashCaptureCount > 0;
 
     const showDonut = shouldShowDonut && (isCaptureCount || isCaptureSpecific);
 

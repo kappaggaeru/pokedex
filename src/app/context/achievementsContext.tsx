@@ -14,13 +14,12 @@ interface AchievementContextType {
     achievements: AchievementProps[];
     notifications: AchievementProps[];
     capturedCount: number;
-    capturedAshCount: number;
     shownAchievements: Set<number>;
     setAchievement: (index: number) => void;
     setSpecialAchievement: (index: number) => void;
     updateCountAchievements: (capturedList: number[]) => void;
-    updateAshCountAchievement: (ashCapturedList: number[]) => void;
     checkTierAchievement: (id: number, pokemonTier: string) => void;
+    checkCaptureCountAshAchievement: (id: number) => void;
     showNotification: (id: number) => void;
     getAchievement: (id: number) => AchievementProps | null;
     removeNotification: (id: number) => void;
@@ -39,7 +38,6 @@ type CookieNames =
     | 'firstEvolution'
     | 'firstVariant'
     | 'retroMode'
-    | 'ashCapturedList';
 
 type CookieValues = {
     completedAchievements?: CompletedAchievement[];
@@ -52,7 +50,6 @@ type CookieValues = {
     firstEvolution?: string;
     firstVariant?: string;
     retroMode?: string;
-    ashCapturedList?: string;
 };
 
 const AchievementsContext = createContext<AchievementContextType | undefined>(undefined);
@@ -69,7 +66,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
         'firstEvolution',
         'firstVariant',
         'retroMode',
-        'ashCapturedList'
     ];
 
     const [cookies, setCookie, removeCookie] = useCookies(cookieNames);
@@ -78,7 +74,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     const [shownAchievements, setShownAchievements] = useState<Set<number>>(new Set());
     const [notifications, setNotifications] = useState<AchievementProps[]>([]);
     const [capturedCount, setCapturedCount] = useState(0);
-    const [capturedAshCount, setCapturedAshCount] = useState(0);
     const completedSound = "/assets/sounds/completed.mp3";
     const { enabledSoundEffects } = useAccesibility();
     const cookieExpiration = 60 * 60 * 24 * 365; // 1 año
@@ -259,7 +254,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
 
         // Resetear contador
         setCapturedCount(0);
-        setCapturedAshCount(0);
 
         // Limpiar el tracking de notificaciones
         notifiedAchievements.current.clear();
@@ -398,21 +392,6 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
     }
 
     /**
-     * verifica el achievement que depende del contador de capturas de ash
-     */
-    const updateAshCountAchievement = (ashCapturedList: number[]) => {
-        const newCapturedCount = ashCapturedList.length;
-        const previousCount = capturedCount;
-
-        // actualizo capturedCount
-        setCapturedAshCount(newCapturedCount);
-
-        if (newCapturedCount > previousCount) {
-            checkCaptureCountAshAchievement(newCapturedCount);
-        }
-    }
-
-    /**
      * valida si los achievemts de captura fueron completados
      */
     const checkCaptureCountAchievements = (count: number) => {
@@ -544,12 +523,11 @@ export const AchievementsProvider = ({ children }: { children: ReactNode }) => {
             achievements,
             notifications,
             capturedCount,
-            capturedAshCount,
             shownAchievements,
             setAchievement,
             setSpecialAchievement,
             updateCountAchievements,
-            updateAshCountAchievement,
+            checkCaptureCountAshAchievement,
             checkTierAchievement,
             showNotification,
             getAchievement,

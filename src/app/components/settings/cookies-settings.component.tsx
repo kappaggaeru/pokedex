@@ -7,24 +7,27 @@ import { useCookies } from "react-cookie";
 
 export const CookiesSettingsComponent: React.FC = () => {
     const hasMounted = useHasMounted();
-    const [cookies] = useCookies(["capturedList", "ashCapturedList"]);
+    const [cookies] = useCookies(["capturedList"]);
     const [captured, setCaptured] = useState("");
     const [capturedAsh, setCapturedAsh] = useState("");
-    const { clearCapturedList } = usePokemon();
+    const { clearCapturedList, ashCapturedList } = usePokemon();
     const {
         clearAchievements,
         capturedCount,
-        capturedAshCount,
     } = useAchievements();
 
     useEffect(() => {
         if (hasMounted) {
             const cookieValue = cookies.capturedList || "";
             setCaptured(cookieValue);
-            const cookieAshValue = cookies.ashCapturedList || "";
-            setCapturedAsh(cookieAshValue);
+
+            let ashList = "";
+            ashCapturedList.map((pokemon) => {
+                ashList += `${pokemon},`;
+            });
+            setCapturedAsh(ashList);
         }
-    }, [cookies.capturedList, hasMounted]);
+    }, [cookies.capturedList, hasMounted, ashCapturedList]);
 
     const handleClearList = () => {
         const confirmed = window.confirm("Are you sure you want to delete all the cookies?");
@@ -43,7 +46,7 @@ export const CookiesSettingsComponent: React.FC = () => {
     return (
         <div className="flex flex-col gap-4 cursor-default">
             <div className="text-gray-500 dark:text-gray-400">
-                <h3>This site uses cookies to ensure you get the best experience on our website.</h3>
+                <h3>This site uses cookies to keep track of captured Pokémon in order to complete achievements.</h3>
             </div>
             <div className="text-gray-500 dark:text-gray-400 flex flex-col gap-4">
                 <p>Captured pokemon: {capturedCount}</p>
@@ -54,7 +57,7 @@ export const CookiesSettingsComponent: React.FC = () => {
                     onChange={() => { }}
                     className="border border-gray-200/50 dark:border-gray-600/50 w-full h-40 bg-white dark:bg-slate-800 rounded-md p-4"
                 />
-                <p>Captured Ash pokemon: {capturedAshCount}</p>
+                <p>Captured Ash pokemon: {ashCapturedList.length}</p>
                 <textarea
                     name="capturedAshList"
                     id="capturedAshList"
