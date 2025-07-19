@@ -9,7 +9,7 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-    title: "Pokedex by Lautaro Olivera",
+    title: "Pokédex by Lautaro Olivera",
     description:
         "Discover, capture and learn everything about Pokémon! Explore stats, moves, evolutions, regions and unlock achievements in this interactive Pokédex.",
     metadataBase: new URL("https://pokedex-one-beta-60.vercel.app"),

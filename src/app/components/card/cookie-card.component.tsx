@@ -43,8 +43,8 @@ export const CookieCardComponent: React.FC = () => {
         <div
             className={`
                 fixed bottom-0 left-0 right-0 mx-auto p-4 m-4 rounded-xl
-                shadow-lg backdrop-blur-xl
-                bg-white dark:bg-slate-800/90
+                shadow-lg backdrop-blur-xl z-30
+                bg-white/60 dark:bg-slate-800/60
                 w-[90%] sm:w-[50%] md:w-[50%] lg:w-[40%] xl:w-[30%] 2xl:w-[25%]
                 transition-all duration-500 ease-out
                 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
@@ -59,13 +59,19 @@ export const CookieCardComponent: React.FC = () => {
                 <div className="flex flex-col gap-4 sm:flex-row">
                     <button
                         onClick={() => handleClick(false)}
-                        className="rounded-lg border border-gray-200/50 dark:border-gray-600/50 w-full bg-slate-50 dark:bg-slate-700/70 p-2 text-black dark:text-gray-200 cursor-pointer"
+                        className="rounded-lg border border-gray-200/50 dark:border-gray-600/50 w-full 
+                            bg-slate-50 hover:bg-slate-200 dark:bg-slate-700/70 dark:hover:bg-slate-500 
+                            hover:scale-105 transition-all duration-300
+                            p-2 text-black dark:text-gray-200 cursor-pointer"
                     >
                         Decline
                     </button>
                     <button
                         onClick={() => handleClick(true)}
-                        className="rounded-lg border border-gray-200/50 dark:border-gray-600/50 w-full bg-indigo-500 p-2 text-white cursor-pointer"
+                        className="rounded-lg border border-gray-200/50 dark:border-gray-600/50 w-full 
+                        bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-400 
+                        hover:scale-105 transition-all duration-300
+                        p-2 text-white cursor-pointer"
                     >
                         Accept cookies
                     </button>
