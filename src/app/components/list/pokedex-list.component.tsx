@@ -21,6 +21,7 @@ const PokedexListComponent: React.FC = () => {
 
     const [cookies] = useCookies(["capturedList"]);
     const [loading, setLoading] = useState(true);
+    const enabledPreloadSprites = false;
 
     const generations = [
         { name: "Kanto", count: 151, roman: "I" },
@@ -116,9 +117,9 @@ const PokedexListComponent: React.FC = () => {
             : [];
 
         // Ejecutar si hay cookies O si hay pokémon capturados en el contexto
-        if (cookieIds.length > 0 || capturedList.length > 0) {
+        if ((cookieIds.length > 0 || capturedList.length > 0) && enabledPreloadSprites) {
             console.log('avoid to load sprites because error 429');
-            // preloadCapturedSprites();
+            preloadCapturedSprites();
         }
     }, [hasMounted, cookies.capturedList, capturedList, viewedMap, setViewedMap]);
 

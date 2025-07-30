@@ -30,6 +30,7 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, type }) => {
                 name={stage.name}
                 sprite={stage.sprite}
                 loading={true}
+                error={false}
                 onSelect={() => handleSelect(stage.id)}
             />
         );
