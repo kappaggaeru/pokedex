@@ -18,9 +18,10 @@ import { StatsComponent } from "./pokemon/stats.component";
 import { EvolutionNode } from "@/app/models/evolution-node.model";
 import { TypesContainerComponent } from "./pokemon/types.component";
 import { AbilitiesList } from "./pokemon/ability-list.component";
+import { ServerCrash } from "lucide-react";
 
 const PokemonCardComponent: React.FC = () => {
-    const { setTier, selectedId, isLoadingPokemon } = usePokemon();
+    const { setTier, selectedId, isLoadingPokemon, clearPokemonCard } = usePokemon();
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecies, setPokemonSpecies] = useState<Species | null>(null);
     const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
@@ -29,6 +30,7 @@ const PokemonCardComponent: React.FC = () => {
     const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
     const [varietiesList, setVarietiesList] = useState<EvolutionStage[]>([]);
     const [loading, setLoading] = useState(true);
+    const [hasFailed, setHasFailed] = useState(false);
 
     useEffect(() => {
         if (!selectedId) return;
@@ -71,6 +73,7 @@ const PokemonCardComponent: React.FC = () => {
 
             } catch (error) {
                 console.error("Error fetching pokemon data:", error);
+                setHasFailed(true);
             } finally {
                 setLoading(false);
             }
@@ -183,6 +186,29 @@ const PokemonCardComponent: React.FC = () => {
                 </div>
             </div>
         );
+    } else if (hasFailed) {
+        return (
+            <div className="h-[40rem] max-w-sm mx-auto w-full flex flex-col items-center justify-center">
+                <div className="flex flex-col gap-4 text-center text-black dark:text-gray-200">
+                    <div className="flex justify-center w-full">
+                        <ServerCrash className="w-6 h-6 text-gray-400" />
+                    </div>
+                    <h1 className="font-bold text-xl">Error</h1>
+                    <p className="px-4">An error occurred while fetching the Pokémon data. Please try again later</p>
+                    <div className="p-4">
+                        <button
+                            onClick={clearPokemonCard}
+                            className="rounded-lg border border-gray-200/50 dark:border-gray-600/50 w-full 
+                        bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-400 
+                        hover:scale-105 transition-all duration-300
+                        p-2 text-white cursor-pointer"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
     } else {
         return (
             <div className="max-w-md mx-auto">

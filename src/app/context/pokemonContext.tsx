@@ -15,6 +15,7 @@ export type PokemonList = {
 type ViewedState = {
     loading: boolean;
     sprite?: string;
+    error?: boolean;
 };
 
 interface PokemonContextType {
@@ -48,7 +49,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [capturedList, setCapturedList] = useState<number[]>([]);
     const [ashCapturedList, setAshCapturedList] = useState<number[]>([]);
     const [ashCaptureCount, setAshCaptureCount] = useState(0);
-    const [viewedMap, setViewedMap] = useState<Record<number, { loading: boolean; sprite?: string }>>({}); // mapa control de sprites
+    const [viewedMap, setViewedMap] = useState<Record<number, { loading: boolean; sprite?: string; error?: boolean }>>({}); // mapa control de sprites
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
     const [isLoadingPokemon, setIsLoadingPokemon] = useState(false);
@@ -113,7 +114,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             // Actualizar viewedMap inmediatamente
             setViewedMap((prev) => ({
                 ...prev,
-                [id]: { loading: false, sprite: objectURL },
+                [id]: { loading: false, sprite: objectURL, error: false },
             }));
 
             setSelectedPokemon(pokemon);
@@ -138,7 +139,7 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             console.error("Error selecting Pokémon", error);
             setViewedMap((prev) => ({
                 ...prev,
-                [id]: { loading: false },
+                [id]: { loading: false, error: false },
             }));
         } finally {
             setIsLoadingPokemon(false);

@@ -4,5 +4,6 @@ export type PokedexItemProps = {
     sprite?: string;
     viewed?: boolean;
     loading: boolean;
+    error: boolean;
     onSelect: (id: number) => void;
 }

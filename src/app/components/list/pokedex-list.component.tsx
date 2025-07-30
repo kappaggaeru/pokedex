@@ -104,7 +104,7 @@ const PokedexListComponent: React.FC = () => {
                         console.error(`Error loading sprite for id: ${id}`, e);
                         setViewedMap((prev) => ({
                             ...prev,
-                            [id]: { loading: false },
+                            [id]: { loading: false, error: true },
                         }));
                     }
                 }
@@ -117,7 +117,8 @@ const PokedexListComponent: React.FC = () => {
 
         // Ejecutar si hay cookies O si hay pokémon capturados en el contexto
         if (cookieIds.length > 0 || capturedList.length > 0) {
-            preloadCapturedSprites();
+            console.log('avoid to load sprites because error 429');
+            // preloadCapturedSprites();
         }
     }, [hasMounted, cookies.capturedList, capturedList, viewedMap, setViewedMap]);
 
@@ -133,6 +134,7 @@ const PokedexListComponent: React.FC = () => {
                         id={id}
                         sprite={viewedData?.sprite ?? ''}
                         loading={viewedData?.loading ?? false}
+                        error={viewedData?.error ?? false}
                         viewed={seenIds.has(id)}
                         onSelect={() => handlePokemonSelect(id)}
                     />
