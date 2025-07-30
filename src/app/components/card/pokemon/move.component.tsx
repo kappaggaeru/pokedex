@@ -36,17 +36,17 @@ export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, eff
                     <div className="flex flex-row justify-evenly text-gray-500 dark:text-gray-300">
                         <div>
                             <p title="accuracy">
-                                <FadeText key={accuracy} text="ACC" />
+                                <FadeText key={accuracy} text={`ACC ${accuracy}`} />
                             </p>
                         </div>
                         <div>
                             <p title="power">
-                                <FadeText key={power} text="PWR" />
+                                <FadeText key={power} text={`PWR ${power}`} />
                             </p>
                         </div>
                         <div>
                             <p title="effect chance">
-                                <FadeText key={effectChance} text="EFF" />
+                                <FadeText key={effectChance} text={`EFF ${effectChance}`} />
                             </p>
                         </div>
                     </div>
