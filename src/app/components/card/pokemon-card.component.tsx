@@ -22,6 +22,7 @@ import { EvolutionTrigger } from "@/app/models/evolution-trigger.model";
 import EvolutionTriggers from "./pokemon/evolution-triggers.component";
 import { Stat } from "@/app/models/dto/stat.model";
 import { Type } from "@/app/models/dto/type.model";
+import { HeldItemsList } from "./pokemon/held-items.list";
 
 const PokemonCardComponent: React.FC = () => {
     const { setTier, selectedId, isLoadingPokemon, clearPokemonCard } = usePokemon();
@@ -317,7 +318,7 @@ const PokemonCardComponent: React.FC = () => {
                     </GenericCardContainerComponent>
                 )}
 
-                {evolutionTriggerList && (
+                {evolutionTriggerList && evolutionTriggerList.length > 0 && (
                     <GenericCardContainerComponent title="evolution triggers">
                         <EvolutionTriggers evolutionChain={evolutionTriggerList} />
                     </GenericCardContainerComponent>
@@ -328,6 +329,12 @@ const PokemonCardComponent: React.FC = () => {
                         <EvolutionChainComponent chain={varietiesList} type={"varietie"} />
                     </GenericCardContainerComponent>
                 )}
+
+                {pokemonData && pokemonData.held_items.length > 0 &&
+                    <GenericCardContainerComponent title="held items">
+                        <HeldItemsList pokemonData={pokemonData} />
+                    </GenericCardContainerComponent>
+                }
 
                 <GenericCardContainerComponent title="tags">
                     <TagsContainerComponent tags={tags} />

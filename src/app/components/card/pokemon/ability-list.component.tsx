@@ -5,63 +5,11 @@ import { getByUrl } from "@/app/services/pokemon.service";
 import { useLanguage } from "@/app/context/languageContext";
 import { Effect } from "@/app/models/dto/effect.model";
 import { AbilityComponent } from "./ability.component";
-
-export type AbilityProps = {
-    name: string;
-    effect: string;
-    shortEffect: string;
-};
-
-type Entry = {
-    language: { name: string };
-    flavor_text: string;
-};
-
-type AbilityData = {
-    flavor_text_entries: Entry[];
-};
-
-function getFirstFlavorTexts(data: AbilityData) {
-    const langs = {
-        en: "en",
-        es: "es",
-        ja: ["ja", "ja-Hrkt"], // japonés puede venir en dos formas
-    };
-
-    const result: Record<string, string | undefined> = {
-        en: undefined,
-        es: undefined,
-        ja: undefined,
-    };
-
-    for (const entry of data.flavor_text_entries) {
-        const lang = entry.language.name;
-
-        if (!result.en && lang === langs.en) {
-            result.en = entry.flavor_text;
-        }
-
-        if (!result.es && lang === langs.es) {
-            result.es = entry.flavor_text;
-        }
-
-        if (
-            !result.ja &&
-            (lang === langs.ja[0] || lang === langs.ja[1])
-        ) {
-            result.ja = entry.flavor_text;
-        }
-
-        // Si ya encontramos los 3, salimos
-        if (result.en && result.es && result.ja) break;
-    }
-
-    return result;
-}
+import { FlavorProps, getFirstFlavorTexts } from "@/app/utils/flavor-entry";
 
 export const AbilitiesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
     const { language } = useLanguage();
-    const [abilities, setAbilities] = useState<AbilityProps[]>([]);
+    const [abilities, setAbilities] = useState<FlavorProps[]>([]);
 
     useEffect(() => {
         const fetchAbilities = async () => {
@@ -81,7 +29,7 @@ export const AbilitiesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
                         return {
                             name: abilityData.name,
                             effect: effectEntry?.effect || flavorTexts[language] || "",
-                            shortEffect: effectEntry?.short_effect || "", // o también podrías usar flavorTexts[language]
+                            shortEffect: effectEntry?.short_effect || "",
                         };
                     } catch (error) {
                         console.error("Error fetching ability:", error);
@@ -90,7 +38,7 @@ export const AbilitiesList = ({ pokemonData }: { pokemonData: Pokemon }) => {
                 })
             );
 
-            setAbilities(abilityDetails.filter((ab): ab is AbilityProps => ab !== null));
+            setAbilities(abilityDetails.filter((ab): ab is FlavorProps => ab !== null));
         };
 
         fetchAbilities();

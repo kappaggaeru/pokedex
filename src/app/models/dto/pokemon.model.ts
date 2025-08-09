@@ -1,5 +1,6 @@
 import { Ability } from "./ability.model";
 import { Cries } from "./cries.model";
+import { Item } from "./item.model";
 import { Move } from "./move.model";
 import { Stat } from "./stat.model";
 import { Type } from "./type.model";
@@ -14,4 +15,5 @@ export interface Pokemon {
     weight: number;
     cries: Cries;
     types: Type[];
+    held_items: Item[];
 }

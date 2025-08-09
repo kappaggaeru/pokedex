@@ -1,7 +1,7 @@
 import { usePokemon } from "@/app/context/pokemonContext";
-import { AbilityProps } from "./ability-list.component";
+import { FlavorProps } from "@/app/utils/flavor-entry";
 
-export const AbilityComponent: React.FC<AbilityProps> = ({ name, effect, shortEffect }) => {
+export const AbilityComponent: React.FC<FlavorProps> = ({ name, effect, shortEffect }) => {
     const { tier } = usePokemon();
     const baseColor =
         tier === "legendary"
