@@ -3,10 +3,10 @@ import { Generic } from "./generic.model";
 export interface EvolutionDetail {
     gender: string | null,
     held_item: string | null,
-    item: string | null,
+    item: Generic,
     known_move: string | null,
-    known_move_type: string | null,
-    location: string | null,
+    known_move_type: Generic | null,
+    location: Generic | null,
     min_affection: string | null,
     min_beauty: string | null,
     min_happiness: string | null,

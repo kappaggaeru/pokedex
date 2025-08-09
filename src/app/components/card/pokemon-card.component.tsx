@@ -19,6 +19,8 @@ import { EvolutionNode } from "@/app/models/evolution-node.model";
 import { TypesContainerComponent } from "./pokemon/types.component";
 import { AbilitiesList } from "./pokemon/ability-list.component";
 import { ServerCrash } from "lucide-react";
+import { EvolutionTrigger } from "@/app/models/evolution-trigger.model";
+import EvolutionTriggers from "./pokemon/evolution-triggers.component";
 
 const PokemonCardComponent: React.FC = () => {
     const { setTier, selectedId, isLoadingPokemon, clearPokemonCard } = usePokemon();
@@ -28,6 +30,7 @@ const PokemonCardComponent: React.FC = () => {
     const [pokemonArtwork, setPokemonArtwork] = useState<string[]>([]);
     const [pokemonEvolution, setPokemonEvolution] = useState<EvolutionChain | null>(null);
     const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
+    const [evolutionTriggerList, setEvolutionTriggerList] = useState<EvolutionTrigger[]>([]);
     const [varietiesList, setVarietiesList] = useState<EvolutionStage[]>([]);
     const [loading, setLoading] = useState(true);
     const [hasFailed, setHasFailed] = useState(false);
@@ -98,9 +101,13 @@ const PokemonCardComponent: React.FC = () => {
         }
     }, [pokemonSpecies, setTier]);
 
+    /**
+     * Effect to fetch the evolution chain and evolution triggers
+     */
     useEffect(() => {
         if (pokemonEvolution) {
             const evolutionChainList = flattenEvolutionChain(pokemonEvolution.chain);
+            const evolutionDetailList = extractEvolutionDetails(pokemonEvolution.chain);
 
             Promise.all(
                 evolutionChainList.map(async (entry) => {
@@ -115,6 +122,7 @@ const PokemonCardComponent: React.FC = () => {
                 })
             ).then(parsedEvolutionList => {
                 setEvolutionChainList(parsedEvolutionList);
+                setEvolutionTriggerList(evolutionDetailList);
             });
         }
     }, [pokemonEvolution]);
@@ -147,6 +155,12 @@ const PokemonCardComponent: React.FC = () => {
         }
     }, [pokemonSpecies]);
 
+
+    /**
+     * creates a vector with the names and urls from the evolution chain
+     * @param chain 
+     * @returns 
+     */
     const flattenEvolutionChain = (chain: EvolutionNode): Generic[] => {
         const result: Generic[] = [];
 
@@ -158,6 +172,47 @@ const PokemonCardComponent: React.FC = () => {
             });
             for (const evolution of node.evolves_to) {
                 traverse(evolution);
+            }
+        };
+
+        traverse(chain);
+        return result;
+    };
+
+    const extractEvolutionDetails = (chain: EvolutionNode): EvolutionTrigger[] => {
+        const result: EvolutionTrigger[] = [];
+
+        const traverse = (node: EvolutionNode) => {
+            if (!node) return;
+
+            for (const evolution of node.evolves_to) {
+                if (evolution.evolution_details) {
+                    for (const detail of evolution.evolution_details) {
+                        result.push({
+                            from: node.species.name ?? "",
+                            to: evolution.species.name ?? "",
+                            min_level: detail.min_level,
+                            trigger: detail.trigger?.name ?? '',
+                            item: detail.item
+                                ? {
+                                    name: detail.item.name,
+                                    url: detail.item.url,
+                                }
+                                : null,
+                            daytime: detail.time_of_day,
+                            min_happiness: detail.min_happiness !== null ? +detail.min_happiness : 0,
+                            location: detail.location ?? null,
+                            min_affection: detail.min_affection !== null ? +detail.min_affection : 0,
+                            known_move_type: detail.known_move_type
+                                ? {
+                                    name: detail.known_move_type.name,
+                                    url: detail.known_move_type.url
+                                }
+                                : null,
+                        });
+                    }
+                    traverse(evolution);
+                }
             }
         };
 
@@ -227,9 +282,21 @@ const PokemonCardComponent: React.FC = () => {
                     </GenericCardContainerComponent>
                 }
 
+                {pokemonData &&
+                    <GenericCardContainerComponent title="information">
+                        <InformationComponent id={selectedId} height={pokemonData?.height} weight={pokemonData?.weight} />
+                    </GenericCardContainerComponent>
+                }
+
                 {evolutionChainList && evolutionChainList.length > 1 && (
                     <GenericCardContainerComponent title="evolution chain">
                         <EvolutionChainComponent chain={evolutionChainList} type={"evolution"} />
+                    </GenericCardContainerComponent>
+                )}
+
+                {evolutionTriggerList && (
+                    <GenericCardContainerComponent title="evolution triggers">
+                        <EvolutionTriggers evolutionChain={evolutionTriggerList} />
                     </GenericCardContainerComponent>
                 )}
 
@@ -238,12 +305,6 @@ const PokemonCardComponent: React.FC = () => {
                         <EvolutionChainComponent chain={varietiesList} type={"varietie"} />
                     </GenericCardContainerComponent>
                 )}
-
-                {pokemonData &&
-                    <GenericCardContainerComponent title="information">
-                        <InformationComponent id={selectedId} height={pokemonData?.height} weight={pokemonData?.weight} />
-                    </GenericCardContainerComponent>
-                }
 
                 {pokemonForm &&
                     <GenericCardContainerComponent title="types">

@@ -17,7 +17,7 @@ export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, eff
             rounded-lg border border-slate-100 dark:border-gray-600/50 p-4
             ${baseColor}
         `}>
-            <div className="flex flex-row-reverse gap-4 items-center ">
+            <div className="flex flex-row-reverse gap-4 items-center">
                 <div className="flex flex-col w-full gap-2">
                     <div className="flex flex-row justify-between">
                         <p className="text-lg bolder text-gray-600 dark:text-gray-300">
