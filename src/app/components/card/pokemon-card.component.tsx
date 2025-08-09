@@ -213,8 +213,8 @@ const PokemonCardComponent: React.FC = () => {
                 if (evolution.evolution_details) {
                     for (const detail of evolution.evolution_details) {
                         result.push({
-                            from: node.species.name ?? "",
-                            to: evolution.species.name ?? "",
+                            evolvesFrom: node.species.name ?? "",
+                            evolvesTo: evolution.species.name ?? "",
                             min_level: detail.min_level,
                             trigger: detail.trigger?.name ?? '',
                             item: detail.item

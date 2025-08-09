@@ -43,7 +43,6 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
         return { en, es, ja };
     }, [entries]);
 
-    // Seleccionamos el arreglo que corresponde según el idioma del contexto
     const selectedEntries = useMemo(() => {
         switch (language) {
             case 'es':
@@ -56,7 +55,6 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
         }
     }, [groupedEntries, language]);
 
-    // Reiniciar índice cuando cambian los entries
     useEffect(() => {
         setCurrentIndex(0);
     }, [selectedEntries]);
@@ -90,11 +88,13 @@ const PokedexEntryComponent: React.FC<Props> = ({ entries }) => {
                 )}
             </h3>
 
-            {selectedEntries.length === 0 ? (
-                <p className="text-gray-500 dark:text-gray-400">N/A</p>
-            ) : (
-                <FadeText key={currentEntry.entry} text={currentEntry.entry} />
-            )}
+            <p className="text-gray-500 dark:text-gray-400">
+                {selectedEntries.length === 0 ? (
+                    <span>N/A</span>
+                ) : (
+                    <FadeText key={currentEntry.entry} text={currentEntry.entry} />
+                )}
+            </p>
 
             <div className="mt-4 flex justify-end gap-4 text-sm font-medium text-gray-500 dark:text-gray-300">
                 <ActionButton text="previous" onClick={handlePrev} />

@@ -7,8 +7,8 @@ type Props = {
 }
 
 type MergedEvolution = {
-    from: string;
-    to: string;
+    evolvesFrom: string;
+    evolvesTo: string;
     triggers: {
         trigger: string;
         min_level: number | null;
@@ -27,10 +27,10 @@ const EvolutionTriggers: React.FC<Props> = ({ evolutionChain }) => {
         const map = new Map<string, MergedEvolution>();
 
         for (const evo of data) {
-            if (!map.has(evo.to)) {
-                map.set(evo.to, {
-                    from: evo.from,
-                    to: evo.to,
+            if (!map.has(evo.evolvesTo)) {
+                map.set(evo.evolvesTo, {
+                    evolvesFrom: evo.evolvesFrom,
+                    evolvesTo: evo.evolvesTo,
                     triggers: [
                         {
                             trigger: evo.trigger,
@@ -51,7 +51,7 @@ const EvolutionTriggers: React.FC<Props> = ({ evolutionChain }) => {
                 });
             }
 
-            const entry = map.get(evo.to)!;
+            const entry = map.get(evo.evolvesTo)!;
             const triggerGroup = entry.triggers[0];
 
             triggerGroup.min_happiness = triggerGroup.min_happiness || evo.min_happiness || 0;
@@ -93,7 +93,7 @@ const EvolutionTriggers: React.FC<Props> = ({ evolutionChain }) => {
         return merged.triggers.map((t, subIndex) => (
             <TriggerCard
                 key={`poke-${index}-${subIndex}`}
-                to={merged.to}
+                evolvesTo={merged.evolvesTo}
                 level={t.min_level ?? 0}
                 trigger={t.trigger ?? ""}
                 item={t.items[0] ?? null}

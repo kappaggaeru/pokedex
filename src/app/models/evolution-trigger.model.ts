@@ -1,8 +1,8 @@
 import { Generic } from "./dto/generic.model";
 
 export interface EvolutionTrigger {
-    from: string;
-    to: string;
+    evolvesFrom: string;
+    evolvesTo: string;
     min_level: number;
     trigger: string;
     item: Generic | null;
