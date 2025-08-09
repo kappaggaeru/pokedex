@@ -8,7 +8,7 @@ type Props = {
 }
 
 const statsColors: StatBarProps["color"][] = [
-    "green", "red", "blue", "violet", "lightblue", "yellow"
+    "green", "red", "blue", "violet", "lightblue", "yellow", "pink"
 ];
 
 export const StatsComponent: React.FC<Props> = ({ stats }) => {

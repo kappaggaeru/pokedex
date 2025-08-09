@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { getPokemonById, getArtworkById, getSprite, getShinyArtworkById } from "../../services/pokemon.service";
 import { Pokemon } from "../../models/dto/pokemon.model";
 import { Species } from "../../models/dto/species.model";
-import { Form } from "../../models/dto/form.model";
 import { EvolutionChain } from "../../models/dto/evolution-chain.model";
 import { Generic } from "../../models/dto/generic.model";
 import EvolutionChainComponent from "./pokemon/evolution-chain.component";
@@ -16,22 +15,24 @@ import { InformationComponent } from "./pokemon/information.component";
 import { ArtworkContainerComponent } from "./pokemon/artwork-container.component";
 import { StatsComponent } from "./pokemon/stats.component";
 import { EvolutionNode } from "@/app/models/evolution-node.model";
-import { TypesContainerComponent } from "./pokemon/types.component";
+import { TagsContainerComponent } from "./pokemon/tags.component";
 import { AbilitiesList } from "./pokemon/ability-list.component";
 import { ServerCrash } from "lucide-react";
 import { EvolutionTrigger } from "@/app/models/evolution-trigger.model";
 import EvolutionTriggers from "./pokemon/evolution-triggers.component";
+import { Stat } from "@/app/models/dto/stat.model";
+import { Type } from "@/app/models/dto/type.model";
 
 const PokemonCardComponent: React.FC = () => {
     const { setTier, selectedId, isLoadingPokemon, clearPokemonCard } = usePokemon();
     const [pokemonData, setPokemonData] = useState<Pokemon | null>(null);
     const [pokemonSpecies, setPokemonSpecies] = useState<Species | null>(null);
-    const [pokemonForm, setPokemonForm] = useState<Form | null>(null);
     const [pokemonArtwork, setPokemonArtwork] = useState<string[]>([]);
     const [pokemonEvolution, setPokemonEvolution] = useState<EvolutionChain | null>(null);
     const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
     const [evolutionTriggerList, setEvolutionTriggerList] = useState<EvolutionTrigger[]>([]);
     const [varietiesList, setVarietiesList] = useState<EvolutionStage[]>([]);
+    const [tags, setTags] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [hasFailed, setHasFailed] = useState(false);
 
@@ -44,9 +45,8 @@ const PokemonCardComponent: React.FC = () => {
         const fetchAllData = async () => {
             try {
                 const pokemon = await getPokemonById(selectedId);
-                const [species, form] = await Promise.all([
+                const [species] = await Promise.all([
                     fetch(pokemon.species.url).then(res => res.json()),
-                    fetch(pokemon.forms[0].url).then(res => res.json())
                 ]);
 
                 const blob = await getArtworkById(pokemon.id);
@@ -61,12 +61,35 @@ const PokemonCardComponent: React.FC = () => {
 
                 setPokemonData(pokemon);
                 setPokemonSpecies(species);
-                setPokemonForm(form);
                 setPokemonArtwork(artworks);
+
+                if (species && pokemon && !pokemon.stats.some((s: Stat) => s.stat.name === "base happiness")) {
+                    pokemon.stats = [
+                        ...pokemon.stats,
+                        {
+                            base_stat: species.base_happiness,
+                            effort: 0,
+                            stat: {
+                                name: "base happiness",
+                                url: ""
+                            }
+                        }
+                    ];
+                }
+
+                if (species && pokemon) {
+                    const newTags: string[] = [
+                        ...pokemon.types.map((t: Type) => (t.type.name)) ?? "",
+                        ...species.egg_groups.map((e: unknown) => (e as { name: string }).name) ?? "",
+                        species.color.name ?? "",
+                        species.shape.name ?? "",
+                        species.habitat.name ?? ""
+                    ]
+                    setTags(newTags);
+                }
 
                 console.log(pokemon);
                 console.log(species);
-                console.log(form);
 
                 if (species.evolution_chain.url) {
                     const evolutionRes = await fetch(species.evolution_chain.url);
@@ -306,11 +329,9 @@ const PokemonCardComponent: React.FC = () => {
                     </GenericCardContainerComponent>
                 )}
 
-                {pokemonForm &&
-                    <GenericCardContainerComponent title="types">
-                        <TypesContainerComponent types={pokemonForm?.types ?? []} />
-                    </GenericCardContainerComponent>
-                }
+                <GenericCardContainerComponent title="tags">
+                    <TagsContainerComponent tags={tags} />
+                </GenericCardContainerComponent>
 
                 {pokemonData?.stats &&
                     < GenericCardContainerComponent title="stats">

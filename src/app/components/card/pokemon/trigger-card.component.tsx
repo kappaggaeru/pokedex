@@ -30,17 +30,25 @@ export const TriggerCard: React.FC<Props> = ({
     const itemFormatted = formatText(item?.name ?? "", '-');
 
     const renderTriggerText = () => {
-        if (minHappiness !== 0 && daytime !== '') {
+        if (minHappiness > 0 && daytime !== '') {
             return `Requires a happiness level of ${minHappiness}, then level up during the ${formatText(daytime, '-')} to evolve`;
+        }
+        if (minHappiness > 0) {
+            return `Requires a happiness level of ${minHappiness} to evolve`;
         }
         if (trigger == "use-item") {
             return `Requires using ${itemFormatted} to evolve`;
         }
         if (trigger == "mixed") {
-            return `Requires leveling up at the following locations: ${renderLocations()}, or using ${itemFormatted}`;
+            if (location.length > 0) {
+                return `Requires leveling up at the following locations: ${renderLocations()}, or using ${itemFormatted} to evolve`;
+            }
+            if (level > 0) {
+                return `Requires reaching level ${level} or using ${itemFormatted} to evolve`;
+            }
         }
         if (minAffection > 0 || minHappiness > 0 && knownTypeMove !== null) {
-            return `Requires a happiness level of ${minHappiness}, or an affection level of ${minAffection} or knowing the move ${formatText(knownTypeMove?.name ?? "", "-", true)}`;
+            return `Requires a happiness level of ${minHappiness}, or an affection level of ${minAffection} or knowing the move ${formatText(knownTypeMove?.name ?? "", "-", true)} to evolve`;
         }
         if (trigger == "trade") {
             return `Requires being traded to evolve`;
@@ -48,25 +56,23 @@ export const TriggerCard: React.FC<Props> = ({
         if (level !== 0) {
             return `Requires reaching level ${level} to evolve`;
         }
-        return `Requires ${trigger} to evolve`;
+        return `Requires ${formatText(trigger ?? "", "-", true)} to evolve`;
     }
 
     const renderIcon = () => {
-        if (trigger == "level-up") {
-            return <ArrowBigUpDash className="w-12 h-12" />
-        }
         if (trigger == "trade") {
             return <Repeat className="w-12 h-12" />
         }
-        if (itemSprite) {
-            return <img src={itemSprite} alt={trigger} className="w-12 h-12 " />
+        if (itemSprite && item) {
+            return <img src={itemSprite} alt={itemSprite} className="w-12 h-12 " title={item.name} />
         }
+        return <ArrowBigUpDash className="w-12 h-12" />
     }
 
     const renderLocations = (): string => {
         let res = "";
         location.forEach((e, index) => {
-            if (index < location.length -1) {
+            if (index < location.length - 1) {
                 res += `${formatText(e, '-', true)}, `;
             } else {
                 res += `${formatText(e, '-', true)}`;

@@ -9,6 +9,7 @@ const colorClasses: Record<StatBarProps["color"], string> = {
     violet: "bg-violet-500 dark:bg-violet-400",
     lightblue: "bg-sky-400 dark:bg-sky-300",
     yellow: "bg-yellow-400 dark:bg-yellow-300",
+    pink: "bg-pink-400 dark:bg-pink-300"
 };
 
 export const StatBar: React.FC<StatBarProps> = ({ title, value, color }) => {
