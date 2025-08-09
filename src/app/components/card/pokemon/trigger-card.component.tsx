@@ -6,6 +6,7 @@ import { ArrowBigUpDash, Repeat } from "lucide-react"
 import { useEffect, useState } from "react"
 
 type Props = {
+    babyTriggerItem: Generic | null;
     level: number,
     evolvesTo: string,
     trigger: string,
@@ -15,8 +16,11 @@ type Props = {
     daytime: string,
     location: string[];
     knownTypeMove: Generic | null;
+    knownMove: Generic | null;
+    partySpecies: Generic | null;
 }
 export const TriggerCard: React.FC<Props> = ({
+    babyTriggerItem,
     level,
     evolvesTo,
     trigger,
@@ -25,11 +29,16 @@ export const TriggerCard: React.FC<Props> = ({
     minAffection,
     daytime,
     location,
-    knownTypeMove
+    knownTypeMove,
+    knownMove,
+    partySpecies
 }) => {
     const { tier } = usePokemon();
     const [itemSprite, setItemSprite] = useState("");
-    const itemFormatted = formatText(item?.name ?? "", '-');
+    const [itemName, setItemName] = useState("");
+    const itemFormatted = formatText(item?.name ?? "", "-");
+    const babyTriggerFormatted = formatText(babyTriggerItem?.name ?? "", "-", true);
+    const partySpeciesFormatted = formatText(partySpecies?.name ?? "", "-", true);
 
     const baseColor =
         tier === "legendary"
@@ -44,6 +53,15 @@ export const TriggerCard: React.FC<Props> = ({
         }
         if (trigger == "use-item") {
             return `Requires using ${itemFormatted} to evolve`;
+        }
+        if (babyTriggerFormatted && partySpeciesFormatted) {
+            return `Requires using ${babyTriggerFormatted} or having ${partySpeciesFormatted} in your party to evolve`;
+        }
+        if (babyTriggerFormatted) {
+            return `Requires using ${babyTriggerFormatted} to evolve`;
+        }
+        if (partySpeciesFormatted) {
+            return `Requires having ${partySpeciesFormatted} in your party to evolve`;
         }
         if (trigger == "mixed") {
             if (location.length > 0) {
@@ -62,6 +80,9 @@ export const TriggerCard: React.FC<Props> = ({
         if (minHappiness > 0) {
             return `Requires a happiness level of ${minHappiness} to evolve`;
         }
+        if (knownMove) {
+            return `Requires knowing the move ${knownMove} to evolve`;
+        }
         if (level !== 0) {
             return `Requires reaching level ${level} to evolve`;
         }
@@ -72,8 +93,8 @@ export const TriggerCard: React.FC<Props> = ({
         if (trigger == "trade") {
             return <Repeat className="w-12 h-12" />
         }
-        if (itemSprite && item) {
-            return <img src={itemSprite} alt={itemSprite} className="w-12 h-12 object-contain flex items-center" title={item.name} />
+        if (itemSprite) {
+            return <img src={itemSprite} alt={`sprite-${itemName}`} className="w-12 h-12 object-contain flex items-center" title={`sprite-${itemName}`} />
         }
         return <ArrowBigUpDash className="w-12 h-12" />
     }
@@ -91,22 +112,25 @@ export const TriggerCard: React.FC<Props> = ({
     }
 
     useEffect(() => {
-        if (!item?.name) return;
-
+        if (!item?.name && !babyTriggerItem?.name) return;
+        const spritePath = item?.name == undefined
+            ? babyTriggerItem?.name
+            : item?.name;
         const loadItemTrigger = async () => {
             try {
-                const blob = await getItemSprite(item?.name ?? "");
+                const blob = await getItemSprite(spritePath ?? "");
                 const objectURL = URL.createObjectURL(blob);
                 setItemSprite(objectURL);
+                setItemName(spritePath ?? "");
             } catch (e) {
                 console.error("Error fetching item sprite", e);
             }
         }
 
-        if (item.url) {
+        if (spritePath) {
             loadItemTrigger();
         }
-    }, [item?.url]);
+    }, [item?.url, babyTriggerItem?.url]);
 
 
     return (

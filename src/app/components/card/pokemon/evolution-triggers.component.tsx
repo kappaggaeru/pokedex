@@ -7,17 +7,21 @@ type Props = {
 }
 
 type MergedEvolution = {
+    babyTriggerItem: Generic | null;
     evolvesFrom: string;
     evolvesTo: string;
     triggers: {
         trigger: string;
-        min_level: number | null;
-        min_happiness: number;
-        min_affection: number;
+        babyTriggerItem: Generic | null;
+        minLevel: number | null;
+        minHappiness: number;
+        minAffection: number;
         daytime: string;
         items: Generic[];
         locations: Generic[];
         knowTypeMove: Generic | null;
+        knowMove: Generic | null;
+        partySpecies: Generic | null;
     }[];
 };
 
@@ -29,21 +33,35 @@ const EvolutionTriggers: React.FC<Props> = ({ evolutionChain }) => {
         for (const evo of data) {
             if (!map.has(evo.evolvesTo)) {
                 map.set(evo.evolvesTo, {
+                    babyTriggerItem: evo.babyTriggerItem,
                     evolvesFrom: evo.evolvesFrom,
                     evolvesTo: evo.evolvesTo,
                     triggers: [
                         {
                             trigger: evo.trigger,
-                            min_level: evo.min_level,
-                            min_happiness: evo.min_happiness,
-                            min_affection: evo.min_affection,
+                            babyTriggerItem: evo.babyTriggerItem,
+                            minLevel: evo.minLevel,
+                            minHappiness: evo.minHappiness,
+                            minAffection: evo.minAffection,
                             daytime: evo.daytime,
                             items: [],
                             locations: [],
-                            knowTypeMove: evo.known_move_type
+                            knowTypeMove: evo.knownMoveType
                                 ? {
-                                    name: evo.known_move_type.name,
-                                    url: evo.known_move_type.url
+                                    name: evo.knownMoveType.name,
+                                    url: evo.knownMoveType.url
+                                }
+                                : null,
+                            knowMove: evo.knowMove
+                                ? {
+                                    name: evo.knowMove.name,
+                                    url: evo.knowMove.url
+                                }
+                                : null,
+                            partySpecies: evo.partySpecies
+                                ? {
+                                    name: evo.partySpecies.name,
+                                    url: evo.partySpecies.url
                                 }
                                 : null
                         }
@@ -54,12 +72,12 @@ const EvolutionTriggers: React.FC<Props> = ({ evolutionChain }) => {
             const entry = map.get(evo.evolvesTo)!;
             const triggerGroup = entry.triggers[0];
 
-            triggerGroup.min_happiness = triggerGroup.min_happiness || evo.min_happiness || 0;
-            triggerGroup.min_affection = triggerGroup.min_affection || evo.min_affection || 0;
-            triggerGroup.min_level = triggerGroup.min_level || evo.min_level || 0;
+            triggerGroup.minHappiness = triggerGroup.minHappiness || evo.minHappiness || 0;
+            triggerGroup.minAffection = triggerGroup.minAffection || evo.minAffection || 0;
+            triggerGroup.minLevel = triggerGroup.minLevel || evo.minLevel || 0;
 
-            if (!triggerGroup.knowTypeMove && evo.known_move_type) {
-                triggerGroup.knowTypeMove = evo.known_move_type;
+            if (!triggerGroup.knowTypeMove && evo.knownMoveType) {
+                triggerGroup.knowTypeMove = evo.knownMoveType;
             }
 
             if (triggerGroup.trigger !== evo.trigger) {
@@ -93,15 +111,18 @@ const EvolutionTriggers: React.FC<Props> = ({ evolutionChain }) => {
         return merged.triggers.map((t, subIndex) => (
             <TriggerCard
                 key={`poke-${index}-${subIndex}`}
+                babyTriggerItem={t.babyTriggerItem}
                 evolvesTo={merged.evolvesTo}
-                level={t.min_level ?? 0}
+                level={t.minLevel ?? 0}
                 trigger={t.trigger ?? ""}
                 item={t.items[0] ?? null}
-                minHappiness={t.min_happiness}
-                minAffection={t.min_affection}
+                minHappiness={t.minHappiness}
+                minAffection={t.minAffection}
                 daytime={t.daytime ?? ""}
                 location={t.locations.length > 0 ? t.locations.map(l => l.name).filter((name): name is string => typeof name === "string") : []}
                 knownTypeMove={t.knowTypeMove}
+                knownMove={t.knowMove}
+                partySpecies={t.partySpecies}
             />
         ));
     });

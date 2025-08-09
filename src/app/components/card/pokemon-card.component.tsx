@@ -83,9 +83,13 @@ const PokemonCardComponent: React.FC = () => {
                         ...pokemon.types.map((t: Type) => (t.type.name)) ?? "",
                         ...species.egg_groups.map((e: unknown) => (e as { name: string }).name) ?? "",
                         species.color.name ?? "",
-                        species.shape.name ?? "",
-                        species.habitat.name ?? ""
+                        species.shape.name ?? ""
                     ]
+                    if (species.habitat !== null) {
+                        if (species.habitat.name) {
+                            newTags.push(species.habitat.name);
+                        }
+                    }
                     setTags(newTags);
                 }
 
@@ -131,7 +135,7 @@ const PokemonCardComponent: React.FC = () => {
     useEffect(() => {
         if (pokemonEvolution) {
             const evolutionChainList = flattenEvolutionChain(pokemonEvolution.chain);
-            const evolutionDetailList = extractEvolutionDetails(pokemonEvolution.chain);
+            const evolutionDetailList = extractEvolutionDetails(pokemonEvolution);
 
             Promise.all(
                 evolutionChainList.map(async (entry) => {
@@ -203,7 +207,7 @@ const PokemonCardComponent: React.FC = () => {
         return result;
     };
 
-    const extractEvolutionDetails = (chain: EvolutionNode): EvolutionTrigger[] => {
+    const extractEvolutionDetails = (evolutionChain: EvolutionChain): EvolutionTrigger[] => {
         const result: EvolutionTrigger[] = [];
 
         const traverse = (node: EvolutionNode) => {
@@ -213,9 +217,15 @@ const PokemonCardComponent: React.FC = () => {
                 if (evolution.evolution_details) {
                     for (const detail of evolution.evolution_details) {
                         result.push({
+                            babyTriggerItem: evolutionChain.baby_trigger_item
+                            ? {
+                                name: evolutionChain.baby_trigger_item.name,
+                                url: evolutionChain.baby_trigger_item.url
+                            }
+                            : null,
                             evolvesFrom: node.species.name ?? "",
                             evolvesTo: evolution.species.name ?? "",
-                            min_level: detail.min_level,
+                            minLevel: detail.min_level,
                             trigger: detail.trigger?.name ?? '',
                             item: detail.item
                                 ? {
@@ -224,15 +234,27 @@ const PokemonCardComponent: React.FC = () => {
                                 }
                                 : null,
                             daytime: detail.time_of_day,
-                            min_happiness: detail.min_happiness !== null ? +detail.min_happiness : 0,
+                            minHappiness: detail.min_happiness !== null ? +detail.min_happiness : 0,
                             location: detail.location ?? null,
-                            min_affection: detail.min_affection !== null ? +detail.min_affection : 0,
-                            known_move_type: detail.known_move_type
+                            minAffection: detail.min_affection !== null ? +detail.min_affection : 0,
+                            knownMoveType: detail.known_move_type
                                 ? {
                                     name: detail.known_move_type.name,
                                     url: detail.known_move_type.url
                                 }
                                 : null,
+                            knowMove: detail.known_move
+                                ? {
+                                    name: detail.known_move.name,
+                                    url: detail.known_move.url
+                                }
+                                : null,
+                            partySpecies: detail.party_species
+                            ? {
+                                name: detail.party_species.name,
+                                url: detail.party_species.url
+                            }
+                            : null
                         });
                     }
                     traverse(evolution);
@@ -240,7 +262,7 @@ const PokemonCardComponent: React.FC = () => {
             }
         };
 
-        traverse(chain);
+        traverse(evolutionChain.chain);
         return result;
     };
 

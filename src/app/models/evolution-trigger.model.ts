@@ -1,14 +1,17 @@
 import { Generic } from "./dto/generic.model";
 
 export interface EvolutionTrigger {
+    babyTriggerItem: Generic | null;
     evolvesFrom: string;
     evolvesTo: string;
-    min_level: number;
+    minLevel: number;
     trigger: string;
     item: Generic | null;
     daytime: string;
-    min_happiness: number;
-    min_affection: number;
+    minHappiness: number;
+    minAffection: number;
     location: Generic | null;
-    known_move_type: Generic | null;
+    knownMoveType: Generic | null;
+    knowMove: Generic | null;
+    partySpecies: Generic | null;
 }

@@ -2,6 +2,7 @@ import { Search, X } from 'lucide-react';
 import { usePokemon } from '../../context/pokemonContext';
 import { useState } from 'react';
 import { ResultSearchBarComponent } from './result-search-bar.component';
+import { formatText } from '@/app/utils/stringUtils';
 export default function SearchBarComponent() {
     const { tier, pokemonList, selectPokemon } = usePokemon();
     const [search, setSearch] = useState("");
@@ -30,7 +31,7 @@ export default function SearchBarComponent() {
                 : pokemon.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
         });
         const res = filtered.map((pokemon) => (
-            <ResultSearchBarComponent key={pokemon.id} id={pokemon.id} name={pokemon.name} clearSearch={clearSearch} />
+            <ResultSearchBarComponent key={pokemon.id} id={pokemon.id} name={formatText(pokemon.name, "-")} clearSearch={clearSearch} />
         ));
         setResults(res);
     }

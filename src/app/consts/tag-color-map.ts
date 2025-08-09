@@ -16,7 +16,7 @@ export const tagColorMap: Record<
     grass: { text: 'text-green-600 dark:text-green-300', bg: 'bg-green-100 dark:bg-green-700' },
     green: { text: 'text-sky-600 dark:text-sky-300', bg: 'bg-green-100 dark:bg-green-700' },
     plant: { text: 'text-green-500 dark:text-green-200', bg: 'bg-green-50 dark:bg-green-600' },
-    grassland: { text: 'text-yellow-500 dark:text-yellow-200', bg: 'bg-green-50 dark:bg-green-600' },
+    grassland: { text: 'text-gray-100 dark:text-gray-200', bg: 'bg-green-500 dark:bg-green-600' },
     electric: { text: 'text-yellow-500 dark:text-yellow-200', bg: 'bg-yellow-100 dark:bg-yellow-700' },
     psychic: { text: 'text-pink-600 dark:text-pink-300', bg: 'bg-pink-100 dark:bg-pink-700' },
     ice: { text: 'text-blue-400 dark:text-blue-200', bg: 'bg-blue-100 dark:bg-blue-700' },

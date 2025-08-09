@@ -2,6 +2,7 @@ import { usePokemon } from "@/app/context/pokemonContext";
 import { EvolutionStage } from "../../../models/evolution-stage.model";
 import PokedexLinkContainer from "./pokedex-link-container.component";
 import { useAchievements } from "@/app/context/achievementsContext";
+import { formatText } from "@/app/utils/stringUtils";
 
 type Props = {
     chain: EvolutionStage[];
@@ -27,7 +28,7 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, type }) => {
             <PokedexLinkContainer
                 key={`stage-${stage.id}`}
                 id={stage.id}
-                name={stage.name}
+                name={formatText(stage.name, "-")}
                 sprite={stage.sprite}
                 loading={true}
                 error={false}

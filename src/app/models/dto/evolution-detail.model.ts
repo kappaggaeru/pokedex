@@ -1,10 +1,11 @@
 import { Generic } from "./generic.model";
 
 export interface EvolutionDetail {
+    baby_trigger_item: Generic | null;
     gender: string | null,
     held_item: string | null,
     item: Generic,
-    known_move: string | null,
+    known_move: Generic | null,
     known_move_type: Generic | null,
     location: Generic | null,
     min_affection: string | null,
@@ -12,7 +13,7 @@ export interface EvolutionDetail {
     min_happiness: string | null,
     min_level: number,
     needs_overworld_rain: boolean,
-    party_species: string | null,
+    party_species: Generic | null,
     party_type: string | null,
     relative_physical_stats: string | null,
     time_of_day: string,
