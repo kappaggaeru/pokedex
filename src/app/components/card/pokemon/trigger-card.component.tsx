@@ -45,7 +45,7 @@ export const TriggerCard: React.FC<Props> = ({
             ? "bg-legendary dark:text-gray-300"
             : tier === "mythical"
                 ? "bg-mythical dark:text-gray-300"
-                : "bg-slate-50 dark:bg-slate-700/80 text-gray-400";
+                : "bg-slate-50 dark:bg-slate-800/80 text-gray-500 dark:text-gray-400";
 
     const renderTriggerText = () => {
         if (minHappiness > 0 && daytime !== '') {
@@ -81,7 +81,7 @@ export const TriggerCard: React.FC<Props> = ({
             return `Requires a happiness level of ${minHappiness} to evolve`;
         }
         if (knownMove) {
-            return `Requires knowing the move ${knownMove} to evolve`;
+            return `Requires knowing the move ${formatText(knownMove.name ?? "", "-", true)} to evolve`;
         }
         if (level !== 0) {
             return `Requires reaching level ${level} to evolve`;
@@ -146,7 +146,7 @@ export const TriggerCard: React.FC<Props> = ({
             </div>
             <div className="flex flex-col gap-1">
                 <div className="text-md bolder text-gray-600 dark:text-gray-300 capitalize">{evolvesTo}</div>
-                <div className="text-gray-500 text-sm">
+                <div className="text-gray-500 dark:text-gray-400 text-sm">
                     {renderTriggerText()}
                 </div>
             </div>

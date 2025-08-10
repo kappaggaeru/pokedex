@@ -8,15 +8,15 @@ export const InformationComponent: React.FC<InformationProps> = ({ id, height, w
         <div className="flex flex-row justify-evenly">
             <div className="flex flex-col text-center">
                 <h5 className="text-gray-500 dark:text-gray-400">Region</h5>
-                <span className="bold text-gray-700">{region.name}</span>
+                <span className="bold text-gray-700 dark:text-gray-300">{region.name}</span>
             </div>
             <div className="flex flex-col text-center">
                 <h5 className="text-gray-500 dark:text-gray-400">Height</h5>
-                <span className="bold text-gray-700">{height / 10} m</span>
+                <span className="bold text-gray-700 dark:text-gray-300">{height / 10} m</span>
             </div>
             <div className="flex flex-col text-center">
                 <h5 className="text-gray-500 dark:text-gray-400">Weight</h5>
-                <span className="bold text-gray-700">{weight / 10} kg</span>
+                <span className="bold text-gray-700 dark:text-gray-300">{weight / 10} kg</span>
             </div>
         </div>
     )

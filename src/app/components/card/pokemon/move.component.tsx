@@ -11,7 +11,7 @@ export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, eff
             ? "bg-legendary dark:text-gray-300"
             : tier === "mythical"
                 ? "bg-mythical dark:text-gray-300"
-                : "bg-slate-50 dark:bg-slate-700/70 text-gray-400";
+                : "bg-slate-50 dark:bg-slate-800/80 text-gray-400";
     return (
         <div className={`
             rounded-lg border border-slate-100 dark:border-gray-600/50 p-4
@@ -27,13 +27,13 @@ export const MoveComponent: React.FC<MoveProps> = ({ name, accuracy, effect, eff
                             <ChipComponent title={type} />
                         </div>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-500 dark:text-gray-400">
                         <FadeText key={description} text={description} />
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                         <FadeText key={effect} text={effect} />
                     </p>
-                    <div className="flex flex-row justify-evenly text-gray-500 dark:text-gray-300">
+                    <div className="flex flex-row justify-evenly text-gray-700 dark:text-gray-300">
                         <div>
                             <p title="accuracy">
                                 <FadeText key={accuracy} text={`ACC ${accuracy}`} />
