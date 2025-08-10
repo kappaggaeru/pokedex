@@ -7,6 +7,7 @@ interface ThemeContextType {
     currentTheme: ThemeOption; // lo elegido por el usuario (puede ser "system")
     resolvedTheme: ThemeOption;
     setActiveTheme: (theme: ThemeOption) => void;
+    toggleThemeLightAndDark: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -76,8 +77,12 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         applyTheme(theme);
     };
 
+    const toggleThemeLightAndDark = () => {
+        applyTheme(currentTheme == "light" ? "dark" : "light");
+    }
+
     return (
-        <ThemeContext.Provider value={{ currentTheme, resolvedTheme, setActiveTheme }}>
+        <ThemeContext.Provider value={{ currentTheme, resolvedTheme, setActiveTheme, toggleThemeLightAndDark }}>
             {children}
         </ThemeContext.Provider>
     );

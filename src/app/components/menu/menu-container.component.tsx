@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { ReactNode } from "react";
 
-type MenuModalProps = {
+type MenuProps = {
     title: string;
     subtitle?: string;
     isOpen: boolean;
@@ -9,7 +9,7 @@ type MenuModalProps = {
     toggleContainer: () => void;
 }
 
-export const MenuModalContainerComponent = ({ children, title, subtitle, isOpen, toggleContainer }: MenuModalProps) => {
+export const MenuContainerComponent = ({ children, title, subtitle, isOpen, toggleContainer }: MenuProps) => {
     return (
         <div className="
             border bg-white/80 dark:bg-slate-800/80

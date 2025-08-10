@@ -1,0 +1,12 @@
+# This curl retrieves all items and relative costs
+curl 'https://graphql.pokeapi.co/v1beta2' \
+-H 'content-type: application/json' \
+-H 'accept: */*' \
+--compressed \
+--data-binary @- << EOF
+{
+    "query": "query getItems{item{name,cost}}",
+    "variables": null,
+    "operationName":"getItems"
+}
+EOF

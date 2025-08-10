@@ -2,11 +2,12 @@ import { ReactNode } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { PokemonProvider } from './pokemonContext';
 import { AchievementsProvider } from './achievementsContext';
-import { ModalProvider } from './modalContext';
+import { MenuProvider } from './menuContext';
 import { ThemeProvider } from './themeContext';
 import { LanguageProvider } from './languageContext';
 import { AccesibilityProvider } from './accesibilityContext';
 import { useAchievementTrigger } from '../hooks/useAchievementTrigger';
+import { ModalProvider } from './modalContext';
 
 // Componente wrapper que usa ambos contextos
 const AchievementTriggerWrapper = ({ children }: { children: ReactNode }) => {
@@ -23,13 +24,15 @@ const AppProviders = ({ children }: { children: ReactNode }) => {
                 <AchievementsProvider>
                     <PokemonProvider>
                         <AchievementTriggerWrapper>
-                            <ModalProvider>
+                            <MenuProvider>
                                 <ThemeProvider>
                                     <LanguageProvider>
-                                        {children}
+                                        <ModalProvider>
+                                            {children}
+                                        </ModalProvider>
                                     </LanguageProvider>
                                 </ThemeProvider>
-                            </ModalProvider>
+                            </MenuProvider>
                         </AchievementTriggerWrapper>
                     </PokemonProvider>
                 </AchievementsProvider>

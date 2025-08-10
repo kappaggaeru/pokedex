@@ -1,132 +1,99 @@
-import CloseModalButton from "../../buttons/close-modal.button"
-import { CookiesComponent } from "./cookies.component";
-import { SupportComponent } from "./support.component";
-import { ThemeComponent } from "./theme.component";
-import { useEffect, useState } from "react";
-import { MenuModalContainerComponent } from "./menu-modal-container.component";
-import { LanguageComponent } from "./language.component";
-import Image from "next/image";
-import { AccesibilityComponent } from "./accesibility.component";
-import AchievementsComponent from "./achievements.component";
-import { useAchievements } from "@/app/context/achievementsContext";
 import { useModal } from "@/app/context/modalContext";
+import { usePokemon } from "@/app/context/pokemonContext";
+import { Search, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ResultSearchBarComponent } from "./result-search-bar.component";
+import { formatText } from "@/app/utils/stringUtils";
+import { FilterRegionsComponent } from "./filter-regions.component";
 
-export const ModalComponent = ({ isOpen }: { isOpen: boolean }) => {
-    const [achievementsVisible, setAchievementsVisible] = useState(false);
-    const [languageVisible, setLanguageVisible] = useState(false);
-    const [accesibilityVisible, setAccesibilityVisible] = useState(false);
-    const [cookiesVisible, setCookiesVisible] = useState(false);
-    const [themeVisible, setThemeVisible] = useState(false);
-    const [supportVisible, setSupportVisible] = useState(false);
-    const { achievements } = useAchievements();
-    const {activeSector} = useModal();
-
-    const completedAchievements = achievements.filter(element => element.completed).length;
-    const achievementsSubtitle = `(${completedAchievements} / ${achievements.length})`;
+export function ModalComponent() {
+    const { toggleModal, showModal } = useModal();
+    const { pokemonList, selectPokemon } = usePokemon();
+    const [search, setSearch] = useState("");
+    const [showResults, setShowResults] = useState(false);
+    const [results, setResults] = useState<React.ReactNode[]>([]);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
-        if (activeSector !== "") {
-            setAchievementsVisible(false);
-            setLanguageVisible(false);
-            setAccesibilityVisible(false);
-            setCookiesVisible(false);
-            setThemeVisible(false);
-            setSupportVisible(false);
-
-            switch (activeSector) {
-                case "achievements":
-                    setAchievementsVisible(true); break;
-                case "settings":
-                    setLanguageVisible(true);
-                    setAccesibilityVisible(true);
-                    setCookiesVisible(true);
-                    break;
-                case "theme":
-                    setThemeVisible(true); break;
-                case "support":
-                    setSupportVisible(true); break;
-            }
+        if (showModal && inputRef.current) {
+            inputRef.current.focus();
         }
-    }, [activeSector])
+    }, [showModal])
+
+    function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+        const rawValue = e.target.value;
+        const value = rawValue.replace(/[^a-zA-Z0-9]/g, "");
+        setSearch(value);
+
+        if (value == "") {
+            setShowResults(false);
+            setResults([]);
+        } else {
+            setShowResults(true);
+            filterResults(value);
+        }
+    }
+
+    function filterResults(search: string) {
+        const isNumeric = /^\d+$/.test(search);
+        const filtered = pokemonList.filter((pokemon) => {
+            return isNumeric
+                ? pokemon.id.toString().includes(search)
+                : pokemon.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+        });
+        const res = filtered.map((pokemon) => (
+            <ResultSearchBarComponent key={pokemon.id} id={pokemon.id} name={formatText(pokemon.name, "-")} completeSearch={clearSearch} />
+        ));
+        setResults(res);
+    }
+
+    function clearSearch(id: number) {
+        selectPokemon(id);
+        closeModal();
+    }
+
+    function closeModal() {
+        setSearch("");
+        setShowResults(false);
+        toggleModal();
+    }
 
     return (
         <div className={`
-            fixed top-0 bottom-0 right-0 h-screen
-            transition-all duration-300 z-50
-            text-black dark:text-gray-300
-            bg-white/50 dark:bg-slate-800/50 backdrop-blur-md
-            md:border-l border-gray-200/50 dark:border-gray-600/50
-            md:rounded-tl-xl md:rounded-bl-xl
-            w-full sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[30%] 2xl:w-[25%]
-            ${!isOpen ? "translate-x-full shadow-none" : "translate-x-0 shadow-[rgba(0,0,15,0.5)_10px_10px_10px_10px]"}
-            `}
-        >
-            <div className="w-full h-full">
-                <div className="overflow-auto h-full">
-                    <div className="flex flex-col gap-4 mx-4 pb-4 pt-4">
-                        <div className="flex flex-row justify-between items-start">
-                            <div>
-                                <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9dex" target="_blank" rel="noopener noreferrer">
-                                    <Image
-                                        src="/assets/images/pokedex_logo.png"
-                                        alt="pokedex logo"
-                                        className="h-[4rem] max-w-[10rem] aspect-[16/9] object-contain"
-                                        width={100}
-                                        height={50}
-                                    />
-                                </a>
-                            </div>
-                            <CloseModalButton />
-                        </div>
-                        <MenuModalContainerComponent
-                            title="achievements"
-                            subtitle={achievementsSubtitle}
-                            isOpen={achievementsVisible}
-                            toggleContainer={() => setAchievementsVisible(!achievementsVisible)}
-                        >
-                            <AchievementsComponent />
-                        </MenuModalContainerComponent>
-                        <MenuModalContainerComponent
-                            title="language"
-                            isOpen={languageVisible}
-                            toggleContainer={() => setLanguageVisible(!languageVisible)}
-                        >
-                            <LanguageComponent />
-                        </MenuModalContainerComponent>
-                        <MenuModalContainerComponent
-                            title="accesibility"
-                            isOpen={accesibilityVisible}
-                            toggleContainer={() => setAccesibilityVisible(!accesibilityVisible)}
-                        >
-                            <AccesibilityComponent />
-                        </MenuModalContainerComponent>
-                        <MenuModalContainerComponent
-                            title="cookies"
-                            isOpen={cookiesVisible}
-                            toggleContainer={() => setCookiesVisible(!cookiesVisible)}
-                        >
-                            <CookiesComponent />
-                        </MenuModalContainerComponent>
-                        <MenuModalContainerComponent
-                            title="Theme"
-                            isOpen={themeVisible}
-                            toggleContainer={() => setThemeVisible(!themeVisible)}
-
-                        >
-                            <ThemeComponent />
-                        </MenuModalContainerComponent>
-                        <div className="mb-20 md:mb-0">
-                            <MenuModalContainerComponent
-                                title="Support"
-                                isOpen={supportVisible}
-                                toggleContainer={() => setSupportVisible(!supportVisible)}
-                            >
-                                <SupportComponent />
-                            </MenuModalContainerComponent>
-                        </div>
-                    </div>
+            fixed py-2 z-10 left-0 right-0
+            mx-auto h-[50%] w-[90%] md:w-[50%] lg:w-[30%]
+            rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md
+            border border-gray-200/50 dark:border-gray-600/50
+            flex flex-col gap-2
+            ${showModal ? 'block' : 'hidden'}
+        `}>
+            <div className="flex flex-row justify-between items-center px-4 pb-2 border-b-2 border-gray-100 dark:border-slate-700">
+                <Search className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                <input
+                    ref={inputRef}
+                    type="text"
+                    name="searchPokemon"
+                    value={search}
+                    placeholder="Type a pokémon name or id"
+                    onChange={handleSearch}
+                    className="w-full bg-transparent p-2 focus:outline-none text-gray-600 dark:text-gray-400 text-md"
+                />
+                <div className="border border-gray-200/50 dark:border-gray-600/50 p-2 cursor-pointer rounded-full">
+                    <X className="w-6 h-6 text-gray-500 dark:text-gray-400" onClick={() => closeModal()} />
                 </div>
             </div>
+            {showResults && (
+                <div className="w-full h-full overflow-auto px-4 py-2">
+                    <div className='w-full h-full flex flex-col gap-2'>
+                        {results.length > 0 ? results : <p className='text-gray-500 dark:text-gray-400'>No results</p>}
+                    </div>
+                </div>
+            )}
+            {!search && (
+                <div className="px-4">
+                    <FilterRegionsComponent />
+                </div>
+            )}
         </div>
     )
 }

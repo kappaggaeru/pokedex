@@ -3,27 +3,21 @@ import { createContext, ReactNode, useContext, useState } from "react";
 interface ModalContextType {
     showModal: boolean;
     toggleModal: (sector?: string) => void;
-    activeSector: string;
 }
-
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 export const ModalProvider = ({ children }: {children: ReactNode }) => {
     const [showModal, setShowModal] = useState(false);
-    const [activeSector, setActiveSector] = useState("");
 
-    const toggleModal = (sector?: string) => {
-        if (sector) {
-            setActiveSector(sector);
-        }
+    const toggleModal = () => {
         setShowModal(prevShowModal => {
             return !prevShowModal;
         })
     };
 
     return (
-        <ModalContext value={{ showModal, toggleModal, activeSector }}>
+        <ModalContext value={{ showModal, toggleModal }}>
             {children}
         </ModalContext>
     );

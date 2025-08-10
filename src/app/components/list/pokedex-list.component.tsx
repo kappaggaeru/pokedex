@@ -14,6 +14,7 @@ const PokedexListComponent: React.FC = () => {
         pokemonList,
         viewedMap,
         capturedList,
+        generations,
         setPokemonList,
         selectPokemon,
         setViewedMap
@@ -22,18 +23,6 @@ const PokedexListComponent: React.FC = () => {
     const [cookies] = useCookies(["capturedList"]);
     const [loading, setLoading] = useState(true);
     const enabledPreloadSprites = false;
-
-    const generations = [
-        { name: "Kanto", count: 151, roman: "I" },
-        { name: "Johto", count: 100, roman: "II" },
-        { name: "Hoenn", count: 135, roman: "III" },
-        { name: "Sinnoh", count: 107, roman: "IV" },
-        { name: "Unova", count: 156, roman: "V" },
-        { name: "Kalos", count: 72, roman: "VI" },
-        { name: "Alola", count: 88, roman: "VII" },
-        { name: "Galar", count: 96, roman: "VIII" },
-        { name: "Paldea", count: 120, roman: "IX" },
-    ];
 
     // Convertir cookies Y capturedList del contexto a Set para búsquedas más eficientes
     const seenIds = React.useMemo(() => {

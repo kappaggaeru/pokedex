@@ -30,6 +30,8 @@ interface PokemonContextType {
     capturedList: number[];
     ashCapturedList: number[];
     ashCaptureCount: number;
+    generations: { name: string, count: number, roman: string }[];
+    filteredRegions: string[];
     setTier: (tier: PokemonTier) => void;
     clearCapturedList: () => void;
     setPokemonList: (list: PokemonList[]) => void;
@@ -38,6 +40,7 @@ interface PokemonContextType {
     setViewedMap: React.Dispatch<React.SetStateAction<Record<number, ViewedState>>>;
     setIsLoadingPokemon: React.Dispatch<React.SetStateAction<boolean>>;
     setShouldBlinkArtwork: (value: boolean) => void;
+    toggleFilteredRegion: (region: string) => void;
 }
 
 const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
@@ -56,6 +59,30 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [shouldBlinkArtwork, setShouldBlinkArtwork] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
     const { updateCountAchievements, checkCaptureCountAshAchievement } = useAchievements();
+    const [filteredRegions, setFilteredRegions] = useState([
+        "Kanto",
+        "Johto",
+        "Hoenn",
+        "Sinnoh",
+        "Unova",
+        "Kalos",
+        "Alola",
+        "Galar",
+        "Paldea"
+    ]);
+
+    const generations = [
+        { name: "Kanto", count: 151, roman: "I" },
+        { name: "Johto", count: 100, roman: "II" },
+        { name: "Hoenn", count: 135, roman: "III" },
+        { name: "Sinnoh", count: 107, roman: "IV" },
+        { name: "Unova", count: 156, roman: "V" },
+        { name: "Kalos", count: 72, roman: "VI" },
+        { name: "Alola", count: 88, roman: "VII" },
+        { name: "Galar", count: 96, roman: "VIII" },
+        { name: "Paldea", count: 120, roman: "IX" },
+    ];
+
 
     const ashGoalCaptureList: number[] = [25, 18, 1, 6, 99, 89, 128, 143, 214, 153,
         156, 158, 164, 232, 277, 254, 341, 324, 362, 398,
@@ -192,6 +219,14 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
         return ashGoalCaptureList.includes(id);
     }
 
+    const toggleFilteredRegion = (region: string) => {
+        if (!filteredRegions.includes(region)) {
+            setFilteredRegions([...filteredRegions, region]);
+        } else {
+            setFilteredRegions(filteredRegions.filter(r => r !== region));
+        }
+    }
+
     return (
         <PokemonContext.Provider value={{
             selectedId,
@@ -205,6 +240,8 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             capturedList,
             ashCapturedList,
             ashCaptureCount,
+            generations,
+            filteredRegions,
             setTier,
             clearCapturedList,
             setPokemonList,
@@ -212,7 +249,8 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             clearPokemonCard,
             setViewedMap,
             setIsLoadingPokemon,
-            setShouldBlinkArtwork
+            setShouldBlinkArtwork,
+            toggleFilteredRegion
         }}>
             {children}
         </PokemonContext.Provider>

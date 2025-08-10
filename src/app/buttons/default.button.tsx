@@ -5,7 +5,7 @@ import { DefaultButtonProps } from "../models/props/default-buttons.props";
 const DefaultButton: React.FC<DefaultButtonProps> = ({
     onClick,
     title,
-    isVisible,
+    isVisible = true,
     icon: Icon,
     className = "",
     disabled = false,

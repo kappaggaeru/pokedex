@@ -5,19 +5,20 @@ import PokedexListComponent from "./list/pokedex-list.component";
 import PokemonCardComponent from "./card/pokemon-card.component";
 import DefaultButton from "../buttons/default.button";
 import { ArrowUp } from "lucide-react";
-import { ModalComponent } from "./modal/modal.component";
-import { useModal } from "../context/modalContext";
+import { MenuComponent } from "./menu/menu.component";
+import { useMenu } from "../context/menuContext";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { usePokemon } from "../context/pokemonContext";
 import { scrollToTop } from "../utils/scroll";
 import { useAccesibility } from "../context/accesibilityContext";
 import { NotificationsComponent } from "./notifications.component";
 import { CookieCardComponent } from "./card/cookie-card.component";
+import { ModalComponent } from "./modal/modal.component";
 
 const HomeComponent: React.FC = () => {
     const { selectedId, selectedPokemon } = usePokemon();
     const [showScrollTop, setShowScrollTop] = useState(false);
-    const { showModal } = useModal();
+    const { showMenu } = useMenu();
     const isMobile = useIsMobile();
     const { enabledAnimations } = useAccesibility();
 
@@ -31,7 +32,7 @@ const HomeComponent: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (isMobile && showModal) {
+        if (isMobile && showMenu) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "";
@@ -40,7 +41,7 @@ const HomeComponent: React.FC = () => {
         return () => {
             document.body.style.overflow = "";
         };
-    }, [isMobile, showModal]);
+    }, [isMobile, showMenu]);
 
     return (
         <div>
@@ -54,8 +55,9 @@ const HomeComponent: React.FC = () => {
                             key={selectedPokemon?.id}
                         />
                     </div>
-                    <ModalComponent isOpen={showModal}>
-                    </ModalComponent>
+                    <MenuComponent isOpen={showMenu}>
+                    </MenuComponent>
+                    <ModalComponent />
                     <CookieCardComponent />
                     <NotificationsComponent></NotificationsComponent>
                 </div>
