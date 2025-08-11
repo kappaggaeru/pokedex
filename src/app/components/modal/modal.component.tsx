@@ -75,14 +75,17 @@ export function ModalComponent() {
     }
 
     return (
-        <div className={`
-            fixed py-2 z-10 left-0 right-0
-            mx-auto h-[50%] w-[90%] md:w-[50%] lg:w-[30%]
-            rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md
-            border border-gray-200/50 dark:border-gray-600/50
-            flex flex-col gap-2
-            ${showModal ? 'block' : 'hidden'}
-        `}>
+        <div
+            className={`
+                fixed py-2 z-10 left-0 right-0
+                mx-auto h-[50%] w-[90%] md:w-[50%] lg:w-[30%]
+                rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md
+                border border-gray-200/50 dark:border-gray-600/50
+                flex flex-col gap-2
+                transform transition-all duration-300 ease-out
+                ${showModal ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none"}
+            `}
+        >
             <div className="flex flex-row justify-between items-center px-4 pb-2 border-b-2 border-gray-100 dark:border-slate-700">
                 <Search className="w-6 h-6 text-gray-500 dark:text-gray-400" />
                 <input

@@ -14,6 +14,7 @@ import { useAccesibility } from "../context/accesibilityContext";
 import { NotificationsComponent } from "./notifications.component";
 import { CookieCardComponent } from "./card/cookie-card.component";
 import { ModalComponent } from "./modal/modal.component";
+import { useModal } from "../context/modalContext";
 
 const HomeComponent: React.FC = () => {
     const { selectedId, selectedPokemon } = usePokemon();
@@ -21,6 +22,7 @@ const HomeComponent: React.FC = () => {
     const { showMenu } = useMenu();
     const isMobile = useIsMobile();
     const { enabledAnimations } = useAccesibility();
+    const { toggleModal } = useModal();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -42,6 +44,18 @@ const HomeComponent: React.FC = () => {
             document.body.style.overflow = "";
         };
     }, [isMobile, showMenu]);
+
+    useEffect(() => {
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.ctrlKey && e.key.toLowerCase() === "k") {
+                e.preventDefault();
+                toggleModal();
+            }
+        }
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [toggleModal]);
 
     return (
         <div>
