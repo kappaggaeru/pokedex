@@ -13,12 +13,13 @@ export function ModalComponent() {
     const [showResults, setShowResults] = useState(false);
     const [results, setResults] = useState<React.ReactNode[]>([]);
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [resultData, setResultData] = useState<{ id: number; name: string }[]>([]);
 
     useEffect(() => {
         if (showModal && inputRef.current) {
             inputRef.current.focus();
         }
-    }, [showModal])
+    }, [showModal]);
 
     function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
         const rawValue = e.target.value;
@@ -41,10 +42,25 @@ export function ModalComponent() {
                 ? pokemon.id.toString().includes(search)
                 : pokemon.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
         });
-        const res = filtered.map((pokemon) => (
-            <ResultSearchBarComponent key={pokemon.id} id={pokemon.id} name={formatText(pokemon.name, "-")} completeSearch={clearSearch} />
+
+        setResultData(filtered);
+        const res = filtered.map((pokemon, index) => (
+            <ResultSearchBarComponent
+                key={pokemon.id}
+                id={pokemon.id}
+                name={formatText(pokemon.name, "-")}
+                completeSearch={clearSearch}
+                isSelected={index === 0}
+            />
         ));
         setResults(res);
+    }
+
+    function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === "Enter" && search.trim() !== "" && resultData.length > 0) {
+            const first = resultData[0];
+            clearSearch(first.id);
+        }
     }
 
     function clearSearch(id: number) {
@@ -76,6 +92,7 @@ export function ModalComponent() {
                     value={search}
                     placeholder="Type a pokémon name or id"
                     onChange={handleSearch}
+                    onKeyDown={handleKeyDown}
                     className="w-full bg-transparent p-2 focus:outline-none text-gray-600 dark:text-gray-400 text-md"
                 />
                 <div className="border border-gray-200/50 dark:border-gray-600/50 p-2 cursor-pointer rounded-full">
