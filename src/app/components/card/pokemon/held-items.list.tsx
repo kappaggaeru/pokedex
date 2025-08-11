@@ -28,21 +28,20 @@ export const HeldItemsList = ({ pokemonData }: { pokemonData: Pokemon }) => {
                 pokemonData.held_items.map(async (heldItemObj: { item: Generic }) => {
                     try {
                         const heldItemData = await getByUrl(heldItemObj.item.url);
-                        const blob = await getItemSprite(heldItemData.name);
+                        const blob = await getItemSprite(heldItemObj.item.name ?? "");
                         const objectURL = URL.createObjectURL(blob);
-                        setSprite(objectURL);
 
                         const effectEntry = heldItemData.effect_entries.find(
                             (entry: Effect) => entry.language.name === language
                         );
 
                         const flavorTexts = getFirstFlavorTexts(heldItemData);
-                        console.log(flavorTexts);
 
                         return {
                             name: heldItemData.name,
                             effect: effectEntry?.effect || flavorTexts[language] || "",
                             shortEffect: effectEntry?.short_effect || "",
+                            sprite: objectURL
                         };
                     } catch (error) {
                         console.error("Error fetching item:", error);
@@ -51,7 +50,7 @@ export const HeldItemsList = ({ pokemonData }: { pokemonData: Pokemon }) => {
                 })
             );
 
-            setItems(heldItemDetails.filter((held): held is FlavorProps => held !== null));
+            setItems(heldItemDetails.filter((held): held is FlavorProps & { sprite: string} => held !== null));
         };
 
         fetchHeldItems();
@@ -67,7 +66,7 @@ export const HeldItemsList = ({ pokemonData }: { pokemonData: Pokemon }) => {
                     title={item.name}
                     effect={item.effect}
                     shortEffect={item.shortEffect}
-                    sprite={sprite}
+                    sprite={item.sprite ?? ""}
                 />
             ))}
         </div>

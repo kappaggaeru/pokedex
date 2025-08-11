@@ -2,6 +2,7 @@ export type FlavorProps = {
     name: string;
     effect: string;
     shortEffect: string;
+    sprite?: string;
 };
 
 type Entry = {
