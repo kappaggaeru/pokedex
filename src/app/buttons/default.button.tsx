@@ -1,7 +1,6 @@
 import React from "react";
 import { usePokemon } from "../context/pokemonContext";
 import { DefaultButtonProps } from "../models/props/default-buttons.props";
-import { KeyButton } from "./key.button";
 
 const DefaultButton: React.FC<DefaultButtonProps> = ({
     onClick,
@@ -10,7 +9,6 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
     icon: Icon,
     className = "",
     disabled = false,
-    altText,
 }) => {
     const { tier } = usePokemon();
 
@@ -32,8 +30,8 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
                 shadow-lg backdrop-blur-xl
                 transition-all duration-300
                 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"}
-                ${disabled ? "cursor-not-allowed opacity-50 scale-100" : "hover:scale-110 cursor-pointer"}
-                ${!disabled ? "hover:text-gray-900 dark:hover:text-white" : ""}
+                ${disabled ? "cursor-not-allowed opacity-50 scale-100" : "md:hover:scale-110 cursor-pointer"}
+                ${!disabled ? "md:hover:text-gray-900 md:dark:hover:text-white" : ""}
                 ${baseColor}
                 ${className}
             `}
@@ -42,15 +40,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
                 <div className="flex flex-row gap-2 items-center">
                     <Icon className={`w-6 h-6 ${disabled ? "opacity-40" : ""}`} />
                     <span className={`${disabled ? "opacity-60" : ""}`}>
-                        {title && !altText && title}
-                        {title && altText && (
-                            <div>
-                                <span className="md:hidden">{title}</span>
-                                <span className="hidden md:block">
-                                    <KeyButton>{altText}</KeyButton>
-                                </span>
-                            </div>
-                        )}
+                        {title && title}
                     </span>
                 </div>
             ) : (
