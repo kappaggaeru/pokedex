@@ -11,6 +11,7 @@ type Props = {
     evolvesTo: string,
     trigger: string,
     item: Generic | null,
+    heldItem: Generic | null,
     minHappiness: number,
     minAffection: number,
     daytime: string,
@@ -19,12 +20,14 @@ type Props = {
     knownMove: Generic | null;
     partySpecies: Generic | null;
 }
+type EvolutionItem = { name?: string; url?: string } | null | undefined;
 export const TriggerCard: React.FC<Props> = ({
     babyTriggerItem,
     level,
     evolvesTo,
     trigger,
     item,
+    heldItem,
     minHappiness,
     minAffection,
     daytime,
@@ -39,6 +42,8 @@ export const TriggerCard: React.FC<Props> = ({
     const itemFormatted = formatText(item?.name ?? "", "-");
     const babyTriggerFormatted = formatText(babyTriggerItem?.name ?? "", "-", true);
     const partySpeciesFormatted = formatText(partySpecies?.name ?? "", "-", true);
+    const heldItemFormatted = formatText(heldItem?.name ?? "", "-", true);
+    const daytimeFormatted = formatText(daytime, '-').toLowerCase();
 
     const baseColor =
         tier === "legendary"
@@ -49,44 +54,53 @@ export const TriggerCard: React.FC<Props> = ({
 
     const renderTriggerText = () => {
         if (minHappiness > 0 && daytime !== '') {
-            return `Requires a happiness level of ${minHappiness}, then level up during the ${formatText(daytime, '-')} to evolve`;
+            return `Requires a happiness level of ${minHappiness}, then leveling up during the ${daytimeFormatted} to evolve.`;
+        }
+        if (heldItemFormatted && daytime !== '') {
+            return `Requires holding ${heldItemFormatted}, then leveling up during the ${daytimeFormatted} to evolve.`;
         }
         if (trigger == "use-item") {
-            return `Requires using ${itemFormatted} to evolve`;
+            return `Requires using ${itemFormatted} to evolve.`;
         }
         if (babyTriggerFormatted && partySpeciesFormatted) {
-            return `Requires using ${babyTriggerFormatted} or having ${partySpeciesFormatted} in your party to evolve`;
+            return `Requires using ${babyTriggerFormatted} or having ${partySpeciesFormatted} in your party to evolve.`;
         }
         if (babyTriggerFormatted) {
-            return `Requires using ${babyTriggerFormatted} to evolve`;
+            return `Requires using ${babyTriggerFormatted} to evolve.`;
         }
         if (partySpeciesFormatted) {
-            return `Requires having ${partySpeciesFormatted} in your party to evolve`;
+            return `Requires having ${partySpeciesFormatted} in your party to evolve.`;
         }
         if (trigger == "mixed") {
             if (location.length > 0) {
-                return `Requires leveling up at the following locations: ${renderLocations()}, or using ${itemFormatted} to evolve`;
+                return `Requires leveling up at the following locations: ${renderLocations()}, or using ${itemFormatted} to evolve.`;
             }
             if (level > 0) {
-                return `Requires reaching level ${level} or using ${itemFormatted} to evolve`;
+                return `Requires reaching level ${level}, or using ${itemFormatted} to evolve.`;
             }
         }
         if (minAffection > 0 || minHappiness > 0 && knownTypeMove !== null) {
-            return `Requires a happiness level of ${minHappiness}, or an affection level of ${minAffection} or knowing the move ${formatText(knownTypeMove?.name ?? "", "-", true)} to evolve`;
+            return `Requires a happiness level of ${minHappiness}, or an affection level of ${minAffection} or knowing the move ${formatText(knownTypeMove?.name ?? "", "-", true)} to evolve.`;
         }
         if (trigger == "trade") {
-            return `Requires being traded to evolve`;
+            return `Requires being traded to evolve.`;
         }
         if (minHappiness > 0) {
-            return `Requires a happiness level of ${minHappiness} to evolve`;
+            return `Requires a happiness level of ${minHappiness} to evolve.`;
         }
         if (knownMove) {
-            return `Requires knowing the move ${formatText(knownMove.name ?? "", "-", true)} to evolve`;
+            return `Requires knowing the move ${formatText(knownMove.name ?? "", "-", true)} to evolve.`;
+        }
+        if (heldItemFormatted) {
+            return `Requires holding ${heldItemFormatted} to evolve.`;
+        }
+        if (daytime !== "") {
+            return `Required leveling up during ${daytimeFormatted} to evolve.`;
         }
         if (level !== 0) {
-            return `Requires reaching level ${level} to evolve`;
+            return `Requires reaching level ${level} to evolve.`;
         }
-        return `Requires ${formatText(trigger ?? "", "-", true)} to evolve`;
+        return `Requires ${formatText(trigger ?? "", "-", true)} to evolve.`;
     }
 
     const renderIcon = () => {
@@ -111,11 +125,14 @@ export const TriggerCard: React.FC<Props> = ({
         return res;
     }
 
+    function getEvolutionItemName(...items: EvolutionItem[]): string | undefined {
+        return items.find(i => i?.name)?.name;
+    }
+
     useEffect(() => {
-        if (!item?.name && !babyTriggerItem?.name) return;
-        const spritePath = item?.name == undefined
-            ? babyTriggerItem?.name
-            : item?.name;
+        const spritePath = getEvolutionItemName(item, babyTriggerItem, heldItem);
+        if (!spritePath) return; // No hay ítem válido
+
         const loadItemTrigger = async () => {
             try {
                 const blob = await getItemSprite(spritePath ?? "");
@@ -130,7 +147,7 @@ export const TriggerCard: React.FC<Props> = ({
         if (spritePath) {
             loadItemTrigger();
         }
-    }, [item?.url, babyTriggerItem?.url]);
+    }, [item?.url, babyTriggerItem?.url, heldItem?.url]);
 
 
     return (

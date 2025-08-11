@@ -233,6 +233,12 @@ const PokemonCardComponent: React.FC = () => {
                                     url: detail.item.url,
                                 }
                                 : null,
+                            heldItem: detail.held_item
+                                ? {
+                                    name: detail.held_item.name,
+                                    url: detail.held_item.url
+                                }
+                                : null,
                             daytime: detail.time_of_day,
                             minHappiness: detail.min_happiness !== null ? +detail.min_happiness : 0,
                             location: detail.location ?? null,

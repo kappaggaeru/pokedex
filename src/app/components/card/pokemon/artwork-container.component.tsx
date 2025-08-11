@@ -5,9 +5,10 @@ import { formatText } from "@/app/utils/stringUtils";
 import DefaultButton from "@/app/buttons/default.button";
 import { X } from "lucide-react";
 import { RoarComponent } from "./roar.component";
-import { ShineComponent } from "./shine-component";
+import { ShineComponent } from "./shine.component";
 import { useState } from "react";
 import { useAccesibility } from "@/app/context/accesibilityContext";
+import { ExpandArtworkComponent } from "./expand-artwork.component";
 
 export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id, name, pokemonArtwork, cries }) => {
     const [showOriginalArtwork, setShowOriginalArtwork] = useState(true);
@@ -17,13 +18,10 @@ export const ArtworkContainerComponent: React.FC<ArtworkContainerProps> = ({ id,
 
     return (
         <div>
-            <div className="flex flex-row justify-between items-baseline mx-6 pt-4">
-                <div>
-                    <div className="flex flex-row gap-4">
-                        <RoarComponent cries={cries} />
-                        <ShineComponent onClick={() => setShowOriginalArtwork(!showOriginalArtwork)} />
-                    </div>
-                </div>
+            <div className="flex flex-row justify-evenly items-baseline mx-6 pt-4">
+                <RoarComponent cries={cries} />
+                <ShineComponent onClick={() => setShowOriginalArtwork(!showOriginalArtwork)} />
+                <ExpandArtworkComponent />
                 <DefaultButton onClick={clearPokemonCard} isVisible={true} icon={X} className="z-10" />
             </div>
             <div className={`

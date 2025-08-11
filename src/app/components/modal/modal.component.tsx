@@ -115,7 +115,7 @@ export function ModalComponent() {
             `}>
                 <div className="flex flex-row justify-between items-center px-4 py-2 border-b-2 border-gray-100 dark:border-slate-700">
                     <Search className="w-6 h-6 text-gray-500 dark:text-gray-400" />
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className="w-full">
                         <input
                             ref={inputRef}
                             type="text"

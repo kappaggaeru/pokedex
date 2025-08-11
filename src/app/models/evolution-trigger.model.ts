@@ -7,6 +7,7 @@ export interface EvolutionTrigger {
     minLevel: number;
     trigger: string;
     item: Generic | null;
+    heldItem: Generic | null;
     daytime: string;
     minHappiness: number;
     minAffection: number;

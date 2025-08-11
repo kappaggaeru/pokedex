@@ -18,6 +18,7 @@ type MergedEvolution = {
         minAffection: number;
         daytime: string;
         items: Generic[];
+        heldItem: Generic | null;
         locations: Generic[];
         knowTypeMove: Generic | null;
         knowMove: Generic | null;
@@ -45,6 +46,12 @@ const EvolutionTriggers: React.FC<Props> = ({ evolutionChain }) => {
                             minAffection: evo.minAffection,
                             daytime: evo.daytime,
                             items: [],
+                            heldItem: evo.heldItem
+                                ? {
+                                    name: evo.heldItem.name,
+                                    url: evo.heldItem.url
+                                }
+                                : null,
                             locations: [],
                             knowTypeMove: evo.knownMoveType
                                 ? {
@@ -116,6 +123,7 @@ const EvolutionTriggers: React.FC<Props> = ({ evolutionChain }) => {
                 level={t.minLevel ?? 0}
                 trigger={t.trigger ?? ""}
                 item={t.items[0] ?? null}
+                heldItem={t.heldItem}
                 minHappiness={t.minHappiness}
                 minAffection={t.minAffection}
                 daytime={t.daytime ?? ""}

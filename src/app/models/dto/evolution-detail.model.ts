@@ -3,7 +3,7 @@ import { Generic } from "./generic.model";
 export interface EvolutionDetail {
     baby_trigger_item: Generic | null;
     gender: string | null,
-    held_item: string | null,
+    held_item: Generic | null,
     item: Generic,
     known_move: Generic | null,
     known_move_type: Generic | null,
