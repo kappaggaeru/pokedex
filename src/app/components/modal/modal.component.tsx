@@ -36,7 +36,7 @@ export function ModalComponent() {
         };
     }, [showModal, closeModal]);
 
-    function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const rawValue = e.target.value;
         const value = rawValue.replace(/[^a-zA-Z0-9]/g, "");
         setSearch(value);
@@ -48,6 +48,12 @@ export function ModalComponent() {
             setShowResults(true);
             filterResults(value);
         }
+    }
+
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        if (inputRef.current) inputRef.current.blur();
+        closeModal();
     }
 
     function filterResults(search: string) {
@@ -75,6 +81,7 @@ export function ModalComponent() {
         if (e.key === "Enter" && search.trim() !== "" && resultData.length > 0) {
             const first = resultData[0];
             clearSearch(first.id);
+            closeModal();
         }
     }
 
@@ -108,16 +115,18 @@ export function ModalComponent() {
             `}>
                 <div className="flex flex-row justify-between items-center px-4 py-2 border-b-2 border-gray-100 dark:border-slate-700">
                     <Search className="w-6 h-6 text-gray-500 dark:text-gray-400" />
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        name="searchPokemon"
-                        value={search}
-                        placeholder="Type a pokémon name or id"
-                        onChange={handleSearch}
-                        onKeyDown={handleKeyDown}
-                        className="w-full bg-transparent p-2 focus:outline-none text-gray-600 dark:text-gray-400 text-md"
-                    />
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            name="searchPokemon"
+                            value={search}
+                            placeholder="Type a pokémon name or id"
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
+                            className="w-full bg-transparent p-2 focus:outline-none text-gray-600 dark:text-gray-400 text-md"
+                        />
+                    </form>
                     <div className="cursor-pointer" onClick={closeModal}>
                         <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
                     </div>
