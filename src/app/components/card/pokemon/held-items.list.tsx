@@ -17,8 +17,6 @@ export type ItemProps = {
 export const HeldItemsList = ({ pokemonData }: { pokemonData: Pokemon }) => {
     const { language } = useLanguage();
     const [items, setItems] = useState<FlavorProps[]>([]);
-    const [sprite, setSprite] = useState("");
-
 
     useEffect(() => {
         const fetchHeldItems = async () => {
