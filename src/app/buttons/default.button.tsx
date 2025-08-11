@@ -1,6 +1,7 @@
 import React from "react";
 import { usePokemon } from "../context/pokemonContext";
 import { DefaultButtonProps } from "../models/props/default-buttons.props";
+import { KeyButton } from "./key.button";
 
 const DefaultButton: React.FC<DefaultButtonProps> = ({
     onClick,
@@ -45,8 +46,8 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
                         {title && altText && (
                             <div>
                                 <span className="md:hidden">{title}</span>
-                                <span className="hidden md:block px-1 rounded-md shadow-[inset_0_-1px_2px] shadow-black/10 select-none dark:bg-white/10 dark:shadow-white/10 dark:text-shadow-xs">
-                                    {altText}
+                                <span className="hidden md:block">
+                                    <KeyButton>{altText}</KeyButton>
                                 </span>
                             </div>
                         )}
