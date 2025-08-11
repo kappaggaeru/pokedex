@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ResultSearchBarComponent } from "./result-search-bar.component";
 import { formatText } from "@/app/utils/stringUtils";
 import { FilterRegionsComponent } from "./filter-regions.component";
+import { KeyButton } from "@/app/buttons/key.button";
 
 export function ModalComponent() {
     const { toggleModal, showModal } = useModal();
@@ -75,45 +76,53 @@ export function ModalComponent() {
     }
 
     return (
-        <div
-            className={`
-                fixed py-2 z-10 left-0 right-0
-                mx-auto h-[50%] w-[90%] md:w-[50%] lg:w-[30%]
+        <div className="
+            fixed left-0 right-0 top-10 md:inset-0 z-50
+            flex justify-center md:items-center
+            mt-10 md:mt-0
+        ">
+            <div className={`
+                w-[90%] h-[400px] md:h-[50%] md:w-[40%] lg:w-[35%] xl:w-[25%]
                 rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md
                 border border-gray-200/50 dark:border-gray-600/50
-                flex flex-col gap-2 shadow-xl
+                flex flex-col shadow-xl
                 transform transition-all duration-300 ease-out
                 ${showModal ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none"}
-            `}
-        >
-            <div className="flex flex-row justify-between items-center px-4 pb-2 border-b-2 border-gray-100 dark:border-slate-700">
-                <Search className="w-6 h-6 text-gray-500 dark:text-gray-400" />
-                <input
-                    ref={inputRef}
-                    type="text"
-                    name="searchPokemon"
-                    value={search}
-                    placeholder="Type a pokémon name or id"
-                    onChange={handleSearch}
-                    onKeyDown={handleKeyDown}
-                    className="w-full bg-transparent p-2 focus:outline-none text-gray-600 dark:text-gray-400 text-md"
-                />
-                <div className="border border-gray-200/50 dark:border-gray-600/50 p-2 cursor-pointer rounded-full">
-                    <X className="w-6 h-6 text-gray-500 dark:text-gray-400" onClick={() => closeModal()} />
-                </div>
-            </div>
-            {showResults && (
-                <div className="w-full h-full overflow-auto px-4 py-2">
-                    <div className='w-full h-full flex flex-col gap-2'>
-                        {results.length > 0 ? results : <p className='text-gray-500 dark:text-gray-400'>No results</p>}
+            `}>
+                <div className="flex flex-row justify-between items-center px-4 py-2 border-b-2 border-gray-100 dark:border-slate-700">
+                    <Search className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        name="searchPokemon"
+                        value={search}
+                        placeholder="Type a pokémon name or id"
+                        onChange={handleSearch}
+                        onKeyDown={handleKeyDown}
+                        className="w-full bg-transparent p-2 focus:outline-none text-gray-600 dark:text-gray-400 text-md"
+                    />
+                    <div className="cursor-pointer" onClick={() => closeModal()}>
+                        <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
                     </div>
                 </div>
-            )}
-            {!search && (
-                <div className="px-4">
-                    <FilterRegionsComponent />
+                <div className="flex-1 overflow-auto p-4">
+                    {showResults && (
+                        <div className="flex flex-col gap-2">
+                            {results.length > 0 ? results : (
+                                <p className="text-gray-500 dark:text-gray-400">No results</p>
+                            )}
+                        </div>
+                    )}
+                    {!search && (
+                        <FilterRegionsComponent />
+                    )}
                 </div>
-            )}
+                <div className="flex flex-row justify-end gap-2 items-center p-4 border-t-2 border-gray-100 dark:border-slate-700 text-sm text-gray-400">
+                    <span>Go to pokémon <KeyButton>{'\u21A9'}</KeyButton></span>
+                    <div>|</div>
+                    <span>Exit <KeyButton>Esc</KeyButton></span>
+                </div>
+            </div>
         </div>
     )
 }
