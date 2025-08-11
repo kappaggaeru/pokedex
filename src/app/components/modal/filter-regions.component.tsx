@@ -10,7 +10,7 @@ export function FilterRegionsComponent() {
         <div key={index}
             className={`
                 rounded-full px-4 py-2
-                border 
+                border cursor-pointer
                 ${filteredRegions.includes(gen.name) ? activeRegion : inactiveRegion}
             `}
             onClick={() => toggleFilteredRegion(gen.name)}>
