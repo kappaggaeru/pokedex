@@ -81,7 +81,7 @@ export function ModalComponent() {
                 mx-auto h-[50%] w-[90%] md:w-[50%] lg:w-[30%]
                 rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md
                 border border-gray-200/50 dark:border-gray-600/50
-                flex flex-col gap-2
+                flex flex-col gap-2 shadow-xl
                 transform transition-all duration-300 ease-out
                 ${showModal ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none"}
             `}
