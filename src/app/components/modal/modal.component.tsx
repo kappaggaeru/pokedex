@@ -22,6 +22,20 @@ export function ModalComponent() {
         }
     }, [showModal]);
 
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape" && showModal) {
+                closeModal();
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [showModal, closeModal]);
+
     function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
         const rawValue = e.target.value;
         const value = rawValue.replace(/[^a-zA-Z0-9]/g, "");
@@ -76,16 +90,19 @@ export function ModalComponent() {
     }
 
     return (
-        <div className="
-            fixed left-0 right-0 top-10 md:inset-0 z-50
+        <div onClick={closeModal}
+            className={`
+            fixed left-0 right-0 top-10 md:inset-0 
             flex justify-center md:items-center
-            mt-10 md:mt-0
-        ">
-            <div className={`
+            mt-10 md:mt-0 cursor-pointer
+            ${showModal ? "z-40 pointer-events-auto" : "z-0 pointer-events-none"}
+        `}>
+            <div onClick={(e) => e.stopPropagation()} // Evita que clic dentro cierre
+                className={`
                 w-[90%] h-[400px] md:h-[50%] md:w-[40%] lg:w-[35%] xl:w-[25%]
                 rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md
                 border border-gray-200/50 dark:border-gray-600/50
-                flex flex-col shadow-xl
+                flex flex-col shadow-xl z-50 cursor-default
                 transform transition-all duration-300 ease-out
                 ${showModal ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none"}
             `}>
@@ -101,7 +118,7 @@ export function ModalComponent() {
                         onKeyDown={handleKeyDown}
                         className="w-full bg-transparent p-2 focus:outline-none text-gray-600 dark:text-gray-400 text-md"
                     />
-                    <div className="cursor-pointer" onClick={() => closeModal()}>
+                    <div className="cursor-pointer" onClick={closeModal}>
                         <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
                     </div>
                 </div>

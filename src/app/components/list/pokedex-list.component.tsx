@@ -15,6 +15,7 @@ const PokedexListComponent: React.FC = () => {
         viewedMap,
         capturedList,
         generations,
+        filteredRegions,
         setPokemonList,
         selectPokemon,
         setViewedMap
@@ -132,7 +133,7 @@ const PokedexListComponent: React.FC = () => {
             });
 
             const segment = (
-                <div key={gen.name} className="flex flex-col">
+                <div key={gen.name} className={`flex flex-col ${filteredRegions.includes(gen.name) ? "block" : "hidden"}`}>
                     <div className="flex flex-row gap-2 items-center px-4">
                         <p className="text-gray-500 text-nowrap">
                             {gen.name} <span className="text-sm">({index + 1} - {index + gen.count} GEN {gen.roman})</span>
