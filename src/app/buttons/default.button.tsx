@@ -9,6 +9,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
     icon: Icon,
     className = "",
     disabled = false,
+    altText,
 }) => {
     const { tier } = usePokemon();
 
@@ -39,7 +40,17 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
             {title ? (
                 <div className="flex flex-row gap-2 items-center">
                     <Icon className={`w-6 h-6 ${disabled ? "opacity-40" : ""}`} />
-                    <span className={`${disabled ? "opacity-60" : ""}`}>{title}</span>
+                    <span className={`${disabled ? "opacity-60" : ""}`}>
+                        {title && !altText && title}
+                        {title && altText && (
+                            <div>
+                                <span className="md:hidden">{title}</span>
+                                <span className="hidden md:block px-1 rounded-md shadow-[inset_0_-1px_2px] shadow-black/10 select-none dark:bg-white/10 dark:shadow-white/10 dark:text-shadow-xs">
+                                    {altText}
+                                </span>
+                            </div>
+                        )}
+                    </span>
                 </div>
             ) : (
                 <Icon className={`w-6 h-6 ${disabled ? "opacity-40" : ""}`} />

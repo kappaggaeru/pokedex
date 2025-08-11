@@ -7,4 +7,5 @@ export interface DefaultButtonProps {
     icon: LucideIcon;
     className?: string;
     disabled?: boolean;
+    altText?: string;
 }

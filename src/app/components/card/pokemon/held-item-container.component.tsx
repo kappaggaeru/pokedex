@@ -9,7 +9,7 @@ export const HeldItemComponent: React.FC<ItemProps> = ({ title, sprite, effect }
             ? "bg-legendary dark:text-gray-300"
             : tier === "mythical"
                 ? "bg-mythical dark:text-gray-300"
-                : "bg-slate-50 dark:bg-slate-700/80 text-gray-400";
+                : "bg-slate-50 dark:bg-slate-800/80 text-gray-400";
     return (
         <div className={`
             flex flex-row gap-4 rounded-lg p-4 items-start
@@ -23,7 +23,7 @@ export const HeldItemComponent: React.FC<ItemProps> = ({ title, sprite, effect }
             </div>
             <div className="flex flex-col gap-1">
                 <div className="text-md bolder text-gray-600 dark:text-gray-300 capitalize">{formatText(title, '-')}</div>
-                <div className="text-gray-500 text-sm">
+                <div className="text-gray-500 dark:text-gray-400 text-sm">
                     {effect ? effect : 'N/A'}
                 </div>
             </div>
