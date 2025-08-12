@@ -10,6 +10,7 @@ import { AccesibilityComponent } from "./accesibility.component";
 import AchievementsComponent from "./achievements.component";
 import { useAchievements } from "@/app/context/achievementsContext";
 import { useMenu } from "@/app/context/menuContext";
+import { FaqComponent } from "./faq.component";
 
 export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
     const [achievementsVisible, setAchievementsVisible] = useState(false);
@@ -17,6 +18,7 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
     const [accesibilityVisible, setAccesibilityVisible] = useState(false);
     const [cookiesVisible, setCookiesVisible] = useState(false);
     const [themeVisible, setThemeVisible] = useState(false);
+    const [faqVisible, setFaqVisible] = useState(false);
     const [supportVisible, setSupportVisible] = useState(false);
     const { achievements } = useAchievements();
     const {activeSector} = useMenu();
@@ -32,6 +34,7 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
             setCookiesVisible(false);
             setThemeVisible(false);
             setSupportVisible(false);
+            setFaqVisible(false);
 
             switch (activeSector) {
                 case "achievements":
@@ -43,6 +46,8 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
                     break;
                 case "theme":
                     setThemeVisible(true); break;
+                case "faq":
+                    setFaqVisible(true); break;
                 case "support":
                     setSupportVisible(true); break;
             }
@@ -114,6 +119,13 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
 
                         >
                             <ThemeComponent />
+                        </MenuContainerComponent>
+                        <MenuContainerComponent
+                            title="Frequently Asked Questions"
+                            isOpen={faqVisible}
+                            toggleContainer={() => setFaqVisible(!faqVisible)}
+                        >
+                            <FaqComponent />
                         </MenuContainerComponent>
                         <div className="mb-20 md:mb-0">
                             <MenuContainerComponent

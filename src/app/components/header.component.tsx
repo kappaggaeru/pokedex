@@ -1,4 +1,4 @@
-import { Coffee, Menu, Settings, SunMoon, Trophy } from "lucide-react";
+import { Coffee, Menu, MessageCircleQuestion, Settings, SunMoon, Trophy } from "lucide-react";
 import MenuTriggerButton from "../buttons/menu-trigger.button";
 import ToggleThemeButton from "../buttons/toggle-theme.button";
 import ToggleModalButton from "../buttons/toggle-modal.button";
@@ -20,6 +20,9 @@ const HeaderComponent: React.FC = () => {
                 </div>
                 <div className="hidden md:block">
                     <MenuTriggerButton menu="theme" title="Theme" icon={SunMoon} />
+                </div>
+                <div className="hidden lg:block">
+                    <MenuTriggerButton menu="faq" title="F.A.Q" icon={MessageCircleQuestion} />
                 </div>
                 <div className="hidden md:block">
                     <MenuTriggerButton menu="support" title="Support" icon={Coffee} />
