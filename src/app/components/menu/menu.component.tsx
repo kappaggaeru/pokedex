@@ -70,7 +70,7 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
                                     <Image
                                         src="/assets/images/pokedex_logo.png"
                                         alt="pokedex logo"
-                                        className="h-[4rem] max-w-[10rem] aspect-[16/9] object-contain"
+                                        className="h-auto w-auto max-w-[10rem] aspect-[16/9] object-contain"
                                         width={100}
                                         height={50}
                                     />

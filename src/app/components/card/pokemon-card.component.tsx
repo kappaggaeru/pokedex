@@ -334,9 +334,15 @@ const PokemonCardComponent: React.FC = () => {
                     </GenericCardContainerComponent>
                 }
 
-                {pokemonData &&
+                {pokemonData && pokemonSpecies &&
                     <GenericCardContainerComponent title="information">
-                        <InformationComponent id={selectedId} height={pokemonData?.height} weight={pokemonData?.weight} />
+                        <InformationComponent
+                            id={selectedId}
+                            height={pokemonData?.height}
+                            weight={pokemonData?.weight}
+                            captureRate={pokemonSpecies?.capture_rate}
+                            genderRate={pokemonSpecies?.gender_rate}
+                        />
                     </GenericCardContainerComponent>
                 }
 

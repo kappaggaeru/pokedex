@@ -40,7 +40,7 @@ const EvolutionChainComponent: React.FC<Props> = ({ chain, type }) => {
     });
     return (
         <div className="my-4">
-            <div className="flex flex-row items-center justify-evenly flex-wrap gap-2">
+            <div className="flex flex-row items-center justify-center flex-wrap gap-4">
                 {evolutionChain}
             </div>
         </div>

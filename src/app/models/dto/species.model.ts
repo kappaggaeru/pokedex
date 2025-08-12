@@ -5,6 +5,7 @@ import { Varieties } from "./varieties.model";
 export interface Species {
     base_happiness: number;
     capture_rate: number;
+    gender_rate: number;
     color: Generic;
     egg_groups: Generic[];
     evolution_chain: Generic;
