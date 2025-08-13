@@ -106,12 +106,12 @@ export function ModalComponent() {
         `}>
             <div onClick={(e) => e.stopPropagation()} // Evita que clic dentro cierre
                 className={`
-                w-[90%] h-[400px] md:h-[50%] md:w-[40%] lg:w-[35%] xl:w-[25%]
+                w-[90%] h-[400px] md:h-[60%] md:w-[40%] lg:w-[35%] xl:w-[25%]
                 rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-md
                 border border-gray-200/50 dark:border-gray-600/50
                 flex flex-col shadow-xl z-50 cursor-default
                 transform transition-all duration-300 ease-out
-                ${showModal ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none"}
+                ${showModal ? "opacity-100 scale-100" : "opacity-0 scale-90 pointer-events-none"}
             `}>
                 <div className="flex flex-row justify-between items-center px-4 py-2 border-b-2 border-gray-100 dark:border-slate-700">
                     <Search className="w-6 h-6 text-gray-500 dark:text-gray-400" />

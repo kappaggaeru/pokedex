@@ -76,8 +76,8 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
                                         src="/assets/images/pokedex_logo.png"
                                         alt="pokedex logo"
                                         className="h-auto w-auto max-w-[10rem] aspect-[16/9] object-contain"
-                                        width={100}
-                                        height={50}
+                                        width={75}
+                                        height={30}
                                     />
                                 </a>
                             </div>
@@ -121,7 +121,7 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
                             <ThemeComponent />
                         </MenuContainerComponent>
                         <MenuContainerComponent
-                            title="Frequently Asked Questions"
+                            title="F.A.Q"
                             isOpen={faqVisible}
                             toggleContainer={() => setFaqVisible(!faqVisible)}
                         >

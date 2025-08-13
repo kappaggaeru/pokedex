@@ -8,15 +8,17 @@ export const InformationComponent: React.FC<InformationProps> = ({ id, height, w
         const calc = genderRate / 8;
         if (calc == 1) {
             return 'Always female';
-        } else if (calc < 1) {
-            return `${calc * 100}%`;
-        } else {
+        } else if (calc == 0) {
+            return 'Always male';
+        } else if (calc < 0) {
             return 'Genderless';
+        } else {
+            return `${calc * 100}%`;
         }
     }
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="flex flex-row justify-evenly">
                 <div className="col-span-1 flex flex-col text-center">
                     <h5 className="text-gray-500 dark:text-gray-400">Region</h5>
                     <span className="bold text-gray-700 dark:text-gray-300">{region.name}</span>
@@ -30,12 +32,12 @@ export const InformationComponent: React.FC<InformationProps> = ({ id, height, w
                     <span className="bold text-gray-700 dark:text-gray-300">{weight / 10} kg</span>
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-1 flex flex-col text-center">
+            <div className="flex flex-row justify-evenly">
+                <div className="flex flex-col text-center">
                     <h5 className="text-gray-500 dark:text-gray-400">Capture Rate</h5>
                     <span className="bold text-gray-700 dark:text-gray-300">{captureRate}</span>
                 </div>
-                <div className="col-span-1 flex flex-col text-center">
+                <div className="flex flex-col text-center">
                     <h5 className="text-gray-500 dark:text-gray-400">Gender Rate</h5>
                     <span className="bold text-gray-700 dark:text-gray-300">
                         {renderGenderRate()}
