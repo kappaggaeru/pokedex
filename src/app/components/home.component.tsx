@@ -15,6 +15,7 @@ import { NotificationsComponent } from "./notifications.component";
 import { CookieCardComponent } from "./card/cookie-card.component";
 import { ModalComponent } from "./modal/modal.component";
 import { useModal } from "../context/modalContext";
+import { ModalArtworkComponent } from "./modal/modal-artwork.component";
 
 const HomeComponent: React.FC = () => {
     const { selectedId, selectedPokemon } = usePokemon();
@@ -22,7 +23,7 @@ const HomeComponent: React.FC = () => {
     const { showMenu } = useMenu();
     const isMobile = useIsMobile();
     const { enabledAnimations } = useAccesibility();
-    const { toggleModal } = useModal();
+    const { toggleModal, showModalArtwork } = useModal();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -34,7 +35,7 @@ const HomeComponent: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (isMobile && showMenu) {
+        if ((isMobile && showMenu) || showModalArtwork) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "";
@@ -43,7 +44,7 @@ const HomeComponent: React.FC = () => {
         return () => {
             document.body.style.overflow = "";
         };
-    }, [isMobile, showMenu]);
+    }, [isMobile, showMenu, showModalArtwork]);
 
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
@@ -69,11 +70,11 @@ const HomeComponent: React.FC = () => {
                             key={selectedPokemon?.id}
                         />
                     </div>
-                    <MenuComponent isOpen={showMenu}>
-                    </MenuComponent>
+                    <MenuComponent isOpen={showMenu} />
                     <ModalComponent />
+                    <ModalArtworkComponent />
                     <CookieCardComponent />
-                    <NotificationsComponent></NotificationsComponent>
+                    <NotificationsComponent />
                 </div>
                 <DefaultButton onClick={scrollToTop} isVisible={showScrollTop} icon={ArrowUp} className={`fixed bottom-5 right-5 z-20 ${enabledAnimations ? "animate-bounce" : ""}`} />
             </div>

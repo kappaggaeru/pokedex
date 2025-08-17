@@ -23,6 +23,7 @@ import EvolutionTriggers from "./pokemon/evolution-triggers.component";
 import { Stat } from "@/app/models/dto/stat.model";
 import { Type } from "@/app/models/dto/type.model";
 import { HeldItemsList } from "./pokemon/held-items.list";
+import { useModal } from "@/app/context/modalContext";
 
 const PokemonCardComponent: React.FC = () => {
     const { setTier, selectedId, isLoadingPokemon, clearPokemonCard } = usePokemon();
@@ -33,6 +34,7 @@ const PokemonCardComponent: React.FC = () => {
     const [evolutionChainList, setEvolutionChainList] = useState<EvolutionStage[]>([]);
     const [evolutionTriggerList, setEvolutionTriggerList] = useState<EvolutionTrigger[]>([]);
     const [varietiesList, setVarietiesList] = useState<EvolutionStage[]>([]);
+    const { setArtworkData } = useModal();
     const [tags, setTags] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [hasFailed, setHasFailed] = useState(false);
@@ -63,6 +65,7 @@ const PokemonCardComponent: React.FC = () => {
                 setPokemonData(pokemon);
                 setPokemonSpecies(species);
                 setPokemonArtwork(artworks);
+                setArtworkData(artworks[0], artworks[1], pokemon.name);
 
                 if (species && pokemon && !pokemon.stats.some((s: Stat) => s.stat.name === "base happiness")) {
                     pokemon.stats = [

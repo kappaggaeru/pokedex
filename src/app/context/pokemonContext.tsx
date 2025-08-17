@@ -26,7 +26,6 @@ interface PokemonContextType {
     viewedMap: Record<number, ViewedState>;
     selectedPokemon: Pokemon | null;
     isLoadingPokemon: boolean;
-    shouldBlinkArtwork: boolean;
     capturedList: number[];
     ashCapturedList: number[];
     ashCaptureCount: number;
@@ -39,7 +38,6 @@ interface PokemonContextType {
     clearPokemonCard: () => void;
     setViewedMap: React.Dispatch<React.SetStateAction<Record<number, ViewedState>>>;
     setIsLoadingPokemon: React.Dispatch<React.SetStateAction<boolean>>;
-    setShouldBlinkArtwork: (value: boolean) => void;
     toggleFilteredRegion: (region: string) => void;
 }
 
@@ -56,7 +54,6 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
     const [isLoadingPokemon, setIsLoadingPokemon] = useState(false);
-    const [shouldBlinkArtwork, setShouldBlinkArtwork] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["capturedList"]);
     const { updateCountAchievements, checkCaptureCountAshAchievement } = useAchievements();
     const [filteredRegions, setFilteredRegions] = useState([
@@ -236,7 +233,6 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             viewedMap,
             selectedPokemon,
             isLoadingPokemon,
-            shouldBlinkArtwork,
             capturedList,
             ashCapturedList,
             ashCaptureCount,
@@ -249,7 +245,6 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
             clearPokemonCard,
             setViewedMap,
             setIsLoadingPokemon,
-            setShouldBlinkArtwork,
             toggleFilteredRegion
         }}>
             {children}
