@@ -69,13 +69,13 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
             <div className="w-full h-full">
                 <div className="overflow-auto h-full">
                     <div className="flex flex-col gap-4 mx-4 pb-4 pt-4">
-                        <div className="flex flex-row justify-between items-start">
+                        <div className="flex flex-row justify-between items-center">
                             <div>
                                 <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9dex" target="_blank" rel="noopener noreferrer">
                                     <Image
                                         src="/assets/images/pokedex_logo.png"
                                         alt="pokedex logo"
-                                        className="h-auto w-auto max-w-[10rem] aspect-[16/9] object-contain"
+                                        className="h-auto w-auto max-w-[5rem] aspect-[16/9] object-contain"
                                         width={75}
                                         height={30}
                                     />
@@ -121,7 +121,7 @@ export const MenuComponent = ({ isOpen }: { isOpen: boolean }) => {
                             <ThemeComponent />
                         </MenuContainerComponent>
                         <MenuContainerComponent
-                            title="F.A.Q"
+                            title="FAQ"
                             isOpen={faqVisible}
                             toggleContainer={() => setFaqVisible(!faqVisible)}
                         >

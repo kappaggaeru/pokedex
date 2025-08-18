@@ -1,4 +1,5 @@
 import { useModal } from "@/app/context/modalContext";
+import { formatText } from "@/app/utils/stringUtils";
 
 export function ModalArtworkComponent() {
     const { showModalArtwork, toggleModalArtwork, artwork } = useModal();
@@ -25,7 +26,7 @@ export function ModalArtworkComponent() {
                                 title={artwork?.title}
                             />
                         </div>
-                        <p className="capitalize text-lg">{artwork?.title}</p>
+                        <p className="uppercase text-lg text-gray-300">{formatText(artwork?.title ?? "", "-")}</p>
                     </div>
                 )
                 }

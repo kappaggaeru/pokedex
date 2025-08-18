@@ -22,7 +22,7 @@ const HeaderComponent: React.FC = () => {
                     <MenuTriggerButton menu="theme" title="Theme" icon={SunMoon} />
                 </div>
                 <div className="hidden lg:block">
-                    <MenuTriggerButton menu="faq" title="F.A.Q" icon={MessageCircleQuestion} />
+                    <MenuTriggerButton menu="faq" title="FAQ" icon={MessageCircleQuestion} />
                 </div>
                 <div className="hidden md:block">
                     <MenuTriggerButton menu="support" title="Support" icon={Coffee} />
