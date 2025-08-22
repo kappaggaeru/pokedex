@@ -1,4 +1,3 @@
-import { useLanguage } from "@/app/context/languageContext";
 import { Effect } from "@/app/models/dto/effect.model";
 import { Generic } from "@/app/models/dto/generic.model";
 import { Pokemon } from "@/app/models/dto/pokemon.model";
@@ -15,7 +14,6 @@ export type ItemProps = {
 }
 
 export const HeldItemsList = ({ pokemonData }: { pokemonData: Pokemon }) => {
-    const { language } = useLanguage();
     const [items, setItems] = useState<FlavorProps[]>([]);
 
     useEffect(() => {
@@ -30,14 +28,14 @@ export const HeldItemsList = ({ pokemonData }: { pokemonData: Pokemon }) => {
                         const objectURL = URL.createObjectURL(blob);
 
                         const effectEntry = heldItemData.effect_entries.find(
-                            (entry: Effect) => entry.language.name === language
+                            (entry: Effect) => entry.language.name === "en"
                         );
 
                         const flavorTexts = getFirstFlavorTexts(heldItemData);
 
                         return {
                             name: heldItemData.name,
-                            effect: effectEntry?.effect || flavorTexts[language] || "",
+                            effect: effectEntry?.effect || flavorTexts["en"] || "",
                             shortEffect: effectEntry?.short_effect || "",
                             sprite: objectURL
                         };
@@ -52,7 +50,7 @@ export const HeldItemsList = ({ pokemonData }: { pokemonData: Pokemon }) => {
         };
 
         fetchHeldItems();
-    }, [pokemonData, language]);
+    }, [pokemonData]);
 
     if (items.length === 0) return null;
 

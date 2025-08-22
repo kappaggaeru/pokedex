@@ -8,7 +8,7 @@ export function ModalArtworkComponent() {
         <div onClick={toggleModalArtwork}
             className={`
                 fixed inset-0 flex justify-center items-center cursor-pointer
-                bg-black/85 transition-all duration-300
+                bg-black/85 backdrop-blur-sm transition-all duration-300
                 ${showModalArtwork ? "z-40 scale-100" : "opacity-0 z-0 pointer-events-none"}
             `}>
             <div
