@@ -24,6 +24,7 @@ import { Stat } from "@/app/models/dto/stat.model";
 import { Type } from "@/app/models/dto/type.model";
 import { HeldItemsList } from "./pokemon/held-items.list";
 import { useModal } from "@/app/context/modalContext";
+import useBackButton from "@/app/utils/useBackButton";
 
 const PokemonCardComponent: React.FC = () => {
     const { setTier, selectedId, isLoadingPokemon, clearPokemonCard } = usePokemon();
@@ -186,6 +187,10 @@ const PokemonCardComponent: React.FC = () => {
         }
     }, [pokemonSpecies]);
 
+    useBackButton(() => {
+        clearPokemonCard();
+    });
+
 
     /**
      * creates a vector with the names and urls from the evolution chain
@@ -221,11 +226,11 @@ const PokemonCardComponent: React.FC = () => {
                     for (const detail of evolution.evolution_details) {
                         result.push({
                             babyTriggerItem: evolutionChain.baby_trigger_item
-                            ? {
-                                name: evolutionChain.baby_trigger_item.name,
-                                url: evolutionChain.baby_trigger_item.url
-                            }
-                            : null,
+                                ? {
+                                    name: evolutionChain.baby_trigger_item.name,
+                                    url: evolutionChain.baby_trigger_item.url
+                                }
+                                : null,
                             evolvesFrom: node.species.name ?? "",
                             evolvesTo: evolution.species.name ?? "",
                             minLevel: detail.min_level,
@@ -259,11 +264,11 @@ const PokemonCardComponent: React.FC = () => {
                                 }
                                 : null,
                             partySpecies: detail.party_species
-                            ? {
-                                name: detail.party_species.name,
-                                url: detail.party_species.url
-                            }
-                            : null
+                                ? {
+                                    name: detail.party_species.name,
+                                    url: detail.party_species.url
+                                }
+                                : null
                         });
                     }
                     traverse(evolution);
