@@ -2,6 +2,7 @@ export const FaqComponent: React.FC = () => {
     return (
         <div className="flex flex-col gap-8 cursor-default">
             <div className="flex flex-col gap-4 cursor-default text-gray-500 dark:text-gray-400">
+                <h2 className="text-lg">Frequently Asked Questions</h2>
                 <h3 className="text-md"><b>Capture Rate</b> — How does it work?</h3>
                 <p>The capture rate is the probability of catching a Pok&eacute;mon. It dependes on several factors, the most principal being the Pok&eacute;mon&#39;s HP, any status condition affecting it, its base capture rate, and the type Pok&eacute; Ball used.</p>
                 <p>Each game uses a different algorithm to calculate the capture rate based on these variables. However, the formula changes between generations, so the way probabilities are calculated is not the same across all games.</p>

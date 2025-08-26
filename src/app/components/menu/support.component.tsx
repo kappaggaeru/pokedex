@@ -13,7 +13,7 @@ export const SupportComponent: React.FC = () => {
             <div className="text-gray-500 dark:text-gray-400 flex flex-col gap-4 cursor-default">
                 <p className="font-bold">Support this developer — buy him a coffee!</p>
                 <p>This website was built by a single developer. Your support helps fund new features and, of course, coffee!</p>
-                <p>If you&#39;re in Argentina, you can use <i>Cafecito</i> to pay in ARS.</p>
+                <p>Si est&aacute;s en Argentina, podes usar <i>Cafecito</i> para pagar en ARS.</p>
                 <p>Thank you for your support!</p>
             </div>
             <div className="mt-4 flex flex-col gap-4">
