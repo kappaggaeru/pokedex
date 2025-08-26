@@ -187,10 +187,7 @@ const PokemonCardComponent: React.FC = () => {
         }
     }, [pokemonSpecies]);
 
-    useBackButton(() => {
-        clearPokemonCard();
-    });
-
+    useBackButton(selectedId, clearPokemonCard);
 
     /**
      * creates a vector with the names and urls from the evolution chain
