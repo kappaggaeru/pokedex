@@ -23,6 +23,7 @@ const PokedexListComponent: React.FC = () => {
 
     const [cookies] = useCookies(["capturedList"]);
     const [loading, setLoading] = useState(true);
+    const [failed, setFailed] = useState(false);
     const enabledPreloadSprites = false;
 
     // Convertir cookies Y capturedList del contexto a Set para búsquedas más eficientes
@@ -54,6 +55,7 @@ const PokedexListComponent: React.FC = () => {
                 }));
                 setPokemonList(entries);
             } catch (e) {
+                setFailed(true);
                 console.error("Error loading pokedex:", e);
             } finally {
                 setLoading(false);
@@ -189,6 +191,15 @@ const PokedexListComponent: React.FC = () => {
                 <PokeballSpinner />
             </div>
         );
+    }
+
+    if (failed) {
+        return (
+            <div className="h-[40rem] max-w-sm mx-auto w-full flex flex-col items-center justify-center text-gray-500 text-center">
+                <h1 className="font-semibold text-xl">Error</h1>
+                <p className="px-4">An error occurred while fetching the Pokémon list. Please try again later.</p>
+            </div>
+        )
     }
 
     return (
