@@ -48,7 +48,7 @@ const HomeComponent: React.FC = () => {
 
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
-            if (e.ctrlKey && e.key.toLowerCase() === "k") {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
                 e.preventDefault();
                 toggleModal();
             }
