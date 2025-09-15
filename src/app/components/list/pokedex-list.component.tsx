@@ -202,6 +202,15 @@ const PokedexListComponent: React.FC = () => {
         )
     }
 
+    if (filteredRegions.length == 0) {
+        return (
+            <div className="h-[40rem] max-w-sm mx-auto w-full flex flex-col items-center justify-center text-gray-500 text-center">
+                <h1 className="font-semibold text-xl">Your Pokédex is empty!</h1>
+                <p className="px-4">No Pokémon showed up this time... maybe they&#39;re all hiding in tall grass. 🌱 Try another filter!</p>
+            </div>
+        )
+    }
+
     return (
         <div className="flex flex-wrap justify-center gap-4 py-4">
             {getSegmentedList()}
